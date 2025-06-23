@@ -1,0 +1,36 @@
+package com.project.likelion13th_team1.domain.routine.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Table(name = "routine_event")
+public class RoutineEvent {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // 이 루틴이 진행될 시간
+    @Column(name = "scheduledAt", nullable = false)
+    private LocalDateTime scheduledAt;
+
+    // 사용자가 루틴 완료를 누른 시간
+    @Column(name = "doneAt")
+    private LocalDateTime doneAt;
+
+    // 루틴 상태
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    private Routine routine;
+}
