@@ -1,7 +1,11 @@
 package com.project.likelion13th_team1.domain.member.entity;
 
+import com.project.likelion13th_team1.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "member")
-public class Member {
+public class Member extends BaseEntity {
 
     // PK
     @Id
@@ -40,29 +44,8 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
-    // 생성일자
-    @Column(name = "createdAt", nullable = false)
-    private LocalDateTime createdAt;
-
-    // 수정일자
-    @Column(name = "updatedAt", nullable = false)
-    private LocalDateTime updatedAt;
-
     // 루틴 추천을 위한 멤버의 특성
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_feature_id")
     private MemberFeature memberFeature;
-
-    // 생성 시점에 시간 초기화
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // 수정 시점에 시간 초기화
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 }

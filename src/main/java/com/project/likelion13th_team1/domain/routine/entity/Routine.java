@@ -1,8 +1,11 @@
 package com.project.likelion13th_team1.domain.routine.entity;
 
 import com.project.likelion13th_team1.domain.member.entity.Member;
+import com.project.likelion13th_team1.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "routine")
-public class Routine {
+public class Routine extends BaseEntity {
 
     // PK
     @Id
@@ -45,14 +48,6 @@ public class Routine {
     @Column(name = "endAt")
     private LocalDateTime endAt;
 
-    // 생성 일자
-    @Column(name = "createdAt", nullable = false)
-    private LocalDateTime createdAt;
-
-    // 변경 일자
-    @Column(name = "updatedAt", nullable = false)
-    private LocalDateTime updatedAt;
-
     // 멤버 FK
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -63,18 +58,4 @@ public class Routine {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "routine_feature_id")
     private RoutineFeature routineFeature;
-
-    // 객체 생성시 시간 초기화
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // 객체 업데이트시 시간 초기화
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
 }
