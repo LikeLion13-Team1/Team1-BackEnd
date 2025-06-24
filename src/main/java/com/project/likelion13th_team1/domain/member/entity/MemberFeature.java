@@ -11,6 +11,7 @@ import lombok.*;
 @Table(name = "member_feature")
 public class MemberFeature {
 
+    // PK
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

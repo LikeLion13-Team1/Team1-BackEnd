@@ -13,33 +13,42 @@ import java.time.LocalDateTime;
 @Table(name = "member")
 public class Member {
 
+    // PK
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 이름
     @Column(name = "username", nullable = false)
     private String username;
 
+    // 이메일
     @Column(name = "email", nullable = false)
     private String email;
 
+    // 비밀번호
     @Column(name = "password", nullable = false)
     private String password;
 
+    // 역할 (일반 사용자, 관리자)
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    // 로그인 타입 (로컬, 카카오, 구글 등)
     @Column(name = "social_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
+    // 생성일자
     @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;
 
+    // 수정일자
     @Column(name = "updatedAt", nullable = false)
     private LocalDateTime updatedAt;
 
+    // 루틴 추천을 위한 멤버의 특성
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_feature_id")
     private MemberFeature memberFeature;
