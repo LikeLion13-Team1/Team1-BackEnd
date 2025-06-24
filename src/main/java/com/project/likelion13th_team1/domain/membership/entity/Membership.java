@@ -14,20 +14,25 @@ import java.time.LocalDateTime;
 @Table(name = "membership")
 public class Membership {
 
+    // PK
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 멤버쉽 상태
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private MembershipStatus status;
 
+    // 시작 시간
     @Column(name = "startAt", nullable = false)
     private LocalDateTime startAt;
 
+    // 만료 시간 (처음 가입시에는 최대 값으로 설정하면 될듯?)
     @Column(name = "expiredAt", nullable = false)
     private LocalDateTime expiredAt;
 
+    // 멤버 정보 FK
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
