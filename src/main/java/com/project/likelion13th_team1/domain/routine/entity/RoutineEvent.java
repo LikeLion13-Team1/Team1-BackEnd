@@ -31,6 +31,6 @@ public class RoutineEvent {
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "routine_id")
     private Routine routine;
 }

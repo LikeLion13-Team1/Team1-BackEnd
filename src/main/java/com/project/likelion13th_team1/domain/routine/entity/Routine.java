@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.routine.entity;
 
+import com.project.likelion13th_team1.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,6 +45,14 @@ public class Routine {
 
     @Column(name = "updatedAt", nullable = false)
     private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "routine_feature_id")
+    private RoutineFeature routineFeature;
 
     @PrePersist
     protected void onCreate() {
