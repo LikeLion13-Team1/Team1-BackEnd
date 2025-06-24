@@ -12,6 +12,7 @@ import lombok.*;
 @Table(name = "routine_feature")
 public class RoutineFeature {
 
+    // PK
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

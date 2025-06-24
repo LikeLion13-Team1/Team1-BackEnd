@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "routine_event")
 public class RoutineEvent {
 
+    // PK
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +31,7 @@ public class RoutineEvent {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    // 루틴 FK (Routine Event 는 Routine 이라는 설계도로 찍어낸 실제 수행해야할 루틴)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "routine_id")
     private Routine routine;
