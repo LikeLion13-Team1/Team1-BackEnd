@@ -1,4 +1,4 @@
-package com.project.likelion13thbe.global.apiPayload;
+package com.project.likelion13th_team1.global.apiPayload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

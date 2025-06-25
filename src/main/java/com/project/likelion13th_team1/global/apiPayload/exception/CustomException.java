@@ -1,6 +1,7 @@
-package com.project.likelion13thbe.global.apiPayload.exception;
+package com.project.likelion13th_team1.global.apiPayload.exception;
 
-import com.project.likelion13thbe.global.apiPayload.code.BaseErrorCode;
+
+import com.project.likelion13th_team1.global.apiPayload.code.BaseErrorCode;
 import lombok.Getter;
 
 @Getter

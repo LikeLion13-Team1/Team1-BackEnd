@@ -1,4 +1,4 @@
-package com.project.likelion13thbe.global.apiPayload.code;
+package com.project.likelion13th_team1.global.apiPayload.code;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

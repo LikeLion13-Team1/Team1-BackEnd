@@ -1,6 +1,6 @@
-package com.project.likelion13thbe.global.apiPayload.code;
+package com.project.likelion13th_team1.global.apiPayload.code;
 
-import com.project.likelion13thbe.global.apiPayload.CustomResponse;
+import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
 import org.springframework.http.HttpStatus;
 
 public interface BaseErrorCode {

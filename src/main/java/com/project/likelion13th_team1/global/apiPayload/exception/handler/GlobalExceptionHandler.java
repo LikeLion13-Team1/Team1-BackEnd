@@ -1,9 +1,10 @@
-package com.project.likelion13thbe.global.apiPayload.exception.handler;
+package com.project.likelion13th_team1.global.apiPayload.exception.handler;
 
-import com.project.likelion13thbe.global.apiPayload.CustomResponse;
-import com.project.likelion13thbe.global.apiPayload.code.BaseErrorCode;
-import com.project.likelion13thbe.global.apiPayload.code.GeneralErrorCode;
-import com.project.likelion13thbe.global.apiPayload.exception.CustomException;
+
+import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
+import com.project.likelion13th_team1.global.apiPayload.code.BaseErrorCode;
+import com.project.likelion13th_team1.global.apiPayload.code.GeneralErrorCode;
+import com.project.likelion13th_team1.global.apiPayload.exception.CustomException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
