@@ -17,6 +17,7 @@ import com.project.likelion13th_team1.global.feature.exception.FeatureException;
 import com.project.likelion13th_team1.global.feature.repository.FeatureRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,13 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         // TODO : 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(dto.password());
         Member member = MemberConverter.toMember(dto, encodedPassword);
-        memberRepository.save(member);
+
+        try {
+            memberRepository.save(member);
+        } catch (DataIntegrityViolationException e) {
+            throw new MemberException(MemberErrorCode.MEMBER_EMAIL_DUPLICATE);
+        }
+
     }
 
     @Override
