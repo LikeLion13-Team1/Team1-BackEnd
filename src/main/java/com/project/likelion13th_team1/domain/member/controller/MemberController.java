@@ -69,4 +69,14 @@ public class MemberController {
         memberCommandService.createFeature(customUserDetails.getUsername(), featureCreateRequestDto);
         return CustomResponse.onSuccess(HttpStatus.CREATED, "회원 특성 정보 생성 완료");
     }
+
+    @Operation(summary = "회원 특성 정보 수정")
+    @PatchMapping("/feature")
+    public CustomResponse<String> updateFeature(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestBody FeatureRequestDto.FeatureUpdateRequestDto featureUpdateRequestDto
+    ) {
+        memberCommandService.updateFeature(customUserDetails.getUsername(), featureUpdateRequestDto);
+        return CustomResponse.onSuccess(HttpStatus.OK, "회원 특성 정보 수정 완료");
+    }
 }

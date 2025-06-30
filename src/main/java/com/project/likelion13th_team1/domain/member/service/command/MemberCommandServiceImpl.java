@@ -63,4 +63,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
         member.linkFeature(feature);
     }
+
+    @Override
+    public void updateFeature(String email, FeatureRequestDto.FeatureUpdateRequestDto featureUpdateRequestDto) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+        member.getFeature().updateFeature(featureUpdateRequestDto);
+    }
 }
