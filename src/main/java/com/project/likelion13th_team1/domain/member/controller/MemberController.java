@@ -4,6 +4,7 @@ import com.project.likelion13th_team1.domain.member.dto.request.MemberRequestDto
 import com.project.likelion13th_team1.domain.member.dto.response.MemberResponseDto;
 import com.project.likelion13th_team1.domain.member.service.command.MemberCommandService;
 import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
+import com.project.likelion13th_team1.global.feature.dto.request.FeatureRequestDto;
 import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,5 +46,15 @@ public class MemberController {
     ) {
         memberCommandService.deleteMember(customUserDetails.getUsername());
         return CustomResponse.onSuccess(HttpStatus.NO_CONTENT, "회원 탈퇴 완료");
+    }
+
+    @Operation(summary = "회원 특성 정보 생성")
+    @PostMapping("/feature")
+    public CustomResponse<String> createFeature(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestBody FeatureRequestDto.FeatureCreateRequestDto featureCreateRequestDto
+            ) {
+        memberCommandService.createFeature(customUserDetails.getUsername(), featureCreateRequestDto);
+        return CustomResponse.onSuccess(HttpStatus.CREATED, "회원 특성 정보 생성 완료");
     }
 }
