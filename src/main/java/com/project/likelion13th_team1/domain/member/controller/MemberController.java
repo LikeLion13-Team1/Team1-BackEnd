@@ -3,6 +3,7 @@ package com.project.likelion13th_team1.domain.member.controller;
 import com.project.likelion13th_team1.domain.member.dto.request.MemberRequestDto;
 import com.project.likelion13th_team1.domain.member.dto.response.MemberResponseDto;
 import com.project.likelion13th_team1.domain.member.service.command.MemberCommandService;
+import com.project.likelion13th_team1.domain.member.service.query.MemberQueryService;
 import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
 import com.project.likelion13th_team1.global.feature.dto.request.FeatureRequestDto;
 import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberCommandService memberCommandService;
+    private final MemberQueryService memberQueryService;
 
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
@@ -38,6 +40,14 @@ public class MemberController {
     ) {
         memberCommandService.updateMember(customUserDetails.getUsername(), memberUpdateRequestDto);
         return CustomResponse.onSuccess(HttpStatus.OK, "회원 정보 수정 완료");
+    }
+
+    @Operation(summary = "회원 정보 조회")
+    @GetMapping("/info")
+    public CustomResponse<MemberResponseDto.MemberDetailResponseDto> getMember(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) {
+        return CustomResponse.onSuccess(memberQueryService.getMember(customUserDetails.getUsername()));
     }
 
     // TODO : 스케쥴러 구현하기

@@ -21,15 +21,13 @@ public class MemberConverter {
                 .build();
     }
 
-    public static MemberResponseDto.MemberCreateResponseDto toMemberResponseDto(Member member) {
-        return MemberResponseDto.MemberCreateResponseDto.builder()
-                .id(member.getId())
+    public static MemberResponseDto.MemberDetailResponseDto toMemberDetailResponseDto(Member member) {
+        return MemberResponseDto.MemberDetailResponseDto.builder()
+                .username(member.getUsername())
+                .email(member.getEmail())
+                .profileImage(member.getProfileImage())
+                .socialType(member.getSocialType())
                 .createdAt(member.getCreatedAt())
-                .build();
-    }
-
-    public static MemberResponseDto.MemberUpdateResponseDto toMemberUpdateResponseDto(Member member) {
-        return MemberResponseDto.MemberUpdateResponseDto.builder()
                 .updatedAt(member.getUpdatedAt())
                 .build();
     }
