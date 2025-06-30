@@ -27,4 +27,10 @@ public class MemberConverter {
                 .createdAt(member.getCreatedAt())
                 .build();
     }
+
+    public static MemberResponseDto.MemberUpdateResponseDto toMemberUpdateResponseDto(Member member) {
+        return MemberResponseDto.MemberUpdateResponseDto.builder()
+                .updatedAt(member.getUpdatedAt())
+                .build();
+    }
 }

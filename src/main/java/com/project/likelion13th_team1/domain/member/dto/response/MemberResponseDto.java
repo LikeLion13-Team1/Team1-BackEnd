@@ -12,4 +12,10 @@ public class MemberResponseDto {
             LocalDateTime createdAt
     ) {
     }
+
+    @Builder
+    public record MemberUpdateResponseDto(
+            LocalDateTime updatedAt
+    ) {
+    }
 }
