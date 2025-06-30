@@ -33,16 +33,14 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         String encodedPassword = passwordEncoder.encode(dto.password());
         Member member = MemberConverter.toMember(dto, encodedPassword);
         memberRepository.save(member);
-        return MemberConverter.toMemberResponseDto(member);
     }
 
     @Override
-    public MemberResponseDto.MemberUpdateResponseDto updateMember(String email, MemberRequestDto.MemberUpdateRequestDto dto) {
+    public void updateMember(String email, MemberRequestDto.MemberUpdateRequestDto dto) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         member.updateUsername(dto);
-        return MemberConverter.toMemberUpdateResponseDto(member);
     }
 
     @Override
