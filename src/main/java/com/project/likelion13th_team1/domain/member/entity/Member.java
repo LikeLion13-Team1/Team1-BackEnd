@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.member.entity;
 
+import com.project.likelion13th_team1.domain.member.dto.request.MemberRequestDto;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -48,4 +49,9 @@ public class Member extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_feature_id")
     private MemberFeature memberFeature;
+
+    // member update 메서드
+    public void updateUsername(MemberRequestDto.MemberUpdateRequestDto dto) {
+        this.username = dto.username();
+    }
 }

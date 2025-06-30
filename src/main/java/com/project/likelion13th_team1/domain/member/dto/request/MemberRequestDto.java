@@ -11,4 +11,10 @@ public class MemberRequestDto {
             String password
     ) {
     }
+
+    public record MemberUpdateRequestDto(
+            String username
+            //TODO : 유저 특성도 이걸로 바꿀건지?
+    ){
+    }
 }
