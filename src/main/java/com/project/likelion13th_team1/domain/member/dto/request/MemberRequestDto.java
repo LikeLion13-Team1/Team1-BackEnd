@@ -8,12 +8,14 @@ public class MemberRequestDto {
     public record MemberCreateRequestDto(
             String username,
             String email,
-            String password
+            String password,
+            String profileImage
     ) {
     }
 
     public record MemberUpdateRequestDto(
-            String username
+            String username,
+            String profileImage
             //TODO : 유저 특성도 이걸로 바꿀건지?
     ){
     }
