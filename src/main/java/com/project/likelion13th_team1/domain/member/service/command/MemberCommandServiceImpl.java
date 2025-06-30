@@ -28,7 +28,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public MemberResponseDto.MemberCreateResponseDto createMember(MemberRequestDto.MemberCreateRequestDto dto) {
+    public void createMember(MemberRequestDto.MemberCreateRequestDto dto) {
         // TODO : 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(dto.password());
         Member member = MemberConverter.toMember(dto, encodedPassword);

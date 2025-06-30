@@ -23,10 +23,11 @@ public class MemberController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
-    public CustomResponse<MemberResponseDto.MemberCreateResponseDto> createMember(
+    public CustomResponse<String> createMember(
             @RequestBody MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto
     ) {
-        return CustomResponse.onSuccess(memberCommandService.createMember(memberCreateRequestDto));
+        memberCommandService.createMember(memberCreateRequestDto);
+        return CustomResponse.onSuccess(HttpStatus.CREATED, "회원 가입 성공");
     }
 
     @Operation(summary = "회원정보 수정")
