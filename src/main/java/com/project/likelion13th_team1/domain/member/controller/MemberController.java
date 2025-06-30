@@ -6,6 +6,7 @@ import com.project.likelion13th_team1.domain.member.service.command.MemberComman
 import com.project.likelion13th_team1.domain.member.service.query.MemberQueryService;
 import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
 import com.project.likelion13th_team1.global.feature.dto.request.FeatureRequestDto;
+import com.project.likelion13th_team1.global.feature.dto.response.FeatureResponseDto;
 import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -78,5 +79,13 @@ public class MemberController {
     ) {
         memberCommandService.updateFeature(customUserDetails.getUsername(), featureUpdateRequestDto);
         return CustomResponse.onSuccess(HttpStatus.OK, "회원 특성 정보 수정 완료");
+    }
+
+    @Operation(summary = "회원 특성 정보 조회")
+    @GetMapping("/feature")
+    public CustomResponse<FeatureResponseDto.FeatureDetailResponseDto> getFeature(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) {
+        return CustomResponse.onSuccess(memberCommandService.getFeature(customUserDetails.getUsername()));
     }
 }

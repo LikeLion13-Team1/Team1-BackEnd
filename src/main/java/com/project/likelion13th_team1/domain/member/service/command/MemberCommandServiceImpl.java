@@ -9,6 +9,7 @@ import com.project.likelion13th_team1.domain.member.exception.MemberException;
 import com.project.likelion13th_team1.domain.member.repository.MemberRepository;
 import com.project.likelion13th_team1.global.feature.converter.FeatureConverter;
 import com.project.likelion13th_team1.global.feature.dto.request.FeatureRequestDto;
+import com.project.likelion13th_team1.global.feature.dto.response.FeatureResponseDto;
 import com.project.likelion13th_team1.global.feature.entity.Feature;
 import com.project.likelion13th_team1.global.feature.entity.FeatureType;
 import com.project.likelion13th_team1.global.feature.repository.FeatureRepository;
@@ -69,5 +70,15 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
         member.getFeature().updateFeature(featureUpdateRequestDto);
+    }
+
+    @Override
+    public FeatureResponseDto.FeatureDetailResponseDto getFeature(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Feature feature = member.getFeature();
+        //TODO : feature가 null 인 경우?
+        return FeatureConverter.toFeatureDetailResponseDto(feature);
     }
 }
