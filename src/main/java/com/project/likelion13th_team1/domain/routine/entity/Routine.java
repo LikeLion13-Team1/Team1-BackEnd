@@ -2,6 +2,7 @@ package com.project.likelion13th_team1.domain.routine.entity;
 
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
+import com.project.likelion13th_team1.global.feature.entity.Feature;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -56,6 +57,6 @@ public class Routine extends BaseEntity {
     // 루틴 특성 FK (유저에게 추천해주기 위한?)
     // TODO : 근데 CUSTOM 으로 만드는 경우에는 어떻게 할지?
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "routine_feature_id")
-    private RoutineFeature routineFeature;
+    @JoinColumn(name = "feature_id")
+    private Feature feature;
 }
