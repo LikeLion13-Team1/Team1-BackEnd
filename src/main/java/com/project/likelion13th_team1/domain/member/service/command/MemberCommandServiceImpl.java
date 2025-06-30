@@ -12,6 +12,8 @@ import com.project.likelion13th_team1.global.feature.dto.request.FeatureRequestD
 import com.project.likelion13th_team1.global.feature.dto.response.FeatureResponseDto;
 import com.project.likelion13th_team1.global.feature.entity.Feature;
 import com.project.likelion13th_team1.global.feature.entity.FeatureType;
+import com.project.likelion13th_team1.global.feature.exception.FeatureErrorCode;
+import com.project.likelion13th_team1.global.feature.exception.FeatureException;
 import com.project.likelion13th_team1.global.feature.repository.FeatureRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -78,7 +80,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         Feature feature = member.getFeature();
-        //TODO : feature가 null 인 경우?
+        if(feature == null) {
+            throw new FeatureException(FeatureErrorCode.FEATURE_NOT_FOUND);
+        }
         return FeatureConverter.toFeatureDetailResponseDto(feature);
     }
 }
