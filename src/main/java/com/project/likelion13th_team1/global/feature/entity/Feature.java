@@ -1,6 +1,7 @@
 package com.project.likelion13th_team1.global.feature.entity;
 
 
+import com.project.likelion13th_team1.global.feature.dto.request.FeatureRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,4 +39,11 @@ public class Feature {
     @Column(name = "Q4")
     @Enumerated(EnumType.STRING)
     private RoutineStyle routineStyle;
+
+    public void updateFeature(FeatureRequestDto.FeatureUpdateRequestDto dto) {
+        if (dto.messyHouse() != null) this.messyHouse = dto.messyHouse();
+        if (dto.cleaningStyle() != null) this.cleaningStyle = dto.cleaningStyle();
+        if (dto.cleanHouse() != null) this.cleanHouse = dto.cleanHouse();
+        if (dto.routineStyle() != null) this.routineStyle = dto.routineStyle();
+    }
 }

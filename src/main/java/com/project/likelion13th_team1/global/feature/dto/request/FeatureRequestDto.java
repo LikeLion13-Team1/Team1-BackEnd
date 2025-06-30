@@ -14,4 +14,12 @@ public class FeatureRequestDto {
             RoutineStyle routineStyle
     ) {
     }
+
+    public record FeatureUpdateRequestDto(
+            MessyHouse messyHouse,
+            CleaningStyle cleaningStyle,
+            CleanHouse cleanHouse,
+            RoutineStyle routineStyle
+    ) {
+    }
 }
