@@ -59,6 +59,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
+        // TODO : 중복저장 방지
         Feature feature = FeatureConverter.toFeature(featureCreateRequestDto, FeatureType.MEMBER);
         featureRepository.save(feature);
 
