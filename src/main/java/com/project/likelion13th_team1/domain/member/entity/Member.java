@@ -36,6 +36,10 @@ public class Member extends BaseEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    // 프로필 사진
+    @Column(name = "profile_image")
+    private String profileImage;
+
     // 역할 (일반 사용자, 관리자)
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)

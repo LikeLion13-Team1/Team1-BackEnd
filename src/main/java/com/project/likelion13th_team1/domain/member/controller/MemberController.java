@@ -23,19 +23,21 @@ public class MemberController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
-    public CustomResponse<MemberResponseDto.MemberCreateResponseDto> createMember(
+    public CustomResponse<String> createMember(
             @RequestBody MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto
     ) {
-        return CustomResponse.onSuccess(memberCommandService.createMember(memberCreateRequestDto));
+        memberCommandService.createMember(memberCreateRequestDto);
+        return CustomResponse.onSuccess(HttpStatus.CREATED, "회원 가입 성공");
     }
 
-    @Operation(summary = "회원정보 수정")
+    @Operation(summary = "회원 정보 수정")
     @PatchMapping("/me")
-    public CustomResponse<MemberResponseDto.MemberUpdateResponseDto> updateMember(
+    public CustomResponse<String> updateMember(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody MemberRequestDto.MemberUpdateRequestDto memberUpdateRequestDto
     ) {
-        return CustomResponse.onSuccess(memberCommandService.updateMember(customUserDetails.getUsername(), memberUpdateRequestDto));
+        memberCommandService.updateMember(customUserDetails.getUsername(), memberUpdateRequestDto);
+        return CustomResponse.onSuccess(HttpStatus.OK, "회원 정보 수정 완료");
     }
 
     // TODO : 스케쥴러 구현하기

@@ -5,9 +5,9 @@ import com.project.likelion13th_team1.domain.member.dto.response.MemberResponseD
 import com.project.likelion13th_team1.global.feature.dto.request.FeatureRequestDto;
 
 public interface MemberCommandService {
-    MemberResponseDto.MemberCreateResponseDto createMember(MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto);
+    void createMember(MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto);
 
-    MemberResponseDto.MemberUpdateResponseDto updateMember(String email, MemberRequestDto.MemberUpdateRequestDto memberUpdateRequestDto);
+    void updateMember(String email, MemberRequestDto.MemberUpdateRequestDto memberUpdateRequestDto);
 
     void deleteMember(String email);
 
