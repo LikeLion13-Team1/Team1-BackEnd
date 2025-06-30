@@ -8,12 +8,13 @@ import com.project.likelion13th_team1.global.security.userdetails.CustomUserDeta
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/member")
+@RequestMapping("/api/v1/members")
 @Tag(name = "Member", description = "멤버 관련 API")
 public class MemberController {
 
@@ -34,5 +35,15 @@ public class MemberController {
             @RequestBody MemberRequestDto.MemberUpdateRequestDto memberUpdateRequestDto
     ) {
         return CustomResponse.onSuccess(memberCommandService.updateMember(customUserDetails.getUsername(), memberUpdateRequestDto));
+    }
+
+    // TODO : 스케쥴러 구현하기
+    @Operation(summary = "회원 탈퇴")
+    @DeleteMapping("/withdrawal")
+    public CustomResponse<String> deleteMember(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) {
+        memberCommandService.deleteMember(customUserDetails.getUsername());
+        return CustomResponse.onSuccess(HttpStatus.NO_CONTENT, "회원 탈퇴 완료");
     }
 }

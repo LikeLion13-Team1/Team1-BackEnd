@@ -39,4 +39,13 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         member.updateUsername(dto);
         return MemberConverter.toMemberUpdateResponseDto(member);
     }
+
+    @Override
+    public void deleteMember(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        // soft delete
+        member.delete();
+    }
 }

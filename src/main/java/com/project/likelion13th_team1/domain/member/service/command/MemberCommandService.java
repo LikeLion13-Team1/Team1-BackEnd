@@ -5,5 +5,8 @@ import com.project.likelion13th_team1.domain.member.dto.response.MemberResponseD
 
 public interface MemberCommandService {
     MemberResponseDto.MemberCreateResponseDto createMember(MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto);
+
     MemberResponseDto.MemberUpdateResponseDto updateMember(String email, MemberRequestDto.MemberUpdateRequestDto memberUpdateRequestDto);
+
+    void deleteMember(String email);
 }

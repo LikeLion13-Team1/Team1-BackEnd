@@ -45,6 +45,10 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
+    // soft delete 여부
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
     // 루틴 추천을 위한 멤버의 특성
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_feature_id")
@@ -53,5 +57,10 @@ public class Member extends BaseEntity {
     // member update 메서드
     public void updateUsername(MemberRequestDto.MemberUpdateRequestDto dto) {
         this.username = dto.username();
+    }
+
+    // member soft delete 메서드
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
     }
 }
