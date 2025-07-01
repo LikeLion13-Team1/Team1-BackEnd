@@ -15,4 +15,11 @@ public class MembershipResponseDto {
             LocalDateTime expiredAt
     ) {
     }
+
+    @Builder
+    public record MembershipJoinResponseDto(
+            Long id,
+            MembershipStatus membershipStatus
+    ) {
+    }
 }

@@ -18,4 +18,11 @@ public class MembershipConverter {
                 .expiredAt(membership.getExpiredAt())
                 .build();
     }
+
+    public MembershipResponseDto.MembershipJoinResponseDto toMembershipJoinResponseDto(Membership membership) {
+        return MembershipResponseDto.MembershipJoinResponseDto.builder()
+                .id(membership.getId())
+                .membershipStatus(membership.getStatus())
+                .build();
+    }
 }
