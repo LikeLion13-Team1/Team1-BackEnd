@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "routine")
@@ -30,6 +30,11 @@ public class Routine extends BaseEntity {
     // 루틴 설명 (이게 뭐하는 루틴인지)
     @Column(name = "description")
     private String description;
+
+    // 루틴 상태 (진행 중인지 끝났는지)
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     // 루틴 타입 (유저가 만든 것인지, 추천받은 것인지)
     @Column(name = "type", nullable = false)
