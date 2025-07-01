@@ -4,6 +4,7 @@ import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.domain.routine.dto.response.RoutineResponseDto;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
+import com.project.likelion13th_team1.domain.routine.entity.Type;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +15,7 @@ public class RoutineConverter {
                 .name(dto.name())
                 .description(dto.description())
                 .status(dto.status())
-                .type(dto.type())
+                .type(Type.CUSTOM)
                 .cycle(dto.cycle())
                 .startAt(dto.startAt())
                 .endAt(dto.endAt())

@@ -12,7 +12,6 @@ public class RoutineRequestDto {
             String name,
             String description,
             Status status,
-            Type type,
             Cycle cycle,
             LocalDateTime startAt,
             LocalDateTime endAt
