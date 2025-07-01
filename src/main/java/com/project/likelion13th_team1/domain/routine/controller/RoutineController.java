@@ -28,4 +28,15 @@ public class RoutineController {
     ) {
         return CustomResponse.onSuccess(HttpStatus.CREATED, routineCommandService.createRoutine(customUserDetails.getUsername(), routineCreateRequestDto));
     }
+
+    @Operation(summary = "루틴 수정")
+    @PatchMapping("/{routineId}")
+    public CustomResponse<RoutineResponseDto.RoutineUpdateResponseDto> updateRoutine(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long routineId,
+            @RequestBody RoutineRequestDto.RoutineUpdateRequestDto routineUpdateRequestDto
+
+    ) {
+        return CustomResponse.onSuccess(routineCommandService.updateRoutine(customUserDetails.getUsername(), routineId, routineUpdateRequestDto));
+    }
 }

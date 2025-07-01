@@ -9,4 +9,11 @@ public class RoutineResponseDto {
             Long routineId
     ) {
     }
+
+    // TODO : 나중에 routineResponseDto 이렇게 합쳐도 될 듯?
+    @Builder
+    public record RoutineUpdateResponseDto(
+            Long routineId
+    ) {
+    }
 }

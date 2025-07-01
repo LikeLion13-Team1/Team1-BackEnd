@@ -1,6 +1,7 @@
 package com.project.likelion13th_team1.domain.routine.entity;
 
 import com.project.likelion13th_team1.domain.member.entity.Member;
+import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
 import com.project.likelion13th_team1.global.feature.entity.Feature;
 import jakarta.persistence.*;
@@ -64,4 +65,14 @@ public class Routine extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feature_id")
     private Feature feature;
+
+    // TODO : DTO 제약 조건이 필요하다
+    public void updateRoutine(RoutineRequestDto.RoutineUpdateRequestDto dto) {
+        if (dto.name() != null) this.name = dto.name();
+        if (dto.description() != null) this.description = dto.description();
+        if (dto.status() != null) this.status = dto.status();
+        if (dto.cycle() != null) this.cycle = dto.cycle();
+        if (dto.startAt() != null) this.startAt = dto.startAt();
+        if (dto.endAt() != null) this.endAt = dto.endAt();
+    }
 }

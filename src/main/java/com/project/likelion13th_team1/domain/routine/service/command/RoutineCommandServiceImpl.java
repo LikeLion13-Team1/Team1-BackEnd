@@ -8,7 +8,11 @@ import com.project.likelion13th_team1.domain.routine.converter.RoutineConverter;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.domain.routine.dto.response.RoutineResponseDto;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
+import com.project.likelion13th_team1.domain.routine.exception.RoutineErrorCode;
+import com.project.likelion13th_team1.domain.routine.exception.RoutineException;
 import com.project.likelion13th_team1.domain.routine.repository.RoutineRepository;
+import com.project.likelion13th_team1.global.apiPayload.code.GeneralErrorCode;
+import com.project.likelion13th_team1.global.apiPayload.exception.CustomException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,5 +34,21 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         routineRepository.save(routine);
 
         return RoutineConverter.toRoutineCreateResponseDto(routine);
+    }
+
+    @Override
+    public RoutineResponseDto.RoutineUpdateResponseDto updateRoutine(String email, Long routineId, RoutineRequestDto.RoutineUpdateRequestDto routineUpdateRequestDto) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new RoutineException(RoutineErrorCode.ROUTINE_NOT_FOUND));
+
+        if (routine.getMember() != member) {
+            throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
+        }
+
+        routine.updateRoutine(routineUpdateRequestDto);
+        return RoutineConverter.toRoutineUpdateResponseDto(routine);
     }
 }

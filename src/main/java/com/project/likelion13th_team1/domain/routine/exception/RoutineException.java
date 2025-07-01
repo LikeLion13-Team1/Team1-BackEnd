@@ -1,7 +1,9 @@
 package com.project.likelion13th_team1.domain.routine.exception;
 
-public class RoutineException extends RuntimeException {
-    public RoutineException(String message) {
+import com.project.likelion13th_team1.global.apiPayload.exception.CustomException;
+
+public class RoutineException extends CustomException {
+    public RoutineException(RoutineErrorCode message) {
         super(message);
     }
 }

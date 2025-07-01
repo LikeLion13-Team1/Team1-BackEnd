@@ -28,4 +28,11 @@ public class RoutineConverter {
                 .routineId(routine.getId())
                 .build();
     }
+
+    // TODO : 이것도 합쳐야 함
+    public static RoutineResponseDto.RoutineUpdateResponseDto toRoutineUpdateResponseDto(Routine routine) {
+        return RoutineResponseDto.RoutineUpdateResponseDto.builder()
+                .routineId(routine.getId())
+                .build();
+    }
 }
