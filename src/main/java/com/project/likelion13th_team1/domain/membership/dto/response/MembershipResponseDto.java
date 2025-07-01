@@ -22,4 +22,11 @@ public class MembershipResponseDto {
             MembershipStatus membershipStatus
     ) {
     }
+
+    @Builder
+    public record MembershipWithdrawResponseDto(
+            Long id,
+            MembershipStatus membershipStatus
+    ) {
+    }
 }

@@ -21,6 +21,7 @@ public class MembershipCommandServiceImpl implements MembershipCommandService {
     private final MembershipRepository membershipRepository;
     private final MembershipConverter membershipConverter;
 
+    // 멤버십 가입
     public MembershipResponseDto.MembershipJoinResponseDto joinMembership(String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
@@ -29,5 +30,16 @@ public class MembershipCommandServiceImpl implements MembershipCommandService {
         membership.setStatus(MembershipStatus.PRO);
 
         return membershipConverter.toMembershipJoinResponseDto(membership);
+    }
+
+    // 멤버십 해지
+    public MembershipResponseDto.MembershipWithdrawResponseDto withdrawMembership(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+        Membership membership = membershipRepository.findByMember(member);
+
+        membership.setStatus(MembershipStatus.STANDARD);
+
+        return membershipConverter.toMembershipWithdrawResponseDto(membership);
     }
 }

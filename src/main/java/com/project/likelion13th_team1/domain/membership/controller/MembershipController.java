@@ -30,4 +30,10 @@ public class MembershipController {
     public CustomResponse<MembershipResponseDto.MembershipJoinResponseDto> joinMembership(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         return CustomResponse.onSuccess(membershipCommandService.joinMembership(customUserDetails.getUsername()));
     }
+
+    @Operation(summary = "멤버십 해지")
+    @PatchMapping("/api/v1/membership/withdrawal")
+    public CustomResponse<MembershipResponseDto.MembershipWithdrawResponseDto> withdrawalMembership(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return CustomResponse.onSuccess(membershipCommandService.withdrawMembership(customUserDetails.getUsername()));
+    }
 }

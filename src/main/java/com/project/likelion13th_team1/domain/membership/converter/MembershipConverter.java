@@ -25,4 +25,11 @@ public class MembershipConverter {
                 .membershipStatus(membership.getStatus())
                 .build();
     }
+
+    public MembershipResponseDto.MembershipWithdrawResponseDto toMembershipWithdrawResponseDto(Membership membership) {
+        return MembershipResponseDto.MembershipWithdrawResponseDto.builder()
+                .id(membership.getId())
+                .membershipStatus(membership.getStatus())
+                .build();
+    }
 }
