@@ -3,6 +3,7 @@ package com.project.likelion13th_team1.domain.routine.controller;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.domain.routine.dto.response.RoutineResponseDto;
 import com.project.likelion13th_team1.domain.routine.service.command.RoutineCommandService;
+import com.project.likelion13th_team1.domain.routine.service.query.RoutineQueryService;
 import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
 import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class RoutineController {
 
     private final RoutineCommandService routineCommandService;
+    private final RoutineQueryService routineQueryService;
 
     @Operation(summary = "루틴 생성")
     @PostMapping()
@@ -48,5 +50,14 @@ public class RoutineController {
     ) {
         routineCommandService.deleteRoutine(customUserDetails.getUsername(), routineId);
         return CustomResponse.onSuccess(HttpStatus.NO_CONTENT, "루틴 삭제 완료");
+    }
+
+    @Operation(summary = "루틴 단일 조회")
+    @GetMapping("/{routineId}")
+    public CustomResponse<RoutineResponseDto.RoutineDetailResponseDto> getRoutine(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long routineId
+    ) {
+        return CustomResponse.onSuccess(routineQueryService.getRoutine(customUserDetails.getUsername(), routineId));
     }
 }

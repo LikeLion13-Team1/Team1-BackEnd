@@ -35,4 +35,17 @@ public class RoutineConverter {
                 .routineId(routine.getId())
                 .build();
     }
+
+    public static RoutineResponseDto.RoutineDetailResponseDto toRoutineDetailResponseDto(Routine routine) {
+        return RoutineResponseDto.RoutineDetailResponseDto.builder()
+                .routineId(routine.getId())
+                .description(routine.getDescription())
+                .status(routine.getStatus())
+                .type(routine.getType())
+                .cycle(routine.getCycle())
+                .startAt(routine.getStartAt())
+                .endAt(routine.getEndAt())
+                .createdAt(routine.getCreatedAt())
+                .build();
+    }
 }
