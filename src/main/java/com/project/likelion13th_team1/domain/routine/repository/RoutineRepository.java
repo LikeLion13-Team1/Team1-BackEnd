@@ -1,8 +1,6 @@
 package com.project.likelion13th_team1.domain.routine.repository;
 
-import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.routine.dto.RoutineDto;
-import com.project.likelion13th_team1.domain.routine.dto.response.RoutineResponseDto;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -18,7 +16,7 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
     @Query("SELECT r " +
             "FROM Routine r " +
             "WHERE r.member.email = :email AND r.id = :routineId")
-    Optional<Routine> findByMemberEmailAndRoutineId(String email, Long routineId);
+    Optional<Routine> findByMemberEmailAndRoutineId(@Param("email") String email, @Param("routineId") Long routineId);
 
     // 커서 검색
     @Query("SELECT new com.project.likelion13th_team1.domain.routine.dto.RoutineDto(r) " +
