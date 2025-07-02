@@ -5,4 +5,6 @@ import com.project.likelion13th_team1.domain.routine.dto.response.RoutineRespons
 public interface RoutineQueryService {
 
     RoutineResponseDto.RoutineDetailResponseDto getRoutine(String email, Long routineId);
+
+    RoutineResponseDto.RoutineCursorResponseDto getRoutineCursor(String email, Long cursor, Integer size);
 }

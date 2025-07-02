@@ -60,4 +60,14 @@ public class RoutineController {
     ) {
         return CustomResponse.onSuccess(routineQueryService.getRoutine(customUserDetails.getUsername(), routineId));
     }
+
+    @Operation(summary = "루틴 목록 커서 조회")
+    @GetMapping("/my")
+    public CustomResponse<RoutineResponseDto.RoutineCursorResponseDto> getRoutineCursor(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam Long cursor,
+            @RequestParam Integer size
+    ) {
+        return CustomResponse.onSuccess(routineQueryService.getRoutineCursor(customUserDetails.getUsername(), cursor, size));
+    }
 }

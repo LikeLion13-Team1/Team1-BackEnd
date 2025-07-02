@@ -6,6 +6,7 @@ import com.project.likelion13th_team1.domain.routine.entity.Type;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class RoutineResponseDto {
 
@@ -34,4 +35,18 @@ public class RoutineResponseDto {
             LocalDateTime createdAt
     ) {
     }
+
+    @Builder
+    public record RoutineCursorResponseDto(
+            List<RoutineDetailResponseDto> routines,
+            Long nextCursor,
+            Boolean hasNextCursor
+    ) {
+    }
+
+//    @Builder
+//    public record RoutineDto(
+//            Routine routine
+//    ) {
+//    }
 }
