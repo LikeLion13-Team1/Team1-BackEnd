@@ -38,6 +38,7 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
 
     @Override
     public RoutineResponseDto.RoutineUpdateResponseDto updateRoutine(String email, Long routineId, RoutineRequestDto.RoutineUpdateRequestDto routineUpdateRequestDto) {
+        // TODO : update랑 delete 공통 부분을 private method로 묶기?
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
@@ -50,5 +51,21 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
 
         routine.updateRoutine(routineUpdateRequestDto);
         return RoutineConverter.toRoutineUpdateResponseDto(routine);
+    }
+
+    // TODO : 스케줄러 구현하기
+    @Override
+    public void deleteRoutine(String email, Long routineId) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new RoutineException(RoutineErrorCode.ROUTINE_NOT_FOUND));
+
+        if (routine.getMember() != member) {
+            throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
+        }
+
+        routine.delete(routine);
     }
 }

@@ -39,4 +39,14 @@ public class RoutineController {
     ) {
         return CustomResponse.onSuccess(routineCommandService.updateRoutine(customUserDetails.getUsername(), routineId, routineUpdateRequestDto));
     }
+
+    @Operation(summary = "루틴 삭제")
+    @DeleteMapping("/{routineId}")
+    public CustomResponse<String> deleteRoutine(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long routineId
+    ) {
+        routineCommandService.deleteRoutine(customUserDetails.getUsername(), routineId);
+        return CustomResponse.onSuccess(HttpStatus.NO_CONTENT, "루틴 삭제 완료");
+    }
 }

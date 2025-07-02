@@ -55,6 +55,10 @@ public class Routine extends BaseEntity {
     @Column(name = "endAt")
     private LocalDateTime endAt;
 
+    // 루틴 삭제 soft
+    @Column(name = "deletedAt")
+    private LocalDateTime deletedAt;
+
     // 멤버 FK
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -74,5 +78,9 @@ public class Routine extends BaseEntity {
         if (dto.cycle() != null) this.cycle = dto.cycle();
         if (dto.startAt() != null) this.startAt = dto.startAt();
         if (dto.endAt() != null) this.endAt = dto.endAt();
+    }
+
+    public void delete(Routine routine) {
+        this.deletedAt = LocalDateTime.now();
     }
 }
