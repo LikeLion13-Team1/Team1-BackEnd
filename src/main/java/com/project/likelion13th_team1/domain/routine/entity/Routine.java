@@ -1,6 +1,7 @@
 package com.project.likelion13th_team1.domain.routine.entity;
 
 import com.project.likelion13th_team1.domain.member.entity.Member;
+import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
 import com.project.likelion13th_team1.global.feature.entity.Feature;
 import jakarta.persistence.*;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "routine")
@@ -30,6 +31,11 @@ public class Routine extends BaseEntity {
     // 루틴 설명 (이게 뭐하는 루틴인지)
     @Column(name = "description")
     private String description;
+
+    // 루틴 상태 (진행 중인지 끝났는지)
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     // 루틴 타입 (유저가 만든 것인지, 추천받은 것인지)
     @Column(name = "type", nullable = false)
@@ -49,6 +55,10 @@ public class Routine extends BaseEntity {
     @Column(name = "endAt")
     private LocalDateTime endAt;
 
+    // 루틴 삭제 soft
+    @Column(name = "deletedAt")
+    private LocalDateTime deletedAt;
+
     // 멤버 FK
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -59,4 +69,18 @@ public class Routine extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feature_id")
     private Feature feature;
+
+    // TODO : DTO 제약 조건이 필요하다
+    public void updateRoutine(RoutineRequestDto.RoutineUpdateRequestDto dto) {
+        if (dto.name() != null) this.name = dto.name();
+        if (dto.description() != null) this.description = dto.description();
+        if (dto.status() != null) this.status = dto.status();
+        if (dto.cycle() != null) this.cycle = dto.cycle();
+        if (dto.startAt() != null) this.startAt = dto.startAt();
+        if (dto.endAt() != null) this.endAt = dto.endAt();
+    }
+
+    public void delete(Routine routine) {
+        this.deletedAt = LocalDateTime.now();
+    }
 }
