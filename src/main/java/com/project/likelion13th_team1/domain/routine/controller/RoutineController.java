@@ -70,4 +70,10 @@ public class RoutineController {
     ) {
         return CustomResponse.onSuccess(routineQueryService.getRoutineCursor(customUserDetails.getUsername(), cursor, size));
     }
+
+    @Operation(summary = "루틴 추천")
+    @PostMapping("/recommendation")
+    public CustomResponse<?> recommendRoutine() {
+        return CustomResponse.onFailure("500", "구상을 해봐야 해요", null);
+    }
 }
