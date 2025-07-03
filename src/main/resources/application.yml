@@ -17,3 +17,9 @@ spring:
     properties:
       hibernate:
         format_sql: true # 출력되는 SQL 쿼리를 보기 좋게 포맷팅
+
+  jwt:
+    secret: ${JWT_SECRET}
+    token:
+      access-expiration-time: ${JWT_ACCESS_EXPIRATION_TIME}
+      refresh-expiration-time: ${JWT_REFRESH_EXPIRATION_TIME}

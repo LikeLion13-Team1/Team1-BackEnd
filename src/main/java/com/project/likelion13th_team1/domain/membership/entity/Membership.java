@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "membership")
@@ -25,8 +25,8 @@ public class Membership {
     private MembershipStatus status;
 
     // 시작 시간
-    @Column(name = "startAt", nullable = false)
-    private LocalDateTime startAt;
+    @Column(name = "joinedAt", nullable = false)
+    private LocalDateTime joinedAt;
 
     // 만료 시간 (처음 가입시에는 최대 값으로 설정하면 될듯?)
     @Column(name = "expiredAt", nullable = false)
@@ -36,4 +36,8 @@ public class Membership {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public void setStatus(MembershipStatus status) {
+        this.status = status;
+    }
 }

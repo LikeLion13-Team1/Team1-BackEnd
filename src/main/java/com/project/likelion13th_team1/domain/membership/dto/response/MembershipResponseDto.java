@@ -1,4 +1,32 @@
 package com.project.likelion13th_team1.domain.membership.dto.response;
 
+import com.project.likelion13th_team1.domain.membership.entity.MembershipStatus;
+import lombok.Builder;
+
+import java.time.LocalDateTime;
+
 public class MembershipResponseDto {
+
+    @Builder
+    public record MembershipDetailResponseDto(
+            Long id,
+            MembershipStatus membershipStatus,
+            LocalDateTime joinedAt,
+            LocalDateTime expiredAt
+    ) {
+    }
+
+    @Builder
+    public record MembershipJoinResponseDto(
+            Long id,
+            MembershipStatus membershipStatus
+    ) {
+    }
+
+    @Builder
+    public record MembershipWithdrawResponseDto(
+            Long id,
+            MembershipStatus membershipStatus
+    ) {
+    }
 }
