@@ -1,5 +1,7 @@
 package com.project.likelion13th_team1.domain.routine.service.command;
 
+import com.project.likelion13th_team1.domain.event.repository.EventRepository;
+import com.project.likelion13th_team1.domain.event.service.command.EventCommandService;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
@@ -24,6 +26,8 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
 
     private final MemberRepository memberRepository;
     private final RoutineRepository routineRepository;
+    private final EventCommandService eventCommandService;
+    private final EventRepository eventRepository;
 
     @Override
     public RoutineResponseDto.RoutineCreateResponseDto createRoutine(String email, RoutineRequestDto.RoutineCreateRequestDto routineCreateRequestDto) {
@@ -33,7 +37,9 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         Routine routine = RoutineConverter.toRoutine(routineCreateRequestDto, member);
         routineRepository.save(routine);
 
-        return RoutineConverter.toRoutineCreateResponseDto(routine);
+        int eventCount = eventCommandService.createEvent(routine);
+
+        return RoutineConverter.toRoutineCreateResponseDto(routine, eventCount);
     }
 
     @Override
@@ -66,6 +72,7 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
 
+        eventCommandService.deleteOrphanedEvent(routine);
         routine.delete(routine);
     }
 }
