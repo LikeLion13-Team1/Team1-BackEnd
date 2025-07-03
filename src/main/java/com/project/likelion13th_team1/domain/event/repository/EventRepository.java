@@ -7,8 +7,10 @@ import com.project.likelion13th_team1.domain.routine.entity.Routine;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,4 +39,12 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("end") LocalDateTime end,
             Pageable pageable
     );
+
+    // 루틴이 삭제됐을 때, 그 자식 루틴 이벤트 일괄 삭제
+    @Transactional
+    @Modifying
+    @Query("DELETE " +
+            "FROM Event e " +
+            "WHERE e.routine = :routine")
+    void deleteByRoutine(@Param("routine") Routine routine);
 }

@@ -11,4 +11,6 @@ public interface EventCommandService {
     EventResponseDto.EventUpdateResponseDto updateEvent(String email, Long eventId, EventRequestDto.EventUpdateRequestDto eventUpdateRequestDto);
 
     void deleteEvent(String email, Long eventId);
+
+    void deleteOrphanedEvent(Routine routine);
 }
