@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,4 +55,15 @@ public class EventController {
     ) {
         return CustomResponse.onSuccess(eventCommandService.updateEvent(customUserDetails.getUsername(), eventId, eventUpdateRequestDto));
     }
+
+    @Operation(summary = "루틴 이벤트 삭제")
+    @DeleteMapping("/{eventId}")
+    public CustomResponse<String> deleteEvent(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @PathVariable Long eventId
+    ) {
+        eventCommandService.deleteEvent(customUserDetails.getUsername(), eventId);
+        return CustomResponse.onSuccess(HttpStatus.NO_CONTENT, "루틴 이벤트 삭제 완료");
+    }
+
 }

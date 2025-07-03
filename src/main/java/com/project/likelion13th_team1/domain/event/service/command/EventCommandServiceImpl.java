@@ -73,4 +73,16 @@ public class EventCommandServiceImpl implements EventCommandService {
         event.updateEvent(eventUpdateRequestDto.scheduledAt(), eventUpdateRequestDto.doneAt(), eventUpdateRequestDto.routineStatus());
         return EventConverter.toEventUpdateResponseDto(event);
     }
+
+    @Override
+    public void deleteEvent(String email, Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
+
+        if (!event.getRoutine().getMember().getEmail().equals(email)) {
+            throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
+        }
+
+        eventRepository.deleteById(eventId);
+    }
 }
