@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Table(name = "event")
+@Table(name = "event",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"routine_id", "scheduled_at"})
+)
 public class Event {
 
     // PK

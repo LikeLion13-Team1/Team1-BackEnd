@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -25,12 +29,28 @@ public class EventCommandServiceImpl implements EventCommandService {
         long cycle = 7;
         int eventCount = 0;
 
-        // 루틴 반복 시작 시간과 반복 끝 시간이 며칠인지 계산 후, cycle이 몇 번 들어갈 수 있는지 확인후 생성
+//        // 루틴 반복 시작 시간과 반복 끝 시간이 며칠인지 계산 후, cycle이 몇 번 들어갈 수 있는지 확인후 생성
+//        for (LocalDateTime date = start; !date.isAfter(end); date = date.plusDays(cycle)) {
+//            Event event = EventConverter.toEvent(routine, date);
+//            eventRepository.save(event);
+//            eventCount++;
+//        }
+
+        Set<LocalDateTime> existingDates = new HashSet<>(
+                eventRepository.findScheduledDatesByRoutineAndStartBetweenEnd(routine, start, end)
+        );
+
+        List<Event> eventsToSave = new ArrayList<>();
+
         for (LocalDateTime date = start; !date.isAfter(end); date = date.plusDays(cycle)) {
-            Event event = EventConverter.toEvent(routine, date);
-            eventRepository.save(event);
-            eventCount++;
+            if (!existingDates.contains(date)) {
+                Event event = EventConverter.toEvent(routine, date);
+                eventsToSave.add(event);
+
+                eventCount++;
+            }
         }
+        eventRepository.saveAll(eventsToSave);
 
         return eventCount;
     }
