@@ -1,7 +1,7 @@
 package com.project.likelion13th_team1.domain.event.entity;
 
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
-import com.project.likelion13th_team1.global.entity.Status;
+import com.project.likelion13th_team1.global.entity.RoutineStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,9 +29,9 @@ public class Event {
     private LocalDateTime doneAt;
 
     // 루틴 이벤트 상태
-    @Column(name = "status", nullable = false)
+    @Column(name = "routineStatus", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private RoutineStatus routineStatus;
 
     // 루틴 FK (Event 는 Routine 이라는 설계도로 찍어낸 실제 수행해야할 루틴)
     @ManyToOne(fetch = FetchType.LAZY)

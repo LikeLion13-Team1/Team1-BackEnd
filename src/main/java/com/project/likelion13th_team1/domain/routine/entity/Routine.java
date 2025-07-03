@@ -3,7 +3,7 @@ package com.project.likelion13th_team1.domain.routine.entity;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
-import com.project.likelion13th_team1.global.entity.Status;
+import com.project.likelion13th_team1.global.entity.RoutineStatus;
 import com.project.likelion13th_team1.global.feature.entity.Feature;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,7 +34,7 @@ public class Routine extends BaseEntity {
     // 루틴 상태 (진행 중인지 끝났는지)
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private RoutineStatus routineStatus;
 
     // 루틴 타입 (유저가 만든 것인지, 추천받은 것인지)
     @Column(name = "type", nullable = false)
@@ -73,7 +73,7 @@ public class Routine extends BaseEntity {
     public void updateRoutine(RoutineRequestDto.RoutineUpdateRequestDto dto) {
         if (dto.name() != null) this.name = dto.name();
         if (dto.description() != null) this.description = dto.description();
-        if (dto.status() != null) this.status = dto.status();
+        if (dto.routineStatus() != null) this.routineStatus = dto.routineStatus();
         if (dto.cycle() != null) this.cycle = dto.cycle();
         if (dto.startAt() != null) this.startAt = dto.startAt();
         if (dto.endAt() != null) this.endAt = dto.endAt();

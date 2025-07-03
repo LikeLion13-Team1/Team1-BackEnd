@@ -1,7 +1,7 @@
 package com.project.likelion13th_team1.domain.routine.dto.response;
 
 import com.project.likelion13th_team1.domain.routine.entity.Cycle;
-import com.project.likelion13th_team1.global.entity.Status;
+import com.project.likelion13th_team1.global.entity.RoutineStatus;
 import com.project.likelion13th_team1.domain.routine.entity.Type;
 import lombok.Builder;
 
@@ -27,7 +27,7 @@ public class RoutineResponseDto {
     public record RoutineDetailResponseDto(
             Long routineId,
             String description,
-            Status status,
+            RoutineStatus routineStatus,
             Type type,
             Cycle cycle,
             LocalDateTime startAt,
