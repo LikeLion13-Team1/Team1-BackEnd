@@ -1,7 +1,7 @@
 package com.project.likelion13th_team1.domain.routine.dto.request;
 
 import com.project.likelion13th_team1.domain.routine.entity.Cycle;
-import com.project.likelion13th_team1.domain.routine.entity.Status;
+import com.project.likelion13th_team1.global.entity.Status;
 
 import java.time.LocalDateTime;
 

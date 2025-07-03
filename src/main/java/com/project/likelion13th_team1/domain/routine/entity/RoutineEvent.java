@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.routine.entity;
 
+import com.project.likelion13th_team1.global.entity.Status;
 import jakarta.persistence.*;
 import lombok.*;
 

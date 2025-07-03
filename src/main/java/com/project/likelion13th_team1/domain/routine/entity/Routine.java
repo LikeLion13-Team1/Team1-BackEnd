@@ -3,11 +3,10 @@ package com.project.likelion13th_team1.domain.routine.entity;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
+import com.project.likelion13th_team1.global.entity.Status;
 import com.project.likelion13th_team1.global.feature.entity.Feature;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
