@@ -25,4 +25,10 @@ public class EventResponseDto {
             Boolean hasNextCursor
     ) {
     }
+
+    @Builder
+    public record EventUpdateResponseDto(
+            Long eventId
+    ) {
+    }
 }

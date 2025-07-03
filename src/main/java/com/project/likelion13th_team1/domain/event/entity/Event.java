@@ -39,4 +39,12 @@ public class Event {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "routine_id")
     private Routine routine;
+
+    // updateEvent
+    // TODO : 제약조건
+    public void updateEvent(LocalDateTime scheduledAt, LocalDateTime doneAt, RoutineStatus routineStatus) {
+        if (scheduledAt != null) this.scheduledAt = scheduledAt;
+        if (doneAt != null) this.doneAt = doneAt;
+        if (routineStatus != null) this.routineStatus = routineStatus;
+    }
 }

@@ -1,6 +1,8 @@
 package com.project.likelion13th_team1.domain.event.controller;
 
+import com.project.likelion13th_team1.domain.event.dto.request.EventRequestDto;
 import com.project.likelion13th_team1.domain.event.dto.response.EventResponseDto;
+import com.project.likelion13th_team1.domain.event.service.command.EventCommandService;
 import com.project.likelion13th_team1.domain.event.service.query.EventQueryService;
 import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
 import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
 @Tag(name = "Event", description = "루틴 이벤트 관련 API")
 public class EventController {
 
+    private final EventCommandService eventCommandService;
     private final EventQueryService eventQueryService;
 
     @Operation(summary = "루틴 이벤트 단일 조회")
@@ -40,5 +43,15 @@ public class EventController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
     ) {
         return CustomResponse.onSuccess(eventQueryService.getEventCursor(customUserDetails.getUsername(), cursor, size, start, end));
+    }
+
+    @Operation(summary = "루틴 이벤트 수정")
+    @PatchMapping("/{eventId}")
+    public CustomResponse<EventResponseDto.EventUpdateResponseDto> updateEvent(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long eventId,
+            @RequestBody EventRequestDto.EventUpdateRequestDto eventUpdateRequestDto
+    ) {
+        return CustomResponse.onSuccess(eventCommandService.updateEvent(customUserDetails.getUsername(), eventId, eventUpdateRequestDto));
     }
 }

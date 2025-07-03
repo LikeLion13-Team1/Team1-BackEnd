@@ -55,4 +55,10 @@ public class EventConverter {
                 .build();
 
     }
+
+    public static EventResponseDto.EventUpdateResponseDto toEventUpdateResponseDto(Event event) {
+        return EventResponseDto.EventUpdateResponseDto.builder()
+                .eventId(event.getId())
+                .build();
+    }
 }
