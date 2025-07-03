@@ -27,9 +27,10 @@ public class RoutineConverter {
                 .build();
     }
 
-    public static RoutineResponseDto.RoutineCreateResponseDto toRoutineCreateResponseDto(Routine routine) {
+    public static RoutineResponseDto.RoutineCreateResponseDto toRoutineCreateResponseDto(Routine routine, Integer eventCount) {
         return RoutineResponseDto.RoutineCreateResponseDto.builder()
                 .routineId(routine.getId())
+                .eventCount(eventCount)
                 .build();
     }
 

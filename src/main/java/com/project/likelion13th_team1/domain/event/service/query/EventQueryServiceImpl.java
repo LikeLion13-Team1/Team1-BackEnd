@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EventQueryServiceImpl {
+public class EventQueryServiceImpl implements EventQueryService{
 }

@@ -12,7 +12,8 @@ public class RoutineResponseDto {
 
     @Builder
     public record RoutineCreateResponseDto(
-            Long routineId
+            Long routineId,
+            Integer eventCount
     ) {
     }
 
