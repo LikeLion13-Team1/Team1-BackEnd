@@ -1,13 +1,13 @@
 package com.project.likelion13th_team1.domain.routine.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
+import com.project.likelion13th_team1.global.entity.RoutineStatus;
 import com.project.likelion13th_team1.global.feature.entity.Feature;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -35,7 +35,7 @@ public class Routine extends BaseEntity {
     // 루틴 상태 (진행 중인지 끝났는지)
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private RoutineStatus routineStatus;
 
     // 루틴 타입 (유저가 만든 것인지, 추천받은 것인지)
     @Column(name = "type", nullable = false)
@@ -48,15 +48,15 @@ public class Routine extends BaseEntity {
     private Cycle cycle;
 
     // 루틴 시작 시간
-    @Column(name = "startAt", nullable = false)
+    @Column(name = "start_at", nullable = false)
     private LocalDateTime startAt;
 
     // 루틴 반복 종료일 (null = 무한반복)
-    @Column(name = "endAt")
+    @Column(name = "end_at")
     private LocalDateTime endAt;
 
     // 루틴 삭제 soft
-    @Column(name = "deletedAt")
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
     // 멤버 FK
@@ -74,7 +74,7 @@ public class Routine extends BaseEntity {
     public void updateRoutine(RoutineRequestDto.RoutineUpdateRequestDto dto) {
         if (dto.name() != null) this.name = dto.name();
         if (dto.description() != null) this.description = dto.description();
-        if (dto.status() != null) this.status = dto.status();
+        if (dto.routineStatus() != null) this.routineStatus = dto.routineStatus();
         if (dto.cycle() != null) this.cycle = dto.cycle();
         if (dto.startAt() != null) this.startAt = dto.startAt();
         if (dto.endAt() != null) this.endAt = dto.endAt();

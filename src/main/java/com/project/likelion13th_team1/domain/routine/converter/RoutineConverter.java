@@ -18,7 +18,7 @@ public class RoutineConverter {
         return Routine.builder()
                 .name(dto.name())
                 .description(dto.description())
-                .status(dto.status())
+                .routineStatus(dto.routineStatus())
                 .type(Type.CUSTOM)
                 .cycle(dto.cycle())
                 .startAt(dto.startAt())
@@ -27,9 +27,10 @@ public class RoutineConverter {
                 .build();
     }
 
-    public static RoutineResponseDto.RoutineCreateResponseDto toRoutineCreateResponseDto(Routine routine) {
+    public static RoutineResponseDto.RoutineCreateResponseDto toRoutineCreateResponseDto(Routine routine, Integer eventCount) {
         return RoutineResponseDto.RoutineCreateResponseDto.builder()
                 .routineId(routine.getId())
+                .eventCount(eventCount)
                 .build();
     }
 
@@ -44,7 +45,7 @@ public class RoutineConverter {
         return RoutineResponseDto.RoutineDetailResponseDto.builder()
                 .routineId(routine.getId())
                 .description(routine.getDescription())
-                .status(routine.getStatus())
+                .routineStatus(routine.getRoutineStatus())
                 .type(routine.getType())
                 .cycle(routine.getCycle())
                 .startAt(routine.getStartAt())
