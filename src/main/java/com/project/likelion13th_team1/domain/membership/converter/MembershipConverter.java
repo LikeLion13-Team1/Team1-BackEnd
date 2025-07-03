@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MembershipConverter {
 
-    public MembershipResponseDto.MembershipGetResponseDto toMembershipGetResponseDto(Membership membership) {
-        return MembershipResponseDto.MembershipGetResponseDto.builder()
+    public MembershipResponseDto.MembershipDetailResponseDto toMembershipGetResponseDto(Membership membership) {
+        return MembershipResponseDto.MembershipDetailResponseDto.builder()
                 .id(membership.getId())
                 .membershipStatus(membership.getStatus())
                 .joinedAt(membership.getJoinedAt())

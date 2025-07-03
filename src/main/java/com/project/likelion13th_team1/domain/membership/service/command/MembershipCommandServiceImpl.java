@@ -8,10 +8,15 @@ import com.project.likelion13th_team1.domain.membership.converter.MembershipConv
 import com.project.likelion13th_team1.domain.membership.dto.response.MembershipResponseDto;
 import com.project.likelion13th_team1.domain.membership.entity.Membership;
 import com.project.likelion13th_team1.domain.membership.entity.MembershipStatus;
+import com.project.likelion13th_team1.domain.membership.exception.MembershipErrorCode;
+import com.project.likelion13th_team1.domain.membership.exception.MembershipException;
 import com.project.likelion13th_team1.domain.membership.repository.MembershipRepository;
+import com.project.likelion13th_team1.global.apiPayload.exception.CustomException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,7 +30,8 @@ public class MembershipCommandServiceImpl implements MembershipCommandService {
     public MembershipResponseDto.MembershipJoinResponseDto joinMembership(String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
-        Membership membership = membershipRepository.findByMember(member);
+        Membership membership = membershipRepository.findByMember(member)
+                .orElseThrow(() -> new MembershipException(MembershipErrorCode.MEMBERSHIP_NOT_FOUND));
 
         membership.setStatus(MembershipStatus.PRO);
 
@@ -36,7 +42,8 @@ public class MembershipCommandServiceImpl implements MembershipCommandService {
     public MembershipResponseDto.MembershipWithdrawResponseDto withdrawMembership(String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
-        Membership membership = membershipRepository.findByMember(member);
+        Membership membership = membershipRepository.findByMember(member)
+                .orElseThrow(() -> new MembershipException(MembershipErrorCode.MEMBERSHIP_NOT_FOUND));
 
         membership.setStatus(MembershipStatus.STANDARD);
 

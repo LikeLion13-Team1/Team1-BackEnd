@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class MembershipResponseDto {
 
     @Builder
-    public record MembershipGetResponseDto(
+    public record MembershipDetailResponseDto(
             Long id,
             MembershipStatus membershipStatus,
             LocalDateTime joinedAt,

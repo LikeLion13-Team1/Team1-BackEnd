@@ -21,7 +21,7 @@ public class MembershipController {
 
     @Operation(summary = "멤버십 조회")
     @GetMapping("/api/v1/membership")
-    public CustomResponse<MembershipResponseDto.MembershipGetResponseDto> getMembership(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public CustomResponse<MembershipResponseDto.MembershipDetailResponseDto> getMembership(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         return CustomResponse.onSuccess(membershipQueryService.getMembership(customUserDetails.getUsername()));
     }
 
