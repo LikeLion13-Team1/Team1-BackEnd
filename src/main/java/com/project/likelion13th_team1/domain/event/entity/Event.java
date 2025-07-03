@@ -21,15 +21,15 @@ public class Event {
     private Long id;
 
     // 이 루틴 이벤트가 진행될 시간
-    @Column(name = "scheduledAt", nullable = false)
+    @Column(name = "scheduled_at", nullable = false)
     private LocalDateTime scheduledAt;
 
     // 사용자가 루틴 이벤트 완료를 누른 시간
-    @Column(name = "doneAt")
+    @Column(name = "done_at")
     private LocalDateTime doneAt;
 
     // 루틴 이벤트 상태
-    @Column(name = "routineStatus", nullable = false)
+    @Column(name = "routine_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private RoutineStatus routineStatus;
 
