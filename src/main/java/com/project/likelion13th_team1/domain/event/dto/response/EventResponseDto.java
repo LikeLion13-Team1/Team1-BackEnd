@@ -4,6 +4,7 @@ import com.project.likelion13th_team1.global.entity.RoutineStatus;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class EventResponseDto {
 
@@ -14,6 +15,14 @@ public class EventResponseDto {
             LocalDateTime scheduledAt,
             LocalDateTime doneAt,
             RoutineStatus routineStatus
+    ) {
+    }
+
+    @Builder
+    public record EventCursorResponseDto(
+            List<EventDetailResponseDto> events,
+            Long nextCursor,
+            Boolean hasNextCursor
     ) {
     }
 }

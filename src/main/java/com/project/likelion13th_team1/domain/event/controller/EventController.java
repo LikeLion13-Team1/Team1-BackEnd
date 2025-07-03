@@ -1,6 +1,5 @@
 package com.project.likelion13th_team1.domain.event.controller;
 
-import com.project.likelion13th_team1.domain.event.dto.request.EventRequestDto;
 import com.project.likelion13th_team1.domain.event.dto.response.EventResponseDto;
 import com.project.likelion13th_team1.domain.event.service.query.EventQueryService;
 import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
@@ -8,11 +7,11 @@ import com.project.likelion13th_team1.global.security.userdetails.CustomUserDeta
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,5 +28,17 @@ public class EventController {
             @PathVariable Long eventId
     ) {
         return CustomResponse.onSuccess(eventQueryService.getEvent(customUserDetails.getUsername(), eventId));
+    }
+
+    @Operation(summary = "루틴 이벤트 목록 커서 조회 (날짜 검색)")
+    @GetMapping()
+    public CustomResponse<EventResponseDto.EventCursorResponseDto> getEventCursor(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam Long cursor,
+            @RequestParam Integer size,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
+    ) {
+        return CustomResponse.onSuccess(eventQueryService.getEventCursor(customUserDetails.getUsername(), cursor, size, start, end));
     }
 }
