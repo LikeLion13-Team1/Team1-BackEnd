@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.routine.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
@@ -47,15 +48,15 @@ public class Routine extends BaseEntity {
     private Cycle cycle;
 
     // 루틴 시작 시간
-    @Column(name = "startAt", nullable = false)
+    @Column(name = "start_at", nullable = false)
     private LocalDateTime startAt;
 
     // 루틴 반복 종료일 (null = 무한반복)
-    @Column(name = "endAt")
+    @Column(name = "end_at")
     private LocalDateTime endAt;
 
     // 루틴 삭제 soft
-    @Column(name = "deletedAt")
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
     // 멤버 FK
