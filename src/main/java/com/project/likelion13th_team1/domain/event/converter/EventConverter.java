@@ -1,6 +1,6 @@
 package com.project.likelion13th_team1.domain.event.converter;
 
-import com.project.likelion13th_team1.domain.event.dto.request.EventRequestDto;
+import com.project.likelion13th_team1.domain.event.dto.response.EventResponseDto;
 import com.project.likelion13th_team1.domain.event.entity.Event;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
 import com.project.likelion13th_team1.global.entity.RoutineStatus;
@@ -17,6 +17,16 @@ public class EventConverter {
                 .scheduledAt(date)
                 .routineStatus(RoutineStatus.PROCESSING)
                 .routine(routine)
+                .build();
+    }
+
+    public static EventResponseDto.EventDetailResponseDto toEventDetailResponseDto(Event event) {
+        return EventResponseDto.EventDetailResponseDto.builder()
+                .routineId(event.getRoutine().getId())
+                .eventId(event.getId())
+                .scheduledAt(event.getScheduledAt())
+                .doneAt(event.getDoneAt())
+                .routineStatus(event.getRoutineStatus())
                 .build();
     }
 }
