@@ -1,6 +1,7 @@
 package com.project.likelion13th_team1.global.apiPayload.exception.handler;
 
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
 import com.project.likelion13th_team1.global.apiPayload.code.BaseErrorCode;
 import com.project.likelion13th_team1.global.apiPayload.code.GeneralErrorCode;
@@ -8,6 +9,7 @@ import com.project.likelion13th_team1.global.apiPayload.exception.CustomExceptio
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -63,6 +65,37 @@ public class GlobalExceptionHandler {
                 .status(errorCode.getHttpStatus())
                 .body(errorResponse);
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<CustomResponse<?>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        Throwable cause = ex.getCause();
+        if (cause instanceof InvalidFormatException formatEx) {
+            Class<?> targetType = formatEx.getTargetType();
+            if (targetType.isEnum()) {
+//                String fieldName = formatEx.getPath().get(0).getFieldName();
+                String invalidValue = formatEx.getValue().toString();
+                BaseErrorCode errorCode = GeneralErrorCode.VALIDATION_FAILED_ENUM;
+                CustomResponse<?> errorResponse = CustomResponse.onFailure(errorCode.getCode(), errorCode.getMessage(), invalidValue);
+                return ResponseEntity.status(errorCode.getHttpStatus()).body(errorResponse);
+//                return ResponseEntity.badRequest().body(
+//                        CustomResponse.onFailure(
+//                                "ENUM_INVALID",
+//                                "필드 '" + fieldName + "'에 잘못된 enum 값 '" + invalidValue + "'이(가) 입력되었습니다."
+//                        )
+//                );
+            }
+        }
+        BaseErrorCode errorCode = GeneralErrorCode.VALIDATION_FAILED_JSON;
+        CustomResponse<?> errorResponse = CustomResponse.onFailure(errorCode.getCode(), errorCode.getMessage());
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(errorResponse);
+//        return ResponseEntity.badRequest().body(
+//                CustomResponse.onFailure(
+//                        "INVALID_REQUEST_BODY",
+//                        "요청 본문의 형식이 잘못되었거나 파싱할 수 없습니다."
+//                )
+//        );
+    }
+
 
     // 그 외의 정의되지 않은 모든 예외 처리
     @ExceptionHandler({Exception.class})
