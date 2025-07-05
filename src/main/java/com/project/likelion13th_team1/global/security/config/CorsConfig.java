@@ -1,7 +1,6 @@
 package com.project.likelion13th_team1.global.security.config;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
