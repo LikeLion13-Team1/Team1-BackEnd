@@ -25,7 +25,7 @@ public class MemberController {
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
 
-    @Operation(summary = "회원가입")
+    @Operation(summary = "회원가입", description = "유저이름이 공백이면 안됨<br/>이메일 형식을 지켜야함<br/>비밀번호는 문자, 숫자, 특수문자를 포함한 8자 이상")
     @PostMapping("/signup")
     public CustomResponse<String> createMember(
             @RequestBody @Valid MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto
@@ -38,7 +38,7 @@ public class MemberController {
     @PatchMapping("/me")
     public CustomResponse<String> updateMember(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestBody MemberRequestDto.MemberUpdateRequestDto memberUpdateRequestDto
+            @RequestBody @Valid MemberRequestDto.MemberUpdateRequestDto memberUpdateRequestDto
     ) {
         memberCommandService.updateMember(customUserDetails.getUsername(), memberUpdateRequestDto);
         return CustomResponse.onSuccess(HttpStatus.OK, "회원 정보 수정 완료");
