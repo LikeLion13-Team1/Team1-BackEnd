@@ -20,6 +20,7 @@ public class MemberRequestDto {
     }
 
     public record MemberUpdateRequestDto(
+            @NotBlank
             String username,
             String profileImage
             //TODO : 유저 특성도 이걸로 바꿀건지?

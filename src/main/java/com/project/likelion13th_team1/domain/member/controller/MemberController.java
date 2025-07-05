@@ -34,7 +34,7 @@ public class MemberController {
         return CustomResponse.onSuccess(HttpStatus.CREATED, "회원 가입 성공");
     }
 
-    @Operation(summary = "회원 정보 수정")
+    @Operation(summary = "회원 정보 수정", description = "모든 정보 수정 요청에는 username이 포함되어야 함")
     @PatchMapping("/me")
     public CustomResponse<String> updateMember(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
