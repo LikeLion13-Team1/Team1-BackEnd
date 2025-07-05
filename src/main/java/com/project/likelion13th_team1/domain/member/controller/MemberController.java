@@ -10,6 +10,7 @@ import com.project.likelion13th_team1.global.feature.dto.response.FeatureRespons
 import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,7 +28,7 @@ public class MemberController {
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
     public CustomResponse<String> createMember(
-            @RequestBody MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto
+            @RequestBody @Valid MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto
     ) {
         memberCommandService.createMember(memberCreateRequestDto);
         return CustomResponse.onSuccess(HttpStatus.CREATED, "회원 가입 성공");

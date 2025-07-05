@@ -1,13 +1,19 @@
 package com.project.likelion13th_team1.domain.member.dto.request;
 
+import com.project.likelion13th_team1.global.security.utils.PasswordPattern;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 
 public class MemberRequestDto {
 
     @Builder
     public record MemberCreateRequestDto(
-            String username,
-            String email,
+            @NotBlank String username,
+            @NotBlank @Email String email,
+            @NotBlank
+            @Pattern(regexp = PasswordPattern.REGEXP, message = PasswordPattern.MESSAGE)
             String password,
             String profileImage
     ) {
