@@ -1,7 +1,7 @@
 package com.project.likelion13th_team1.domain.event.entity;
 
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
-import com.project.likelion13th_team1.global.entity.RoutineStatus;
+import com.project.likelion13th_team1.global.entity.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,7 +33,7 @@ public class Event {
     // 루틴 이벤트 상태
     @Column(name = "routine_status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private RoutineStatus routineStatus;
+    private Status status;
 
     // 루틴 FK (Event 는 Routine 이라는 설계도로 찍어낸 실제 수행해야할 루틴)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,21 +42,21 @@ public class Event {
 
     // updateEvent
     // TODO : 제약조건
-    public void updateEvent(LocalDateTime scheduledAt, LocalDateTime doneAt, RoutineStatus routineStatus) {
+    public void updateEvent(LocalDateTime scheduledAt, LocalDateTime doneAt, Status status) {
         if (scheduledAt != null) this.scheduledAt = scheduledAt;
         if (doneAt != null) this.doneAt = doneAt;
-        if (routineStatus != null) this.routineStatus = routineStatus;
+        if (status != null) this.status = status;
     }
 
     // done
     public void doneEvent() {
         this.doneAt = LocalDateTime.now();
-        this.routineStatus = RoutineStatus.SUCCESS;
+        this.status = Status.SUCCESS;
     }
 
     // undone
     public void undoneEvent() {
         this.doneAt = null;
-        this.routineStatus = RoutineStatus.PROCESSING;
+        this.status = Status.PROCESSING;
     }
 }

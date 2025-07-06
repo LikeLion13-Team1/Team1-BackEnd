@@ -3,9 +3,8 @@ package com.project.likelion13th_team1.domain.event.converter;
 import com.project.likelion13th_team1.domain.event.dto.EventDto;
 import com.project.likelion13th_team1.domain.event.dto.response.EventResponseDto;
 import com.project.likelion13th_team1.domain.event.entity.Event;
-import com.project.likelion13th_team1.domain.routine.dto.response.RoutineResponseDto;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
-import com.project.likelion13th_team1.global.entity.RoutineStatus;
+import com.project.likelion13th_team1.global.entity.Status;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -19,7 +18,7 @@ public class EventConverter {
     public static Event toEvent(Routine routine, LocalDateTime date) {
         return Event.builder()
                 .scheduledAt(date)
-                .routineStatus(RoutineStatus.PROCESSING)
+                .status(Status.PROCESSING)
                 .routine(routine)
                 .build();
     }
@@ -30,7 +29,7 @@ public class EventConverter {
                 .eventId(event.getId())
                 .scheduledAt(event.getScheduledAt())
                 .doneAt(event.getDoneAt())
-                .routineStatus(event.getRoutineStatus())
+                .status(event.getStatus())
                 .build();
     }
 

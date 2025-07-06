@@ -80,7 +80,7 @@ public class EventCommandServiceImpl implements EventCommandService {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
 
-        event.updateEvent(eventUpdateRequestDto.scheduledAt(), eventUpdateRequestDto.doneAt(), eventUpdateRequestDto.routineStatus());
+        event.updateEvent(eventUpdateRequestDto.scheduledAt(), eventUpdateRequestDto.doneAt(), eventUpdateRequestDto.status());
         return EventConverter.toEventUpdateResponseDto(event);
     }
 
