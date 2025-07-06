@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("SELECT e.scheduledAt " +
@@ -47,4 +48,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "FROM Event e " +
             "WHERE e.routine = :routine")
     void deleteByRoutine(@Param("routine") Routine routine);
+
+    @Query("SELECT e " +
+            "FROM Event e " +
+            "WHERE e.id = :eventId AND e.routine.member.email = :email")
+    Optional<Event> findByIdAndEmail(@Param("eventId") Long eventId, @Param("email") String email);
 }

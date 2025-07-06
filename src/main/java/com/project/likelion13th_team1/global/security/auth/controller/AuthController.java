@@ -36,11 +36,17 @@ public class AuthController {
         return CustomResponse.onSuccess(authService.reissueToken(jwtDto));
     }
 
-    @Operation(summary = "login")
+    @Operation(summary = "login", description = "이메일과 비밀번호로 로그인을 해 jwt 토큰을 받는다.")
     @PostMapping("/login")
     public CustomResponse<?> login(
             @RequestBody AuthRequestDto.LoginRequestDto memberLoginRequestDto
     ) {
+        return null;
+    }
+
+    @Operation(summary = "logout", description = "현재 jwt 토큰을 블랙리스트로 등록해 사용 불가하게 만든다.")
+    @PostMapping("/logout")
+    public CustomResponse<?> logout() {
         return null;
     }
 }

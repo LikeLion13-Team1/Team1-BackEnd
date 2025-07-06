@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     // JWT 관련 유틸리티 클래스 주입
     private final JwtUtil jwtUtil;
+
+    // redis 주입
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     protected void doFilterInternal(
@@ -40,6 +44,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             // 2. Access Token이 없으면 다음 필터로 바로 진행
             if (accessToken == null) {
                 log.info("[ JwtAuthorizationFilter ] Access Token 없음, 다음 필터로 진행");
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            log.info("[ JwtAuthorizationFilter ] 로그아웃 여부 확인");
+            String isLogout = redisTemplate.opsForValue().get("Logout " + accessToken);
+            if (isLogout != null) {
+//                throw new AuthException(AuthErrorCode.BLACKLISTED_TOKEN);
+                log.info("[ JwtAuthorizationFilter ] 블랙리스트 토큰. 인증 생략하고 다음 필터로 진행");
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -83,5 +96,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         log.info("[ JwtAuthorizationFilter ] 인증 객체 저장 완료");
+
+
     }
 }

@@ -32,7 +32,7 @@ public class EventCommandServiceImpl implements EventCommandService {
 
         LocalDateTime start = routine.getStartAt();
         LocalDateTime end = routine.getEndAt();
-        long cycle = 7;
+        long cycle = routine.getCycle().getDays();
         int eventCount = 0;
 
 //        // 루틴 반복 시작 시간과 반복 끝 시간이 며칠인지 계산 후, cycle이 몇 번 들어갈 수 있는지 확인후 생성
@@ -47,6 +47,16 @@ public class EventCommandServiceImpl implements EventCommandService {
         );
 
         List<Event> eventsToSave = new ArrayList<>();
+
+        if (cycle == 0) {
+            if (!existingDates.contains(start)) {
+                Event event = EventConverter.toEvent(routine, start);
+                eventsToSave.add(event);
+            }
+
+            eventRepository.saveAll(eventsToSave);
+            return eventsToSave.size();  // 0 또는 1 반환
+        }
 
         for (LocalDateTime date = start; !date.isAfter(end); date = date.plusDays(cycle)) {
             if (!existingDates.contains(date)) {
@@ -70,7 +80,7 @@ public class EventCommandServiceImpl implements EventCommandService {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
 
-        event.updateEvent(eventUpdateRequestDto.scheduledAt(), eventUpdateRequestDto.doneAt(), eventUpdateRequestDto.routineStatus());
+        event.updateEvent(eventUpdateRequestDto.scheduledAt(), eventUpdateRequestDto.doneAt(), eventUpdateRequestDto.status());
         return EventConverter.toEventUpdateResponseDto(event);
     }
 
@@ -89,5 +99,23 @@ public class EventCommandServiceImpl implements EventCommandService {
     @Override
     public void deleteOrphanedEvent(Routine routine) {
         eventRepository.deleteByRoutine(routine);
+    }
+
+    @Override
+    public EventResponseDto.EventDoneResponseDto doneEvent(String email, Long eventId) {
+        Event event = eventRepository.findByIdAndEmail(eventId, email)
+                .orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
+
+        event.doneEvent();
+        return EventConverter.toEventDoneResponseDto(event);
+    }
+
+    @Override
+    public EventResponseDto.EventDoneResponseDto undoneEvent(String email, Long eventId) {
+        Event event = eventRepository.findByIdAndEmail(eventId, email)
+                .orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
+
+        event.undoneEvent();
+        return EventConverter.toEventDoneResponseDto(event);
     }
 }

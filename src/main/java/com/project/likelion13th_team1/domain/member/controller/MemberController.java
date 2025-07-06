@@ -10,6 +10,7 @@ import com.project.likelion13th_team1.global.feature.dto.response.FeatureRespons
 import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,26 +25,26 @@ public class MemberController {
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
 
-    @Operation(summary = "회원가입")
+    @Operation(summary = "회원가입", description = "유저이름이 공백이면 안됨<br/>이메일 형식을 지켜야함<br/>비밀번호는 문자, 숫자, 특수문자를 포함한 8자 이상")
     @PostMapping("/signup")
     public CustomResponse<String> createMember(
-            @RequestBody MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto
+            @RequestBody @Valid MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto
     ) {
         memberCommandService.createMember(memberCreateRequestDto);
         return CustomResponse.onSuccess(HttpStatus.CREATED, "회원 가입 성공");
     }
 
-    @Operation(summary = "회원 정보 수정")
+    @Operation(summary = "회원 정보 수정", description = "모든 정보 수정 요청에는 username이 포함되어야 함")
     @PatchMapping("/me")
     public CustomResponse<String> updateMember(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestBody MemberRequestDto.MemberUpdateRequestDto memberUpdateRequestDto
+            @RequestBody @Valid MemberRequestDto.MemberUpdateRequestDto memberUpdateRequestDto
     ) {
         memberCommandService.updateMember(customUserDetails.getUsername(), memberUpdateRequestDto);
         return CustomResponse.onSuccess(HttpStatus.OK, "회원 정보 수정 완료");
     }
 
-    @Operation(summary = "회원 정보 조회")
+    @Operation(summary = "회원 정보 조회", description = "유저 이름, 이메일과 같은 회원 정보를 조회한다")
     @GetMapping("/info")
     public CustomResponse<MemberResponseDto.MemberDetailResponseDto> getMember(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
@@ -52,7 +53,7 @@ public class MemberController {
     }
 
     // TODO : 스케쥴러 구현하기
-    @Operation(summary = "회원 탈퇴")
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴, 실제 DB에서 삭제되는 것이 아닌 soft delete")
     @DeleteMapping("/withdrawal")
     public CustomResponse<String> deleteMember(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
@@ -61,7 +62,7 @@ public class MemberController {
         return CustomResponse.onSuccess(HttpStatus.NO_CONTENT, "회원 탈퇴 완료");
     }
 
-    @Operation(summary = "회원 특성 정보 생성")
+    @Operation(summary = "회원 특성 정보 생성", description = "루틴 추천을 위한 회원 특성 정보를 생성한다.")
     @PostMapping("/feature")
     public CustomResponse<String> createFeature(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -71,7 +72,7 @@ public class MemberController {
         return CustomResponse.onSuccess(HttpStatus.CREATED, "회원 특성 정보 생성 완료");
     }
 
-    @Operation(summary = "회원 특성 정보 수정")
+    @Operation(summary = "회원 특성 정보 수정", description = "루틴 추천을 위한 회원 특성 정보를 수정한다.")
     @PatchMapping("/feature")
     public CustomResponse<String> updateFeature(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -81,7 +82,7 @@ public class MemberController {
         return CustomResponse.onSuccess(HttpStatus.OK, "회원 특성 정보 수정 완료");
     }
 
-    @Operation(summary = "회원 특성 정보 조회")
+    @Operation(summary = "회원 특성 정보 조회", description = "회원 특성 정보를 조회한다.")
     @GetMapping("/feature")
     public CustomResponse<FeatureResponseDto.FeatureDetailResponseDto> getFeature(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
