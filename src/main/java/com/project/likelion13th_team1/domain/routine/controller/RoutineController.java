@@ -8,6 +8,7 @@ import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
 import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,7 +27,7 @@ public class RoutineController {
     @PostMapping()
     public CustomResponse<RoutineResponseDto.RoutineCreateResponseDto> createRoutine(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestBody RoutineRequestDto.RoutineCreateRequestDto routineCreateRequestDto
+            @RequestBody @Valid RoutineRequestDto.RoutineCreateRequestDto routineCreateRequestDto
     ) {
         return CustomResponse.onSuccess(HttpStatus.CREATED, routineCommandService.createRoutine(customUserDetails.getUsername(), routineCreateRequestDto));
     }
