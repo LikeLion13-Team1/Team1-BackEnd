@@ -11,4 +11,10 @@ public class AlarmRequestDto {
             String activation,
             LocalDateTime time
     ) {}
+
+    @Builder
+    public record AlarmCreateRequestDto(
+       String context,
+       LocalDateTime time
+    ) {}
 }

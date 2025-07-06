@@ -30,4 +30,10 @@ public class AlarmResponseDto {
     public record AlarmUpdateResponseDto(
             Long alarmId
     ) {}
+
+    @Builder
+    public record AlarmCreateResponseDto(
+            String context,
+            LocalDateTime time
+    ) {}
 }

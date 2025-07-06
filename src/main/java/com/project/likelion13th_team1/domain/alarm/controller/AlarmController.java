@@ -34,4 +34,13 @@ public class AlarmController {
     ) {
         return CustomResponse.onSuccess(alarmCommandService.updateAlarm(alarmId, alarmUpdateRequestDto));
     }
+
+    @Operation
+    @PostMapping("/api/v1/events/{routineEventId}/alarms")
+    public CustomResponse<?> createAlarm(
+            @PathVariable("routineEventId") Long routineEventId,
+            @RequestBody AlarmRequestDto.AlarmCreateRequestDto alarmCreateRequestDto
+    ) {
+        return CustomResponse.onSuccess(alarmCommandService.createAlarm(routineEventId, alarmCreateRequestDto));
+    }
 }
