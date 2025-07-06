@@ -66,4 +66,21 @@ public class EventController {
         return CustomResponse.onSuccess(HttpStatus.NO_CONTENT, "루틴 이벤트 삭제 완료");
     }
 
+    @Operation(summary = "루틴 완료")
+    @PatchMapping("/{eventId}/done")
+    public CustomResponse<EventResponseDto.EventDoneResponseDto> doneEvent(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long eventId
+    ) {
+        return CustomResponse.onSuccess(eventCommandService.doneEvent(customUserDetails.getUsername(), eventId));
+    }
+
+    @Operation(summary = "루틴 완료 취소")
+    @PatchMapping("/{eventId}/undone")
+    public CustomResponse<EventResponseDto.EventDoneResponseDto> undoneEvent(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long eventId
+    ) {
+        return CustomResponse.onSuccess(eventCommandService.undoneEvent(customUserDetails.getUsername(), eventId));
+    }
 }
