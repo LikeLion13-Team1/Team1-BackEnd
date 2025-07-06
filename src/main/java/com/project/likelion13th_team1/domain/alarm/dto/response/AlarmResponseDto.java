@@ -24,4 +24,10 @@ public class AlarmResponseDto {
             String activation,
             LocalDateTime time
     ) {}
+
+
+    @Builder
+    public record AlarmUpdateResponseDto(
+            Long alarmId
+    ) {}
 }

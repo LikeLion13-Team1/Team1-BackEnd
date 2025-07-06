@@ -1,5 +1,12 @@
 package com.project.likelion13th_team1.domain.alarm.service.command;
 
+import com.project.likelion13th_team1.domain.alarm.dto.request.AlarmRequestDto;
+import com.project.likelion13th_team1.domain.alarm.dto.response.AlarmResponseDto;
+import com.project.likelion13th_team1.domain.alarm.entity.Activation;
+import com.project.likelion13th_team1.domain.alarm.entity.Alarm;
+import com.project.likelion13th_team1.domain.alarm.exception.AlarmErrorCode;
+import com.project.likelion13th_team1.domain.alarm.exception.AlarmException;
+import com.project.likelion13th_team1.domain.alarm.repository.AlarmRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,4 +15,17 @@ import org.springframework.stereotype.Service;
 @Transactional
 @RequiredArgsConstructor
 public class AlarmCommandServiceImpl implements AlarmCommandService {
+    private final AlarmRepository alarmRepository;
+
+    // Id만 넘기면 되므로 컨버터 미사용
+    public Long updateAlarm(Long id , AlarmRequestDto.AlarmUpdateRequestDto alarmUpdateRequestDto) {
+        Alarm alarm = alarmRepository.findById(id)
+                .orElseThrow(() -> new AlarmException(AlarmErrorCode.ALARM_NOT_FOUND));
+
+        alarm.setContext(alarmUpdateRequestDto.context());
+        alarm.setActivation(Activation.valueOf(alarmUpdateRequestDto.activation()));
+        alarm.setTime(alarmUpdateRequestDto.time());
+
+        return alarm.getId();
+    }
 }

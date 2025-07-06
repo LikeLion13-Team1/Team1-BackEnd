@@ -1,5 +1,14 @@
 package com.project.likelion13th_team1.domain.alarm.dto.request;
 
-public class AlarmRequestDto {
+import lombok.Builder;
 
+import java.time.LocalDateTime;
+
+public class AlarmRequestDto {
+    @Builder
+    public record AlarmUpdateRequestDto(
+            String context,
+            String activation,
+            LocalDateTime time
+    ) {}
 }
