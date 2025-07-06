@@ -21,6 +21,8 @@ public enum GeneralErrorCode implements BaseErrorCode{
     // 유효성 검사
     VALIDATION_FAILED_DTO_FILED(HttpStatus.BAD_REQUEST, "VALID400_1", "잘못된 ReqDTO 입니다."),
     VALIDATION_FAILED_PARAM(HttpStatus.BAD_REQUEST, "VALID400_2", "잘못된 파라미터 입니다."),
+    VALIDATION_FAILED_ENUM(HttpStatus.BAD_REQUEST, "ENUM400", "잘못된 ENUM 입력 입니다."),
+    VALIDATION_FAILED_JSON(HttpStatus.BAD_REQUEST, "JSON400", "요청 본문의 형식이 잘못되었거나 파싱할 수 없습니다."),
     ;
 
     // 필요한 필드값 선언
