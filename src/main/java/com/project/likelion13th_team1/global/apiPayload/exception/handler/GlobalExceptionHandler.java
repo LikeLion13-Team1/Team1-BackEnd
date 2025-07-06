@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,7 +85,29 @@ public class GlobalExceptionHandler {
 //                        )
 //                );
             }
+            // LocalDateTime 파싱 오류 처리
+
+            if (targetType.equals(LocalDateTime.class)) {
+                String invalidValue = formatEx.getValue().toString();
+                BaseErrorCode errorCode = GeneralErrorCode.VALIDATION_FAILED_LOCAL_DATE_TIME;
+                CustomResponse<?> errorResponse = CustomResponse.onFailure(errorCode.getCode(), errorCode.getMessage(), invalidValue);
+                return ResponseEntity.status(errorCode.getHttpStatus()).body(errorResponse);
+//                return ResponseEntity
+//                        .badRequest()
+//                        .body(CustomResponse.onFailure(
+//                                "INVALID_DATETIME_FORMAT",
+//                                "날짜/시간 형식이 잘못되었습니다. 형식: yyyy-MM-dd'T'HH:mm:ss"
+//                        ));
+            }
         }
+//        if (cause instanceof DateTimeParseException) {
+//            return ResponseEntity
+//                    .badRequest()
+//                    .body(CustomResponse.onFailure(
+//                            "INVALID_DATETIME_FORMAT",
+//                            "날짜/시간 형식이 잘못되었습니다. 형식: yyyy-MM-dd'T'HH:mm:ss"
+//                    ));
+//        }
         BaseErrorCode errorCode = GeneralErrorCode.VALIDATION_FAILED_JSON;
         CustomResponse<?> errorResponse = CustomResponse.onFailure(errorCode.getCode(), errorCode.getMessage());
         return ResponseEntity.status(errorCode.getHttpStatus()).body(errorResponse);
