@@ -51,6 +51,7 @@ public class Event {
     // done
     public void doneEvent() {
         this.doneAt = LocalDateTime.now();
+        this.routineStatus = RoutineStatus.SUCCESS;
     }
 
     // undone
