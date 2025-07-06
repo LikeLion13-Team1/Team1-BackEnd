@@ -43,4 +43,10 @@ public class AuthController {
     ) {
         return null;
     }
+
+    @Operation(summary = "logout")
+    @PostMapping("/logout")
+    public CustomResponse<?> logout() {
+        return null;
+    }
 }
