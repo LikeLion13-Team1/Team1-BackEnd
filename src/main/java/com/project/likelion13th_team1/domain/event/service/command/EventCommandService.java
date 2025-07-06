@@ -13,4 +13,6 @@ public interface EventCommandService {
     void deleteEvent(String email, Long eventId);
 
     void deleteOrphanedEvent(Routine routine);
+
+    EventResponseDto.EventDoneResponseDto doneEvent(String email, Long eventId);
 }

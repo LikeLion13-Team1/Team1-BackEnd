@@ -31,4 +31,11 @@ public class EventResponseDto {
             Long eventId
     ) {
     }
+
+    @Builder
+    public record EventDoneResponseDto(
+            Long eventId,
+            LocalDateTime doneAt
+    ) {
+    }
 }

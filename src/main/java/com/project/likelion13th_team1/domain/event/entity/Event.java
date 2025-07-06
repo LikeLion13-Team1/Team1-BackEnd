@@ -47,4 +47,9 @@ public class Event {
         if (doneAt != null) this.doneAt = doneAt;
         if (routineStatus != null) this.routineStatus = routineStatus;
     }
+
+    // done
+    public void doneEvent() {
+        this.doneAt = LocalDateTime.now();
+    }
 }

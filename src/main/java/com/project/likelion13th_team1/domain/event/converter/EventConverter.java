@@ -61,4 +61,11 @@ public class EventConverter {
                 .eventId(event.getId())
                 .build();
     }
+
+    public static EventResponseDto.EventDoneResponseDto toEventDoneResponseDto(Event event) {
+        return EventResponseDto.EventDoneResponseDto.builder()
+                .eventId(event.getId())
+                .doneAt(event.getDoneAt())
+                .build();
+    }
 }

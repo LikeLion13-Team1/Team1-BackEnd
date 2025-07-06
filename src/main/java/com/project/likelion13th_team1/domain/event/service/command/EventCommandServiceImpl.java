@@ -100,4 +100,13 @@ public class EventCommandServiceImpl implements EventCommandService {
     public void deleteOrphanedEvent(Routine routine) {
         eventRepository.deleteByRoutine(routine);
     }
+
+    @Override
+    public EventResponseDto.EventDoneResponseDto doneEvent(String email, Long eventId) {
+        Event event = eventRepository.findByIdAndEmail(eventId, email)
+                .orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
+
+        event.doneEvent();
+        return EventConverter.toEventDoneResponseDto(event);
+    }
 }
