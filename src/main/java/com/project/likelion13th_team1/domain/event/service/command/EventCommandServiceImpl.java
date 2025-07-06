@@ -109,4 +109,13 @@ public class EventCommandServiceImpl implements EventCommandService {
         event.doneEvent();
         return EventConverter.toEventDoneResponseDto(event);
     }
+
+    @Override
+    public EventResponseDto.EventDoneResponseDto undoneEvent(String email, Long eventId) {
+        Event event = eventRepository.findByIdAndEmail(eventId, email)
+                .orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
+
+        event.undoneEvent();
+        return EventConverter.toEventDoneResponseDto(event);
+    }
 }

@@ -52,4 +52,10 @@ public class Event {
     public void doneEvent() {
         this.doneAt = LocalDateTime.now();
     }
+
+    // undone
+    public void undoneEvent() {
+        this.doneAt = null;
+        this.routineStatus = RoutineStatus.PROCESSING;
+    }
 }

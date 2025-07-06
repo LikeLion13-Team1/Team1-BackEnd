@@ -75,4 +75,12 @@ public class EventController {
         return CustomResponse.onSuccess(eventCommandService.doneEvent(customUserDetails.getUsername(), eventId));
     }
 
+    @Operation(summary = "루틴 완료 취소")
+    @PatchMapping("/{eventId}/undone")
+    public CustomResponse<EventResponseDto.EventDoneResponseDto> undoneEvent(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long eventId
+    ) {
+        return CustomResponse.onSuccess(eventCommandService.undoneEvent(customUserDetails.getUsername(), eventId));
+    }
 }
