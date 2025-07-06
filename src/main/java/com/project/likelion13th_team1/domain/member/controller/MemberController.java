@@ -44,7 +44,7 @@ public class MemberController {
         return CustomResponse.onSuccess(HttpStatus.OK, "회원 정보 수정 완료");
     }
 
-    @Operation(summary = "회원 정보 조회")
+    @Operation(summary = "회원 정보 조회", description = "유저 이름, 이메일과 같은 회원 정보를 조회한다")
     @GetMapping("/info")
     public CustomResponse<MemberResponseDto.MemberDetailResponseDto> getMember(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
@@ -53,7 +53,7 @@ public class MemberController {
     }
 
     // TODO : 스케쥴러 구현하기
-    @Operation(summary = "회원 탈퇴")
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴, 실제 DB에서 삭제되는 것이 아닌 soft delete")
     @DeleteMapping("/withdrawal")
     public CustomResponse<String> deleteMember(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
@@ -62,7 +62,7 @@ public class MemberController {
         return CustomResponse.onSuccess(HttpStatus.NO_CONTENT, "회원 탈퇴 완료");
     }
 
-    @Operation(summary = "회원 특성 정보 생성")
+    @Operation(summary = "회원 특성 정보 생성", description = "루틴 추천을 위한 회원 특성 정보를 생성한다.")
     @PostMapping("/feature")
     public CustomResponse<String> createFeature(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -72,7 +72,7 @@ public class MemberController {
         return CustomResponse.onSuccess(HttpStatus.CREATED, "회원 특성 정보 생성 완료");
     }
 
-    @Operation(summary = "회원 특성 정보 수정")
+    @Operation(summary = "회원 특성 정보 수정", description = "루틴 추천을 위한 회원 특성 정보를 수정한다.")
     @PatchMapping("/feature")
     public CustomResponse<String> updateFeature(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -82,7 +82,7 @@ public class MemberController {
         return CustomResponse.onSuccess(HttpStatus.OK, "회원 특성 정보 수정 완료");
     }
 
-    @Operation(summary = "회원 특성 정보 조회")
+    @Operation(summary = "회원 특성 정보 조회", description = "회원 특성 정보를 조회한다.")
     @GetMapping("/feature")
     public CustomResponse<FeatureResponseDto.FeatureDetailResponseDto> getFeature(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
