@@ -4,7 +4,7 @@ import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestD
 import com.project.likelion13th_team1.domain.routine.dto.response.RoutineResponseDto;
 
 public interface RoutineCommandService {
-    RoutineResponseDto.RoutineCreateResponseDto createRoutine(String email, RoutineRequestDto.RoutineCreateRequestDto routineCreateRequestDto);
+    RoutineResponseDto.RoutineCreateResponseDto createRoutine(Long groupId, RoutineRequestDto.RoutineCreateRequestDto routineCreateRequestDto);
 
     RoutineResponseDto.RoutineUpdateResponseDto updateRoutine(String email, Long routineId, RoutineRequestDto.RoutineUpdateRequestDto routineUpdateRequestDto);
 
