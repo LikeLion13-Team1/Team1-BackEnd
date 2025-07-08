@@ -9,4 +9,6 @@ public interface GroupCommandService {
 
     void updateGroup(String email, Long GroupId, GroupRequestDto.GroupUpdateRequestDto groupUpdateRequestDto);
 
+    void deleteGroup(String email, Long groupId);
+
 }

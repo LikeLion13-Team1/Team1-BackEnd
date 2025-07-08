@@ -61,4 +61,14 @@ public class GroupController {
         groupCommandService.updateGroup(customUserDetails.getUsername(), groupId, groupUpdateRequestDto);
         return CustomResponse.onSuccess(HttpStatus.OK, "그룹 수정 완료");
     }
+
+    @Operation(summary = "그룹 삭제", description = "hard delete")
+    @DeleteMapping("/{groupId}")
+    public CustomResponse<String> deleteGroup(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long groupId
+    ) {
+        groupCommandService.deleteGroup(customUserDetails.getUsername(), groupId);
+        return CustomResponse.onSuccess(HttpStatus.NO_CONTENT, "그룹 삭제 완료");
+    }
 }
