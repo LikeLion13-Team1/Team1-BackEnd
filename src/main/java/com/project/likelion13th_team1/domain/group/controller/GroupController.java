@@ -52,7 +52,7 @@ public class GroupController {
     }
 
     @Operation(summary = "그룹 수정", description = "이름은 빈칸일 수 없음")
-    @PatchMapping("{groupId}")
+    @PatchMapping("/{groupId}")
     public CustomResponse<String> updateGroup(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long groupId,
