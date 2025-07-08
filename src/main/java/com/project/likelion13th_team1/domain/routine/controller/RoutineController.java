@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/group/{groupId}")
+@RequestMapping("/api/v1")
 @Tag(name = "Routine", description = "루틴 관련 API")
 public class RoutineController {
 
@@ -24,7 +24,7 @@ public class RoutineController {
     private final RoutineQueryService routineQueryService;
 
     @Operation(summary = "루틴 생성", description = "루틴 이름, 루틴 설명, 시작 시간은 빈칸일 수 없다.<br>status는 루틴의 상태를 말하며, PROCESSING, SUCCESS가 있다. <br> cycle은 주기로 NO, DAY, WEEK, MONTH, YEAR이 있다. <br> cycle이 no인 경우에는 endAt은 null")
-    @PostMapping("/routines")
+    @PostMapping("/group/{groupId}/routines")
     public CustomResponse<RoutineResponseDto.RoutineCreateResponseDto> createRoutine(
             @PathVariable Long groupId,
             @RequestBody @Valid RoutineRequestDto.RoutineCreateRequestDto routineCreateRequestDto
