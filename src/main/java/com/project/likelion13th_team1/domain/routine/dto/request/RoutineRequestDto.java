@@ -12,7 +12,7 @@ public class RoutineRequestDto {
     public record RoutineCreateRequestDto(
             @NotBlank String name,
             @NotBlank String description,
-            Status status,
+//            Status status,
             Cycle cycle,
             @NotNull LocalDateTime startAt,
             LocalDateTime endAt
@@ -23,7 +23,7 @@ public class RoutineRequestDto {
     public record RoutineUpdateRequestDto(
             @NotBlank String name,
             @NotBlank String description,
-            Status status,
+//            Status status,
             Cycle cycle,
             @NotNull LocalDateTime startAt,
             LocalDateTime endAt
