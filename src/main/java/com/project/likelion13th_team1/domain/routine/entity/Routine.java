@@ -45,6 +45,10 @@ public class Routine extends BaseEntity {
 //    @Enumerated(EnumType.STRING)
 //    private Type type;
 
+    // 사용 여부
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
+
     // 반복 주기
     @Column(name = "cycle", nullable = false)
     @Enumerated(EnumType.STRING)

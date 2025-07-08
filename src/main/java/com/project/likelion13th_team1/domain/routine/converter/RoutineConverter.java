@@ -21,6 +21,7 @@ public class RoutineConverter {
                 .description(dto.description())
 //                .status(dto.status())
 //                .type(Type.CUSTOM)
+                .isActive(true)
                 .cycle(dto.cycle())
                 .startAt(dto.startAt())
                 .endAt(dto.endAt())
