@@ -30,7 +30,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("SELECT new com.project.likelion13th_team1.domain.event.dto.EventDto(e) " +
             "FROM Event e " +
             "WHERE e.id > :cursor " +
-            "AND e.routine.member.email = :email " +
+            "AND e.routine.group.member.email = :email " +
             "AND e.scheduledAt BETWEEN :start AND :end " +
             "ORDER BY e.scheduledAt ASC")
     Slice<EventDto> findAllByEventIdGreaterThanAndScheduledAtBetweenOrderByScheduledAtAsc(
@@ -41,16 +41,16 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             Pageable pageable
     );
 
-    // 루틴이 삭제됐을 때, 그 자식 루틴 이벤트 일괄 삭제
-    @Transactional
-    @Modifying
-    @Query("DELETE " +
-            "FROM Event e " +
-            "WHERE e.routine = :routine")
-    void deleteByRoutine(@Param("routine") Routine routine);
+//    // 루틴이 삭제됐을 때, 그 자식 루틴 이벤트 일괄 삭제
+//    @Transactional
+//    @Modifying
+//    @Query("DELETE " +
+//            "FROM Event e " +
+//            "WHERE e.routine = :routine")
+//    void deleteByRoutine(@Param("routine") Routine routine);
 
     @Query("SELECT e " +
             "FROM Event e " +
-            "WHERE e.id = :eventId AND e.routine.member.email = :email")
+            "WHERE e.id = :eventId AND e.routine.group.member.email = :email")
     Optional<Event> findByIdAndEmail(@Param("eventId") Long eventId, @Param("email") String email);
 }
