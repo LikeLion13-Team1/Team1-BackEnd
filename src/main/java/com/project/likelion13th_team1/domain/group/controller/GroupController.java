@@ -4,6 +4,7 @@ import com.project.likelion13th_team1.domain.group.dto.request.GroupRequestDto;
 import com.project.likelion13th_team1.domain.group.dto.response.GroupResponseDto;
 import com.project.likelion13th_team1.domain.group.service.command.GroupCommandService;
 import com.project.likelion13th_team1.domain.group.service.query.GroupQueryService;
+import com.project.likelion13th_team1.domain.routine.dto.response.RoutineResponseDto;
 import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
 import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,5 +38,15 @@ public class GroupController {
             @PathVariable Long groupId
     ) {
         return CustomResponse.onSuccess(groupQueryService.getGroup(groupId));
+    }
+
+    @Operation(summary = "그룹 목록 조회 (내 그룹만)")
+    @GetMapping("/my")
+    public CustomResponse<GroupResponseDto.GroupCursorResponseDto> getGroupCursor(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam Long cursor,
+            @RequestParam Integer size
+    ) {
+        return CustomResponse.onSuccess(groupQueryService.getGroupCursor(customUserDetails.getUsername(), cursor, size));
     }
 }

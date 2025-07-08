@@ -1,6 +1,7 @@
 package com.project.likelion13th_team1.domain.group.service.query;
 
 import com.project.likelion13th_team1.domain.group.converter.GroupConverter;
+import com.project.likelion13th_team1.domain.group.dto.GroupDto;
 import com.project.likelion13th_team1.domain.group.dto.response.GroupResponseDto;
 import com.project.likelion13th_team1.domain.group.entity.Group;
 import com.project.likelion13th_team1.domain.group.exception.GroupErrorCode;
@@ -8,6 +9,9 @@ import com.project.likelion13th_team1.domain.group.exception.GroupException;
 import com.project.likelion13th_team1.domain.group.repository.GroupRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,5 +27,21 @@ public class GroupQueryServiceImpl implements GroupQueryService {
                 .orElseThrow(() -> new GroupException(GroupErrorCode.GROUP_NOT_FOUND));
 
         return GroupConverter.toGroupDetailResponseDto(group);
+    }
+
+    @Override
+    public GroupResponseDto.GroupCursorResponseDto getGroupCursor(String email, Long cursor, Integer size) {
+
+        Pageable pageable = PageRequest.of(0, size);
+
+        // cursor가 0일 경우(첫페이지) cursor 최대값
+        if (cursor == 0) {
+            cursor = Long.MIN_VALUE;
+        }
+
+        Slice<GroupDto> groupDtosSlice
+                = groupRepository.findAllByGroupIdGreaterThanOrderByGroupIdASC(email, cursor, pageable);
+
+        return GroupConverter.toGroupCursorResponseDto(groupDtosSlice);
     }
 }
