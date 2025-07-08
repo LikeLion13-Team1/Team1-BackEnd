@@ -1,4 +1,10 @@
 package com.project.likelion13th_team1.domain.group.service.command;
 
+import com.project.likelion13th_team1.domain.group.dto.request.GroupRequestDto;
+import com.project.likelion13th_team1.domain.group.dto.response.GroupResponseDto;
+
 public interface GroupCommandService {
+
+    GroupResponseDto.GroupCreateResponseDto createGroup(String email, GroupRequestDto.GroupCreateRequestDto groupCreateRequestDto);
+
 }

@@ -37,10 +37,9 @@ public class SecurityConfig {
 
     //인증이 필요하지 않은 url
     private final String[] allowUrl = {
-            "/auth/login", //로그인 은 인증이 필요하지 않음
+            "/api/v1/auth/login", //로그인 은 인증이 필요하지 않음
             "/api/v1/members/signup", // 회원가입은 인증이 필요하지 않음
-            "/auth/reissue", // 토큰 재발급은 인증이 필요하지 않음
-            "/auth/**",
+            "/api/v1/auth/reissue", // 토큰 재발급은 인증이 필요하지 않음
             "api/usage",
             "/swagger-ui/**",   // swagger 관련 URL
             "/v3/api-docs/**",
