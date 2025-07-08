@@ -76,7 +76,7 @@ public class EventCommandServiceImpl implements EventCommandService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
 
-        if (!event.getRoutine().getMember().getEmail().equals(email)) {
+        if (!event.getRoutine().getGroup().getMember().getEmail().equals(email)) {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
 
@@ -89,7 +89,7 @@ public class EventCommandServiceImpl implements EventCommandService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
 
-        if (!event.getRoutine().getMember().getEmail().equals(email)) {
+        if (!event.getRoutine().getGroup().getMember().getEmail().equals(email)) {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
 

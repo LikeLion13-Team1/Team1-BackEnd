@@ -30,7 +30,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("SELECT new com.project.likelion13th_team1.domain.event.dto.EventDto(e) " +
             "FROM Event e " +
             "WHERE e.id > :cursor " +
-            "AND e.routine.member.email = :email " +
+            "AND e.routine.group.member.email = :email " +
             "AND e.scheduledAt BETWEEN :start AND :end " +
             "ORDER BY e.scheduledAt ASC")
     Slice<EventDto> findAllByEventIdGreaterThanAndScheduledAtBetweenOrderByScheduledAtAsc(
@@ -51,6 +51,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query("SELECT e " +
             "FROM Event e " +
-            "WHERE e.id = :eventId AND e.routine.member.email = :email")
+            "WHERE e.id = :eventId AND e.routine.group.member.email = :email")
     Optional<Event> findByIdAndEmail(@Param("eventId") Long eventId, @Param("email") String email);
 }

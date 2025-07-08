@@ -73,7 +73,7 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         Routine routine = routineRepository.findById(routineId)
                 .orElseThrow(() -> new RoutineException(RoutineErrorCode.ROUTINE_NOT_FOUND));
 
-        if (routine.getMember() != member) {
+        if (routine.getGroup().getMember() != member) {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
 
