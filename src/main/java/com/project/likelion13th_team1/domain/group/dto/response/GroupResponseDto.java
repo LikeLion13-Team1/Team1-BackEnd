@@ -10,4 +10,11 @@ public class GroupResponseDto {
     ) {
     }
 
+    @Builder
+    public record GroupDetailResponseDto(
+            Long groupId,
+            String name
+    ) {
+    }
+
 }

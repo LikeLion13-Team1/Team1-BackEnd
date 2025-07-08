@@ -22,4 +22,11 @@ public class GroupConverter {
                 .groupId(group.getId())
                 .build();
     }
+
+    public static GroupResponseDto.GroupDetailResponseDto toGroupDetailResponseDto(Group group) {
+        return GroupResponseDto.GroupDetailResponseDto.builder()
+                .groupId(group.getId())
+                .name(group.getName())
+                .build();
+    }
 }
