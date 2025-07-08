@@ -11,6 +11,8 @@ import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
 import com.project.likelion13th_team1.domain.member.repository.MemberRepository;
+import com.project.likelion13th_team1.domain.routine.repository.RoutineRepository;
+import com.project.likelion13th_team1.domain.routine.service.command.RoutineCommandServiceImpl;
 import com.project.likelion13th_team1.global.apiPayload.code.GeneralErrorCode;
 import com.project.likelion13th_team1.global.apiPayload.exception.CustomException;
 import jakarta.transaction.Transactional;
@@ -23,7 +25,9 @@ import org.springframework.stereotype.Service;
 public class GroupCommandServiceImpl implements GroupCommandService {
 
     private final MemberRepository memberRepository;
+    private final RoutineRepository routineRepository;
     private final GroupRepository groupRepository;
+    private final RoutineCommandServiceImpl routineCommandServiceImpl;
 
     @Override
     public GroupResponseDto.GroupCreateResponseDto createGroup(String email, GroupRequestDto.GroupCreateRequestDto groupCreateRequestDto) {
@@ -61,6 +65,7 @@ public class GroupCommandServiceImpl implements GroupCommandService {
         }
 
         // TODO : 고아가 된 루틴 삭제처리
+
         groupRepository.delete(group);
     }
 }

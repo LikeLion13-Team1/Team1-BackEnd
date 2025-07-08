@@ -41,13 +41,13 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             Pageable pageable
     );
 
-    // 루틴이 삭제됐을 때, 그 자식 루틴 이벤트 일괄 삭제
-    @Transactional
-    @Modifying
-    @Query("DELETE " +
-            "FROM Event e " +
-            "WHERE e.routine = :routine")
-    void deleteByRoutine(@Param("routine") Routine routine);
+//    // 루틴이 삭제됐을 때, 그 자식 루틴 이벤트 일괄 삭제
+//    @Transactional
+//    @Modifying
+//    @Query("DELETE " +
+//            "FROM Event e " +
+//            "WHERE e.routine = :routine")
+//    void deleteByRoutine(@Param("routine") Routine routine);
 
     @Query("SELECT e " +
             "FROM Event e " +

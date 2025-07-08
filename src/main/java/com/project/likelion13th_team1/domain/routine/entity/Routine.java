@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.routine.entity;
 
+import com.project.likelion13th_team1.domain.event.entity.Event;
 import com.project.likelion13th_team1.domain.group.entity.Group;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
@@ -10,6 +11,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -55,9 +58,9 @@ public class Routine extends BaseEntity {
     @Column(name = "end_at")
     private LocalDateTime endAt;
 
-    // 루틴 삭제 soft
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+//    // 루틴 삭제 soft
+//    @Column(name = "deleted_at")
+//    private LocalDateTime deletedAt;
 
 //    // 멤버 FK
 //    @ManyToOne(fetch = FetchType.LAZY)
@@ -68,6 +71,10 @@ public class Routine extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
+
+    // 루틴 삭제시 이벤트도 삭제
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> eventList = new ArrayList<>();
 
 //    // 루틴 특성 FK (유저에게 추천해주기 위한?)
 //    // TODO : 근데 CUSTOM 으로 만드는 경우에는 어떻게 할지?
@@ -85,7 +92,7 @@ public class Routine extends BaseEntity {
         if (dto.endAt() != null) this.endAt = dto.endAt();
     }
 
-    public void delete(Routine routine) {
-        this.deletedAt = LocalDateTime.now();
-    }
+//    public void delete(Routine routine) {
+//        this.deletedAt = LocalDateTime.now();
+//    }
 }

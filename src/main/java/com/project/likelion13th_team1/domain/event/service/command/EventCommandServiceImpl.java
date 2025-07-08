@@ -96,10 +96,10 @@ public class EventCommandServiceImpl implements EventCommandService {
         eventRepository.deleteById(eventId);
     }
 
-    @Override
-    public void deleteOrphanedEvent(Routine routine) {
-        eventRepository.deleteByRoutine(routine);
-    }
+//    @Override
+//    public void deleteOrphanedEvent(Routine routine) {
+//        eventRepository.deleteByRoutine(routine);
+//    }
 
     @Override
     public EventResponseDto.EventDoneResponseDto doneEvent(String email, Long eventId) {

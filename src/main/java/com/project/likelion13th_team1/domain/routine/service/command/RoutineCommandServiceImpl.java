@@ -77,7 +77,7 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
 
-        eventCommandService.deleteOrphanedEvent(routine);
-        routine.delete(routine);
+//        eventCommandService.deleteOrphanedEvent(routine);
+        routineRepository.delete(routine);
     }
 }
