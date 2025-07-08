@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.group.entity;
 
+import com.project.likelion13th_team1.domain.group.dto.request.GroupRequestDto;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,4 +23,9 @@ public class Group {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
     private Member member;
+
+    // groupUpdate
+    public void update(GroupRequestDto.GroupUpdateRequestDto groupUpdateRequestDto) {
+        this.name = groupUpdateRequestDto.name();
+    }
 }

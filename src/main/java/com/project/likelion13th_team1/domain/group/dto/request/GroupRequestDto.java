@@ -7,4 +7,9 @@ public class GroupRequestDto {
             @NotBlank String name
     ) {
     }
+
+    public record GroupUpdateRequestDto(
+            @NotBlank String name
+    ) {
+    }
 }

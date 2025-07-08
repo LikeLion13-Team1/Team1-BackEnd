@@ -7,4 +7,6 @@ public interface GroupCommandService {
 
     GroupResponseDto.GroupCreateResponseDto createGroup(String email, GroupRequestDto.GroupCreateRequestDto groupCreateRequestDto);
 
+    void updateGroup(String email, Long GroupId, GroupRequestDto.GroupUpdateRequestDto groupUpdateRequestDto);
+
 }

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,5 +49,16 @@ public class GroupController {
             @RequestParam Integer size
     ) {
         return CustomResponse.onSuccess(groupQueryService.getGroupCursor(customUserDetails.getUsername(), cursor, size));
+    }
+
+    @Operation(summary = "그룹 수정", description = "이름은 빈칸일 수 없음")
+    @PatchMapping("{groupId}")
+    public CustomResponse<String> updateGroup(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long groupId,
+            @RequestBody @Valid GroupRequestDto.GroupUpdateRequestDto groupUpdateRequestDto
+    ) {
+        groupCommandService.updateGroup(customUserDetails.getUsername(), groupId, groupUpdateRequestDto);
+        return CustomResponse.onSuccess(HttpStatus.OK, "그룹 수정 완료");
     }
 }

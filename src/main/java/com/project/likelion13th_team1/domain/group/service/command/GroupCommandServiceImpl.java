@@ -4,6 +4,8 @@ import com.project.likelion13th_team1.domain.group.converter.GroupConverter;
 import com.project.likelion13th_team1.domain.group.dto.request.GroupRequestDto;
 import com.project.likelion13th_team1.domain.group.dto.response.GroupResponseDto;
 import com.project.likelion13th_team1.domain.group.entity.Group;
+import com.project.likelion13th_team1.domain.group.exception.GroupErrorCode;
+import com.project.likelion13th_team1.domain.group.exception.GroupException;
 import com.project.likelion13th_team1.domain.group.repository.GroupRepository;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
@@ -31,5 +33,16 @@ public class GroupCommandServiceImpl implements GroupCommandService {
         groupRepository.save(group);
 
         return GroupConverter.toGroupCreateResponseDto(group);
+    }
+
+    @Override
+    public void updateGroup(String email, Long groupId, GroupRequestDto.GroupUpdateRequestDto groupUpdateRequestDto) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new GroupException(GroupErrorCode.GROUP_NOT_FOUND));
+
+        group.update(groupUpdateRequestDto);
     }
 }
