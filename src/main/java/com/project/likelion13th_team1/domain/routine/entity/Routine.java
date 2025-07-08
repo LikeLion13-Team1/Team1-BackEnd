@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.routine.entity;
 
+import com.project.likelion13th_team1.domain.group.entity.Group;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
@@ -62,6 +63,11 @@ public class Routine extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    // 그룹 FK
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private Group group;
 
     // 루틴 특성 FK (유저에게 추천해주기 위한?)
     // TODO : 근데 CUSTOM 으로 만드는 경우에는 어떻게 할지?
