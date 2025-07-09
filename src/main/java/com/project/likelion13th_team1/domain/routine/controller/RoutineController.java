@@ -34,7 +34,7 @@ public class RoutineController {
     }
 
     @Operation(summary = "루틴 수정", description = "루틴을 수정한다. 생성과 마찬가지로 이름, 설명, 반복 요일이 빈칸일 수 없다")
-    @PatchMapping("/{routineId}")
+    @PatchMapping("routines/{routineId}")
     public CustomResponse<RoutineResponseDto.RoutineUpdateResponseDto> updateRoutine(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long routineId,
@@ -45,7 +45,7 @@ public class RoutineController {
     }
 
     @Operation(summary = "루틴 삭제", description = "루틴을 삭제한다. 해당 루틴을 통해 생성된 이벤트들도 함께 삭제된다.")
-    @DeleteMapping("/{routineId}")
+    @DeleteMapping("routines/{routineId}")
     public CustomResponse<String> deleteRoutine(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long routineId
@@ -55,7 +55,7 @@ public class RoutineController {
     }
 
     @Operation(summary = "루틴 단일 조회", description = "루틴 아이디로 루틴 1개를 검색한다.")
-    @GetMapping("/{routineId}")
+    @GetMapping("routines/{routineId}")
     public CustomResponse<RoutineResponseDto.RoutineDetailResponseDto> getRoutine(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long routineId
@@ -64,7 +64,7 @@ public class RoutineController {
     }
 
     @Operation(summary = "루틴 목록 커서 조회", description = "cursor은 커서 위치로 맨 초기에는 0을 입력한다 <br>size는 한번에 나타낼 객체의 개수이다.<br>hasNextCursor가 true라면 뒤에 내용이 더 있다는 의미이므로 다음 커서를 nextCursor값으로 입력하면 계속해서 객체가 출력된다.")
-    @GetMapping("/my")
+    @GetMapping("routines/my")
     public CustomResponse<RoutineResponseDto.RoutineCursorResponseDto> getRoutineCursor(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestParam Long cursor,
@@ -94,7 +94,7 @@ public class RoutineController {
     }
 
     @Operation(summary = "루틴 추천", description = "멤버와 루틴의 특성 정보를 매칭시켜 루틴을 추천한다")
-    @PostMapping("/recommendation")
+    @PostMapping("routines/recommendation")
     public CustomResponse<?> recommendRoutine() {
         return CustomResponse.onFailure("500", "구상을 해봐야 해요", null);
     }
