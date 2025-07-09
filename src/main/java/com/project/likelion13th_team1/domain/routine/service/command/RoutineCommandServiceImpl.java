@@ -2,6 +2,10 @@ package com.project.likelion13th_team1.domain.routine.service.command;
 
 import com.project.likelion13th_team1.domain.event.repository.EventRepository;
 import com.project.likelion13th_team1.domain.event.service.command.EventCommandService;
+import com.project.likelion13th_team1.domain.group.entity.Group;
+import com.project.likelion13th_team1.domain.group.exception.GroupErrorCode;
+import com.project.likelion13th_team1.domain.group.exception.GroupException;
+import com.project.likelion13th_team1.domain.group.repository.GroupRepository;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
@@ -27,14 +31,16 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
     private final MemberRepository memberRepository;
     private final RoutineRepository routineRepository;
     private final EventCommandService eventCommandService;
+    private final GroupRepository groupRepository;
     private final EventRepository eventRepository;
 
     @Override
-    public RoutineResponseDto.RoutineCreateResponseDto createRoutine(String email, RoutineRequestDto.RoutineCreateRequestDto routineCreateRequestDto) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+    public RoutineResponseDto.RoutineCreateResponseDto createRoutine(Long groupId, RoutineRequestDto.RoutineCreateRequestDto routineCreateRequestDto) {
 
-        Routine routine = RoutineConverter.toRoutine(routineCreateRequestDto, member);
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new GroupException(GroupErrorCode.GROUP_NOT_FOUND));
+
+        Routine routine = RoutineConverter.toRoutine(routineCreateRequestDto, group);
         routineRepository.save(routine);
 
         int eventCount = eventCommandService.createEvent(routine);
@@ -51,11 +57,13 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         Routine routine = routineRepository.findById(routineId)
                 .orElseThrow(() -> new RoutineException(RoutineErrorCode.ROUTINE_NOT_FOUND));
 
-        if (routine.getMember() != member) {
+        if (routine.getGroup().getMember() != member) {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
 
         routine.updateRoutine(routineUpdateRequestDto);
+        eventRepository.deleteByRoutine(routine);
+        eventCommandService.createEvent(routine);
         return RoutineConverter.toRoutineUpdateResponseDto(routine);
     }
 
@@ -68,11 +76,44 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         Routine routine = routineRepository.findById(routineId)
                 .orElseThrow(() -> new RoutineException(RoutineErrorCode.ROUTINE_NOT_FOUND));
 
-        if (routine.getMember() != member) {
+        if (routine.getGroup().getMember() != member) {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
 
-        eventCommandService.deleteOrphanedEvent(routine);
-        routine.delete(routine);
+//        eventCommandService.deleteOrphanedEvent(routine);
+        routineRepository.delete(routine);
+    }
+
+    @Override
+    public void activateRoutine(String email, Long routineId) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new RoutineException(RoutineErrorCode.ROUTINE_NOT_FOUND));
+
+        if (routine.getGroup().getMember() != member) {
+            throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
+        }
+
+        routine.activate();
+        eventCommandService.createEvent(routine);
+
+    }
+
+    @Override
+    public void inactivateRoutine(String email, Long routineId) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new RoutineException(RoutineErrorCode.ROUTINE_NOT_FOUND));
+
+        if (routine.getGroup().getMember() != member) {
+            throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
+        }
+
+        routine.inactivate();
+        eventRepository.deleteByRoutine(routine);
     }
 }

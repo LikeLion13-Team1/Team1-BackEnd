@@ -1,10 +1,10 @@
 package com.project.likelion13th_team1.domain.routine.dto.request;
 
 import com.project.likelion13th_team1.domain.routine.entity.Cycle;
-import com.project.likelion13th_team1.global.entity.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class RoutineRequestDto {
@@ -12,10 +12,11 @@ public class RoutineRequestDto {
     public record RoutineCreateRequestDto(
             @NotBlank String name,
             @NotBlank String description,
-            Status status,
+//            Status status,
+            @NotNull Boolean isActive,
             Cycle cycle,
-            @NotNull LocalDateTime startAt,
-            LocalDateTime endAt
+            @NotNull LocalDate startAt,
+            LocalDate endAt
     ) {
     }
 
@@ -23,10 +24,10 @@ public class RoutineRequestDto {
     public record RoutineUpdateRequestDto(
             @NotBlank String name,
             @NotBlank String description,
-            Status status,
+//            Status status,
             Cycle cycle,
-            @NotNull LocalDateTime startAt,
-            LocalDateTime endAt
+            @NotNull LocalDate startAt,
+            LocalDate endAt
     ) {
     }
 }

@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.routine.converter;
 
+import com.project.likelion13th_team1.domain.group.entity.Group;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.routine.dto.RoutineDto;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
@@ -14,16 +15,18 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RoutineConverter {
-    public static Routine toRoutine(RoutineRequestDto.RoutineCreateRequestDto dto, Member member) {
+    public static Routine toRoutine(RoutineRequestDto.RoutineCreateRequestDto dto, Group group) {
         return Routine.builder()
                 .name(dto.name())
                 .description(dto.description())
-                .status(dto.status())
-                .type(Type.CUSTOM)
+//                .status(dto.status())
+//                .type(Type.CUSTOM)
+                .isActive(true)
                 .cycle(dto.cycle())
                 .startAt(dto.startAt())
                 .endAt(dto.endAt())
-                .member(member)
+                .group(group)
+//                .member(member)
                 .build();
     }
 
@@ -43,10 +46,13 @@ public class RoutineConverter {
 
     public static RoutineResponseDto.RoutineDetailResponseDto toRoutineDetailResponseDto(Routine routine) {
         return RoutineResponseDto.RoutineDetailResponseDto.builder()
+                .groupId(routine.getGroup().getId())
                 .routineId(routine.getId())
+                .name(routine.getName())
                 .description(routine.getDescription())
-                .status(routine.getStatus())
-                .type(routine.getType())
+//                .status(routine.getStatus())
+//                .type(routine.getType())
+                .isActive(routine.getIsActive())
                 .cycle(routine.getCycle())
                 .startAt(routine.getStartAt())
                 .endAt(routine.getEndAt())

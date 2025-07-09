@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,19 +31,20 @@ public class EventCommandServiceImpl implements EventCommandService {
     @Override
     public int createEvent(Routine routine) {
 
-        LocalDateTime start = routine.getStartAt();
-        LocalDateTime end = routine.getEndAt();
+        LocalDate start = routine.getStartAt();
+        LocalDate oneYearLater = start.plusYears(1);
+        LocalDate end;
+
+        if (routine.getEndAt() != null && routine.getEndAt().isBefore(oneYearLater)) {
+            end = routine.getEndAt();
+        } else {
+            end = oneYearLater;
+        }
+
         long cycle = routine.getCycle().getDays();
         int eventCount = 0;
 
-//        // 루틴 반복 시작 시간과 반복 끝 시간이 며칠인지 계산 후, cycle이 몇 번 들어갈 수 있는지 확인후 생성
-//        for (LocalDateTime date = start; !date.isAfter(end); date = date.plusDays(cycle)) {
-//            Event event = EventConverter.toEvent(routine, date);
-//            eventRepository.save(event);
-//            eventCount++;
-//        }
-
-        Set<LocalDateTime> existingDates = new HashSet<>(
+        Set<LocalDate> existingDates = new HashSet<>(
                 eventRepository.findScheduledDatesByRoutineAndStartBetweenEnd(routine, start, end)
         );
 
@@ -58,16 +60,15 @@ public class EventCommandServiceImpl implements EventCommandService {
             return eventsToSave.size();  // 0 또는 1 반환
         }
 
-        for (LocalDateTime date = start; !date.isAfter(end); date = date.plusDays(cycle)) {
+        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(cycle)) {
             if (!existingDates.contains(date)) {
                 Event event = EventConverter.toEvent(routine, date);
                 eventsToSave.add(event);
-
                 eventCount++;
             }
         }
-        eventRepository.saveAll(eventsToSave);
 
+        eventRepository.saveAll(eventsToSave);
         return eventCount;
     }
 
@@ -76,7 +77,7 @@ public class EventCommandServiceImpl implements EventCommandService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
 
-        if (!event.getRoutine().getMember().getEmail().equals(email)) {
+        if (!event.getRoutine().getGroup().getMember().getEmail().equals(email)) {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
 
@@ -89,17 +90,17 @@ public class EventCommandServiceImpl implements EventCommandService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
 
-        if (!event.getRoutine().getMember().getEmail().equals(email)) {
+        if (!event.getRoutine().getGroup().getMember().getEmail().equals(email)) {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
 
         eventRepository.deleteById(eventId);
     }
 
-    @Override
-    public void deleteOrphanedEvent(Routine routine) {
-        eventRepository.deleteByRoutine(routine);
-    }
+//    @Override
+//    public void deleteOrphanedEvent(Routine routine) {
+//        eventRepository.deleteByRoutine(routine);
+//    }
 
     @Override
     public EventResponseDto.EventDoneResponseDto doneEvent(String email, Long eventId) {

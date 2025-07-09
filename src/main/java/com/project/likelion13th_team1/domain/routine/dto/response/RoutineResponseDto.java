@@ -5,6 +5,7 @@ import com.project.likelion13th_team1.global.entity.Status;
 import com.project.likelion13th_team1.domain.routine.entity.Type;
 import lombok.Builder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,13 +27,14 @@ public class RoutineResponseDto {
 
     @Builder
     public record RoutineDetailResponseDto(
+            Long groupId,
             Long routineId,
+            String name,
             String description,
-            Status status,
-            Type type,
+            Boolean isActive,
             Cycle cycle,
-            LocalDateTime startAt,
-            LocalDateTime endAt,
+            LocalDate startAt,
+            LocalDate endAt,
             LocalDateTime createdAt
     ) {
     }
