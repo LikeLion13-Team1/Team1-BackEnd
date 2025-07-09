@@ -15,8 +15,8 @@ public class RoutineRequestDto {
             @NotBlank String name,
             @NotBlank String description,
 //            Status status,
-            @NotNull Boolean isActive,
-            Cycle cycle,
+//            @NotNull Boolean isActive,
+//            Cycle cycle,
             @NotNull List<DayOfWeek> repeatDays
 //            @NotNull LocalDateTime startAt,
 //            LocalDateTime endAt
@@ -27,8 +27,9 @@ public class RoutineRequestDto {
     public record RoutineUpdateRequestDto(
             @NotBlank String name,
             @NotBlank String description,
+            @NotNull List<DayOfWeek> repeatDays
 //            Status status,
-            Cycle cycle
+//            Cycle cycle
 //            @NotNull LocalDate startAt
 //            LocalDateTime endAt
     ) {

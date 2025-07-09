@@ -51,10 +51,10 @@ public class Routine extends BaseEntity {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
-    // 반복 주기
-    @Column(name = "cycle", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Cycle cycle;
+//    // 반복 주기
+//    @Column(name = "cycle", nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    private Cycle cycle;
 
     @Column(name = "repeat_days")
     @ElementCollection(targetClass = DayOfWeek.class)
@@ -98,7 +98,7 @@ public class Routine extends BaseEntity {
         if (dto.name() != null) this.name = dto.name();
         if (dto.description() != null) this.description = dto.description();
 //        if (dto.status() != null) this.status = dto.status();
-        if (dto.cycle() != null) this.cycle = dto.cycle();
+//        if (dto.cycle() != null) this.cycle = dto.cycle();
 //        if (dto.startAt() != null) this.startAt = dto.startAt();
 //        if (dto.endAt() != null) this.endAt = dto.endAt();
     }

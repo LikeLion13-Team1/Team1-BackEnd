@@ -21,7 +21,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("SELECT e.scheduledAt " +
             "FROM Event e " +
             "WHERE e.routine = :routine AND e.scheduledAt BETWEEN :today AND :end")
-    List<LocalDateTime> findScheduledDatesByRoutineAndStartBetweenEnd(
+    List<LocalDate> findScheduledDatesByRoutineAndStartBetweenEnd(
             @Param("routine") Routine routine,
             @Param("today") LocalDate today,
             @Param("end") LocalDate end
