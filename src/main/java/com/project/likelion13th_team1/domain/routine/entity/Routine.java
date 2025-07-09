@@ -99,4 +99,12 @@ public class Routine extends BaseEntity {
 //    public void delete(Routine routine) {
 //        this.deletedAt = LocalDateTime.now();
 //    }
+
+    public void activate() {
+        this.isActive = true;
+    }
+
+    public void inactivate() {
+        this.isActive = false;
+    }
 }

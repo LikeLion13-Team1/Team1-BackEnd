@@ -9,4 +9,8 @@ public interface RoutineCommandService {
     RoutineResponseDto.RoutineUpdateResponseDto updateRoutine(String email, Long routineId, RoutineRequestDto.RoutineUpdateRequestDto routineUpdateRequestDto);
 
     void deleteRoutine(String email, Long routineId);
+
+    void activateRoutine(String email, Long routineId);
+
+    void inactivateRoutine(String email, Long routineId);
 }

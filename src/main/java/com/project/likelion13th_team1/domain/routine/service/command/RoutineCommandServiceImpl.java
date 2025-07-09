@@ -32,6 +32,7 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
     private final RoutineRepository routineRepository;
     private final EventCommandService eventCommandService;
     private final GroupRepository groupRepository;
+    private final EventRepository eventRepository;
 
     @Override
     public RoutineResponseDto.RoutineCreateResponseDto createRoutine(Long groupId, RoutineRequestDto.RoutineCreateRequestDto routineCreateRequestDto) {
@@ -79,5 +80,39 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
 
 //        eventCommandService.deleteOrphanedEvent(routine);
         routineRepository.delete(routine);
+    }
+
+    @Override
+    public void activateRoutine(String email, Long routineId) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new RoutineException(RoutineErrorCode.ROUTINE_NOT_FOUND));
+
+        if (routine.getGroup().getMember() != member) {
+            throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
+        }
+
+        routine.activate();
+        eventCommandService.createEvent(routine);
+
+    }
+
+    @Override
+    public void inactivateRoutine(String email, Long routineId) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new RoutineException(RoutineErrorCode.ROUTINE_NOT_FOUND));
+
+        if (routine.getGroup().getMember() != member) {
+            throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
+        }
+
+        routine.inactivate();
+        // 비활성화 된 루틴에서 생성된 이벤트 제거
+        eventRepository.deleteByRoutine(routine);
     }
 }

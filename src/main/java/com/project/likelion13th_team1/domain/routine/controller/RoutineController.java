@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -70,6 +71,26 @@ public class RoutineController {
             @RequestParam Integer size
     ) {
         return CustomResponse.onSuccess(routineQueryService.getRoutineCursor(customUserDetails.getUsername(), cursor, size));
+    }
+
+    @Operation(summary = "루틴 활성화", description = "루틴의 isActive를 true로 바꾸고, 이벤트를 생성한다.")
+    @PatchMapping("/routines/{routineId}/activate")
+    public CustomResponse<String> activateRoutine(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long routineId
+    ) {
+        routineCommandService.activateRoutine(customUserDetails.getUsername(), routineId);
+        return CustomResponse.onSuccess(HttpStatus.OK, "루틴 활성화 완료");
+    }
+
+    @Operation(summary = "루틴 비활성화", description = "루틴의 isActive를 false로 바꾸고, 이벤트를 삭제한다.")
+    @PatchMapping("/routines/{routineId}/inactivate")
+    public CustomResponse<String> inactivateRoutine(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long routineId
+    ) {
+        routineCommandService.inactivateRoutine(customUserDetails.getUsername(), routineId);
+        return CustomResponse.onSuccess(HttpStatus.OK, "루틴 비활성화 완료");
     }
 
     @Operation(summary = "루틴 추천", description = "멤버와 루틴의 특성 정보를 매칭시켜 루틴을 추천한다")
