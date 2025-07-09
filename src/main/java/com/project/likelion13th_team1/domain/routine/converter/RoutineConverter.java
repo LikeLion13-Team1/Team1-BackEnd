@@ -22,10 +22,9 @@ public class RoutineConverter {
 //                .status(dto.status())
 //                .type(Type.CUSTOM)
                 .isActive(true)
-//                .cycle(dto.cycle())
-                .repeatDays(dto.repeatDays())
-//                .startAt(dto.startAt())
-//                .endAt(dto.endAt())
+                .cycle(dto.cycle())
+                .startAt(dto.startAt())
+                .endAt(dto.endAt())
                 .group(group)
 //                .member(member)
                 .build();
@@ -53,10 +52,10 @@ public class RoutineConverter {
                 .description(routine.getDescription())
 //                .status(routine.getStatus())
 //                .type(routine.getType())
-//                .cycle(routine.getCycle())
-                .repeatDays(routine.getRepeatDays())
-//                .startAt(routine.getStartAt())
-//                .endAt(routine.getEndAt())
+                .isActive(routine.getIsActive())
+                .cycle(routine.getCycle())
+                .startAt(routine.getStartAt())
+                .endAt(routine.getEndAt())
                 .createdAt(routine.getCreatedAt())
                 .build();
     }
