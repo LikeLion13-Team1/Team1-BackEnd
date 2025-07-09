@@ -93,15 +93,23 @@ public class Routine extends BaseEntity {
 //    @JoinColumn(name = "feature_id")
 //    private Feature feature;
 
-    // TODO : DTO 제약 조건이 필요하다
-    public void updateRoutine(RoutineRequestDto.RoutineUpdateRequestDto dto) {
-        if (dto.name() != null) this.name = dto.name();
-        if (dto.description() != null) this.description = dto.description();
-//        if (dto.status() != null) this.status = dto.status();
-//        if (dto.cycle() != null) this.cycle = dto.cycle();
-//        if (dto.startAt() != null) this.startAt = dto.startAt();
-//        if (dto.endAt() != null) this.endAt = dto.endAt();
+//    // TODO : DTO 제약 조건이 필요하다
+//    public void updateRoutine(RoutineRequestDto.RoutineUpdateRequestDto dto) {
+//        if (dto.name() != null) this.name = dto.name();
+//        if (dto.description() != null) this.description = dto.description();
+////        if (dto.status() != null) this.status = dto.status();
+////        if (dto.cycle() != null) this.cycle = dto.cycle();
+////        if (dto.startAt() != null) this.startAt = dto.startAt();
+////        if (dto.endAt() != null) this.endAt = dto.endAt();
+//    }
+    public void updateName(String name) {
+        this.name = name;
     }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
 
 //    public void delete(Routine routine) {
 //        this.deletedAt = LocalDateTime.now();
