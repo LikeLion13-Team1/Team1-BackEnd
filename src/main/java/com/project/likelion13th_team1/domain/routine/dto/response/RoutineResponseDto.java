@@ -5,6 +5,7 @@ import com.project.likelion13th_team1.global.entity.Status;
 import com.project.likelion13th_team1.domain.routine.entity.Type;
 import lombok.Builder;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,8 +32,9 @@ public class RoutineResponseDto {
             Status status,
             Type type,
             Cycle cycle,
-            LocalDateTime startAt,
-            LocalDateTime endAt,
+            List<DayOfWeek> repeatDays,
+//            LocalDateTime startAt,
+//            LocalDateTime endAt,
             LocalDateTime createdAt
     ) {
     }

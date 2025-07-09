@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +20,11 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("SELECT e.scheduledAt " +
             "FROM Event e " +
-            "WHERE e.routine = :routine AND e.scheduledAt BETWEEN :start AND :end")
+            "WHERE e.routine = :routine AND e.scheduledAt BETWEEN :today AND :end")
     List<LocalDateTime> findScheduledDatesByRoutineAndStartBetweenEnd(
             @Param("routine") Routine routine,
-            @Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end
+            @Param("today") LocalDate today,
+            @Param("end") LocalDate end
     );
 
     // 커서 검색
@@ -31,13 +32,13 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "FROM Event e " +
             "WHERE e.id > :cursor " +
             "AND e.routine.group.member.email = :email " +
-            "AND e.scheduledAt BETWEEN :start AND :end " +
+            "AND e.scheduledAt BETWEEN :today AND :end " +
             "ORDER BY e.scheduledAt ASC")
     Slice<EventDto> findAllByEventIdGreaterThanAndScheduledAtBetweenOrderByScheduledAtAsc(
             @Param("email") String email,
             @Param("cursor") Long cursor,
-            @Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end,
+            @Param("today") LocalDate today,
+            @Param("end") LocalDate end,
             Pageable pageable
     );
 

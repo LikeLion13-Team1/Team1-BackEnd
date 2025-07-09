@@ -5,6 +5,7 @@ import com.project.likelion13th_team1.global.entity.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,11 +25,11 @@ public class Event {
 
     // 이 루틴 이벤트가 진행될 시간
     @Column(name = "scheduled_at", nullable = false)
-    private LocalDateTime scheduledAt;
+    private LocalDate scheduledAt;
 
     // 사용자가 루틴 이벤트 완료를 누른 시간
     @Column(name = "done_at")
-    private LocalDateTime doneAt;
+    private LocalDate doneAt;
 
     // 루틴 이벤트 상태
     @Column(name = "routine_status", nullable = false)
@@ -42,7 +43,7 @@ public class Event {
 
     // updateEvent
     // TODO : 제약조건
-    public void updateEvent(LocalDateTime scheduledAt, LocalDateTime doneAt, Status status) {
+    public void updateEvent(LocalDate scheduledAt, LocalDate doneAt, Status status) {
         if (scheduledAt != null) this.scheduledAt = scheduledAt;
         if (doneAt != null) this.doneAt = doneAt;
         if (status != null) this.status = status;
@@ -50,7 +51,7 @@ public class Event {
 
     // done
     public void doneEvent() {
-        this.doneAt = LocalDateTime.now();
+        this.doneAt = LocalDate.now();
         this.status = Status.SUCCESS;
     }
 

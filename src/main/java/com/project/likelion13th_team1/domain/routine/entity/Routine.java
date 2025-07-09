@@ -10,6 +10,8 @@ import com.project.likelion13th_team1.global.feature.entity.Feature;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +56,18 @@ public class Routine extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Cycle cycle;
 
-    // 루틴 시작 시간
-    @Column(name = "start_at", nullable = false)
-    private LocalDateTime startAt;
+    @Column(name = "repeat_days")
+    @ElementCollection(targetClass = DayOfWeek.class)
+    @Enumerated(EnumType.STRING)
+    private List<DayOfWeek> repeatDays;
 
-    // 루틴 반복 종료일 (null = 무한반복)
-    @Column(name = "end_at")
-    private LocalDateTime endAt;
+//    // 루틴 시작 시간
+//    @Column(name = "start_at", nullable = false)
+//    private LocalDate startAt;
+
+//    // 루틴 반복 종료일 (null = 무한반복)
+//    @Column(name = "end_at")
+//    private LocalDateTime endAt;
 
 //    // 루틴 삭제 soft
 //    @Column(name = "deleted_at")
@@ -92,8 +99,8 @@ public class Routine extends BaseEntity {
         if (dto.description() != null) this.description = dto.description();
 //        if (dto.status() != null) this.status = dto.status();
         if (dto.cycle() != null) this.cycle = dto.cycle();
-        if (dto.startAt() != null) this.startAt = dto.startAt();
-        if (dto.endAt() != null) this.endAt = dto.endAt();
+//        if (dto.startAt() != null) this.startAt = dto.startAt();
+//        if (dto.endAt() != null) this.endAt = dto.endAt();
     }
 
 //    public void delete(Routine routine) {

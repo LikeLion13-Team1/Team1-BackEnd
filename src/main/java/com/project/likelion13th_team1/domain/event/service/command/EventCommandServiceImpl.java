@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,8 +31,8 @@ public class EventCommandServiceImpl implements EventCommandService {
     @Override
     public int createEvent(Routine routine) {
 
-        LocalDateTime start = routine.getStartAt();
-        LocalDateTime end = routine.getEndAt();
+        LocalDate today = LocalDate.now();
+        LocalDate end = today.plusMonths(1);
         long cycle = routine.getCycle().getDays();
         int eventCount = 0;
 
@@ -43,14 +44,14 @@ public class EventCommandServiceImpl implements EventCommandService {
 //        }
 
         Set<LocalDateTime> existingDates = new HashSet<>(
-                eventRepository.findScheduledDatesByRoutineAndStartBetweenEnd(routine, start, end)
+                eventRepository.findScheduledDatesByRoutineAndStartBetweenEnd(routine, today, end)
         );
 
         List<Event> eventsToSave = new ArrayList<>();
 
         if (cycle == 0) {
-            if (!existingDates.contains(start)) {
-                Event event = EventConverter.toEvent(routine, start);
+            if (!existingDates.contains(today)) {
+                Event event = EventConverter.toEvent(routine, today);
                 eventsToSave.add(event);
             }
 
@@ -58,7 +59,7 @@ public class EventCommandServiceImpl implements EventCommandService {
             return eventsToSave.size();  // 0 또는 1 반환
         }
 
-        for (LocalDateTime date = start; !date.isAfter(end); date = date.plusDays(cycle)) {
+        for (LocalDate date = today; !date.isAfter(end); date = date.plusDays(cycle)) {
             if (!existingDates.contains(date)) {
                 Event event = EventConverter.toEvent(routine, date);
                 eventsToSave.add(event);

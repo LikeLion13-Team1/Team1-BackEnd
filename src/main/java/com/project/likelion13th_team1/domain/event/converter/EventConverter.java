@@ -9,13 +9,14 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Slice;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EventConverter {
 
-    public static Event toEvent(Routine routine, LocalDateTime date) {
+    public static Event toEvent(Routine routine, LocalDate date) {
         return Event.builder()
                 .scheduledAt(date)
                 .status(Status.PROCESSING)
