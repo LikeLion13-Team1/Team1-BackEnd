@@ -27,6 +27,7 @@ public class RoutineResponseDto {
 
     @Builder
     public record RoutineDetailResponseDto(
+            Long groupId,
             Long routineId,
             String description,
 //            Status status,
