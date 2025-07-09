@@ -32,16 +32,17 @@ public class EventCommandServiceImpl implements EventCommandService {
     public int createEvent(Routine routine) {
 
         LocalDate start = routine.getStartAt();
-        LocalDate end = routine.getEndAt();
+        LocalDate oneYearLater = start.plusYears(1);
+        LocalDate end;
+
+        if (routine.getEndAt() != null && routine.getEndAt().isBefore(oneYearLater)) {
+            end = routine.getEndAt();
+        } else {
+            end = oneYearLater;
+        }
+
         long cycle = routine.getCycle().getDays();
         int eventCount = 0;
-
-//        // 루틴 반복 시작 시간과 반복 끝 시간이 며칠인지 계산 후, cycle이 몇 번 들어갈 수 있는지 확인후 생성
-//        for (LocalDateTime date = start; !date.isAfter(end); date = date.plusDays(cycle)) {
-//            Event event = EventConverter.toEvent(routine, date);
-//            eventRepository.save(event);
-//            eventCount++;
-//        }
 
         Set<LocalDate> existingDates = new HashSet<>(
                 eventRepository.findScheduledDatesByRoutineAndStartBetweenEnd(routine, start, end)
@@ -63,12 +64,11 @@ public class EventCommandServiceImpl implements EventCommandService {
             if (!existingDates.contains(date)) {
                 Event event = EventConverter.toEvent(routine, date);
                 eventsToSave.add(event);
-
                 eventCount++;
             }
         }
-        eventRepository.saveAll(eventsToSave);
 
+        eventRepository.saveAll(eventsToSave);
         return eventCount;
     }
 
