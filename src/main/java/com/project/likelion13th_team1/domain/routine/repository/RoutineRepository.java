@@ -30,4 +30,9 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
             @Param("cursor") Long cursor,
             Pageable pageable
     );
+
+    @Query("SELECT r " +
+            "FROM Routine r " +
+            "WHERE r.isActive = true")
+    List<Routine> findAllActiveRoutines();
 }

@@ -24,7 +24,12 @@ public class RoutineController {
     private final RoutineCommandService routineCommandService;
     private final RoutineQueryService routineQueryService;
 
-    @Operation(summary = "루틴 생성", description = "루틴 이름, 루틴 설명, 시작 시간은 빈칸일 수 없다.<br>status는 루틴의 상태를 말하며, PROCESSING, SUCCESS가 있다. <br> cycle은 주기로 NO, DAY, WEEK, MONTH, YEAR이 있다. <br> cycle이 no인 경우에는 endAt은 null")
+    @Operation(summary = "루틴 생성",
+            description = "루틴 이름, 루틴 설명, 시작 시간은 빈칸일 수 없다." +
+            "<br>status는 루틴의 상태를 말하며, PROCESSING, SUCCESS가 있다. " +
+            "<br> cycle은 주기로 NO, DAY, WEEK, MONTH, YEAR이 있다. " +
+            "<br> cycle이 no인 경우에는 endAt은 null" +
+            "<br> 1년을 넘는 범위로 설정하면, 이벤트는 현재 시간으로부터 1년까지만 생성되고 날짜가 지남에 따라 매일 자정에 자동 추가 생성된다.")
     @PostMapping("/group/{groupId}/routines")
     public CustomResponse<RoutineResponseDto.RoutineCreateResponseDto> createRoutine(
             @PathVariable Long groupId,
