@@ -20,10 +20,10 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("SELECT e.scheduledAt " +
             "FROM Event e " +
-            "WHERE e.routine = :routine AND e.scheduledAt BETWEEN :today AND :end")
+            "WHERE e.routine = :routine AND e.scheduledAt BETWEEN :start AND :end")
     List<LocalDate> findScheduledDatesByRoutineAndStartBetweenEnd(
             @Param("routine") Routine routine,
-            @Param("today") LocalDate today,
+            @Param("start") LocalDate start,
             @Param("end") LocalDate end
     );
 
@@ -32,12 +32,12 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "FROM Event e " +
             "WHERE e.id > :cursor " +
             "AND e.routine.group.member.email = :email " +
-            "AND e.scheduledAt BETWEEN :today AND :end " +
+            "AND e.scheduledAt BETWEEN :start AND :end " +
             "ORDER BY e.scheduledAt ASC")
     Slice<EventDto> findAllByEventIdGreaterThanAndScheduledAtBetweenOrderByScheduledAtAsc(
             @Param("email") String email,
             @Param("cursor") Long cursor,
-            @Param("today") LocalDate today,
+            @Param("start") LocalDate start,
             @Param("end") LocalDate end,
             Pageable pageable
     );

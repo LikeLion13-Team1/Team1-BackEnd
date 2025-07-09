@@ -24,7 +24,7 @@ public class RoutineController {
     private final RoutineCommandService routineCommandService;
     private final RoutineQueryService routineQueryService;
 
-    @Operation(summary = "루틴 생성", description = "루틴 이름, 루틴 설명, 반복 요일은 빈칸일 수 없다.<br>반복요일은 MONDAY, TUESDAY 이런식으로 리스트 안에 작성한다.<br> 이벤트도 요일에 맞게 자동 생성")
+    @Operation(summary = "루틴 생성", description = "루틴 이름, 루틴 설명, 시작 시간은 빈칸일 수 없다.<br>status는 루틴의 상태를 말하며, PROCESSING, SUCCESS가 있다. <br> cycle은 주기로 NO, DAY, WEEK, MONTH, YEAR이 있다. <br> cycle이 no인 경우에는 endAt은 null")
     @PostMapping("/group/{groupId}/routines")
     public CustomResponse<RoutineResponseDto.RoutineCreateResponseDto> createRoutine(
             @PathVariable Long groupId,
@@ -33,7 +33,7 @@ public class RoutineController {
         return CustomResponse.onSuccess(HttpStatus.CREATED, routineCommandService.createRoutine(groupId, routineCreateRequestDto));
     }
 
-    @Operation(summary = "루틴 수정", description = "루틴을 수정한다. 생성과 마찬가지로 이름, 설명, 반복 요일이 빈칸일 수 없다")
+    @Operation(summary = "루틴 수정", description = "루틴을 수정한다. 생성과 마찬가지로 이름, 설명, 시작 시간이 빈칸일 수 없다")
     @PatchMapping("routines/{routineId}")
     public CustomResponse<RoutineResponseDto.RoutineUpdateResponseDto> updateRoutine(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -64,7 +64,7 @@ public class RoutineController {
     }
 
     @Operation(summary = "루틴 목록 커서 조회", description = "cursor은 커서 위치로 맨 초기에는 0을 입력한다 <br>size는 한번에 나타낼 객체의 개수이다.<br>hasNextCursor가 true라면 뒤에 내용이 더 있다는 의미이므로 다음 커서를 nextCursor값으로 입력하면 계속해서 객체가 출력된다.")
-    @GetMapping("routines/my")
+    @GetMapping("/routines/my")
     public CustomResponse<RoutineResponseDto.RoutineCursorResponseDto> getRoutineCursor(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestParam Long cursor,
@@ -90,11 +90,11 @@ public class RoutineController {
             @PathVariable Long routineId
     ) {
         routineCommandService.inactivateRoutine(customUserDetails.getUsername(), routineId);
-        return CustomResponse.onSuccess(HttpStatus.OK, "루틴 비활성화 완료");
+        return CustomResponse.onSuccess(HttpStatus.OK, "루틴비활성화 완료");
     }
 
     @Operation(summary = "루틴 추천", description = "멤버와 루틴의 특성 정보를 매칭시켜 루틴을 추천한다")
-    @PostMapping("routines/recommendation")
+    @PostMapping("/routines/recommendation")
     public CustomResponse<?> recommendRoutine() {
         return CustomResponse.onFailure("500", "구상을 해봐야 해요", null);
     }
