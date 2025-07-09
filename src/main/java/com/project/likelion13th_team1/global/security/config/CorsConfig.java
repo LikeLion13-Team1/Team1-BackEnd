@@ -1,7 +1,8 @@
 package com.project.likelion13th_team1.global.security.config;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -12,18 +13,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
+    @Bean
     public static CorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
         //데이터 교환이 가능한 URL 지정
         ArrayList<String> allowedOriginPatterns = new ArrayList<>();
         allowedOriginPatterns.add("http://localhost:8080");
-        allowedOriginPatterns.add("http://localhost:3000");
+        allowedOriginPatterns.add("http://localhost:5500");
         allowedOriginPatterns.add("http://127.0.0.1:8080");
-        allowedOriginPatterns.add("http://127.0.0.1:3000");
+        allowedOriginPatterns.add("http://127.0.0.1:5500");
+        allowedOriginPatterns.add("http://13.209.221.182:8080");
 
 
         //허용하는 HTTP METHOD 지정

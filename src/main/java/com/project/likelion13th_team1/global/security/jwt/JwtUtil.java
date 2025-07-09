@@ -176,4 +176,15 @@ public class JwtUtil {
             throw new ExpiredJwtException(null, null, "만료된 JWT 토큰입니다.");
         }
     }
+
+    // AccessToken의 남은 유효시간 (로그아웃)
+    public long getExpiration(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration()
+                .getTime() - new Date().getTime();
+    }
 }

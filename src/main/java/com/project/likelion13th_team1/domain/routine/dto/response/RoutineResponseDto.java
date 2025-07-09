@@ -1,10 +1,11 @@
 package com.project.likelion13th_team1.domain.routine.dto.response;
 
 import com.project.likelion13th_team1.domain.routine.entity.Cycle;
-import com.project.likelion13th_team1.domain.routine.entity.Status;
+import com.project.likelion13th_team1.global.entity.Status;
 import com.project.likelion13th_team1.domain.routine.entity.Type;
 import lombok.Builder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,7 +13,8 @@ public class RoutineResponseDto {
 
     @Builder
     public record RoutineCreateResponseDto(
-            Long routineId
+            Long routineId,
+            Integer eventCount
     ) {
     }
 
@@ -25,13 +27,14 @@ public class RoutineResponseDto {
 
     @Builder
     public record RoutineDetailResponseDto(
+            Long groupId,
             Long routineId,
+            String name,
             String description,
-            Status status,
-            Type type,
+            Boolean isActive,
             Cycle cycle,
-            LocalDateTime startAt,
-            LocalDateTime endAt,
+            LocalDate startAt,
+            LocalDate endAt,
             LocalDateTime createdAt
     ) {
     }
