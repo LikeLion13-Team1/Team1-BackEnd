@@ -68,6 +68,11 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
             routine.getRepeatDays().clear();
             routine.getRepeatDays().addAll(routineUpdateRequestDto.repeatDays());
         }
+
+        // TODO : 이게 최선일까?
+        eventRepository.deleteByRoutine(routine);
+        eventCommandService.createEvent(routine);
+
         return RoutineConverter.toRoutineUpdateResponseDto(routine);
     }
 
