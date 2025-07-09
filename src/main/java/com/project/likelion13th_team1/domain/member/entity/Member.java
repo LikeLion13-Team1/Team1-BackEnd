@@ -29,12 +29,16 @@ public class Member extends BaseEntity {
     private String username;
 
     // 이메일
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     // 비밀번호
     @Column(name = "password", nullable = false)
     private String password;
+
+    // 프로필 사진
+    @Column(name = "profile_image")
+    private String profileImage;
 
     // 역할 (일반 사용자, 관리자)
     @Column(name = "role", nullable = false)
