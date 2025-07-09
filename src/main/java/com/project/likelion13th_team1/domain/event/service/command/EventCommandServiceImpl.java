@@ -14,11 +14,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,47 +32,71 @@ public class EventCommandServiceImpl implements EventCommandService {
 
     @Override
     public int createEvent(Routine routine) {
+        LocalDate today = LocalDate.now();
+        LocalDate oneMonthLater = today.plusMonths(1);
 
-        LocalDateTime start = routine.getStartAt();
-        LocalDateTime end = routine.getEndAt();
-        long cycle = routine.getCycle().getDays();
-        int eventCount = 0;
+        List<DayOfWeek> repeatDays = routine.getRepeatDays();
+        if (repeatDays == null || repeatDays.isEmpty()) return 0;
 
-//        // 루틴 반복 시작 시간과 반복 끝 시간이 며칠인지 계산 후, cycle이 몇 번 들어갈 수 있는지 확인후 생성
-//        for (LocalDateTime date = start; !date.isAfter(end); date = date.plusDays(cycle)) {
-//            Event event = EventConverter.toEvent(routine, date);
-//            eventRepository.save(event);
-//            eventCount++;
-//        }
-
-        Set<LocalDateTime> existingDates = new HashSet<>(
-                eventRepository.findScheduledDatesByRoutineAndStartBetweenEnd(routine, start, end)
+        Set<LocalDate> existingDates = new HashSet<>(
+                eventRepository.findScheduledDatesByRoutineAndStartBetweenEnd(routine, today, oneMonthLater)
         );
 
         List<Event> eventsToSave = new ArrayList<>();
+        int count = 0;
 
-        if (cycle == 0) {
-            if (!existingDates.contains(start)) {
-                Event event = EventConverter.toEvent(routine, start);
-                eventsToSave.add(event);
-            }
-
-            eventRepository.saveAll(eventsToSave);
-            return eventsToSave.size();  // 0 또는 1 반환
-        }
-
-        for (LocalDateTime date = start; !date.isAfter(end); date = date.plusDays(cycle)) {
-            if (!existingDates.contains(date)) {
+        for (LocalDate date = today; !date.isAfter(oneMonthLater); date = date.plusDays(1)) {
+            if (repeatDays.contains(date.getDayOfWeek()) && !existingDates.contains(date)) {
                 Event event = EventConverter.toEvent(routine, date);
                 eventsToSave.add(event);
-
-                eventCount++;
+                count++;
             }
         }
-        eventRepository.saveAll(eventsToSave);
 
-        return eventCount;
+        eventRepository.saveAll(eventsToSave);
+        return count;
     }
+
+//        LocalDate today = LocalDate.now();
+//        LocalDate end = today.plusMonths(1);
+////        long cycle = routine.getCycle().getDays();
+//        int eventCount = 0;
+//
+////        // 루틴 반복 시작 시간과 반복 끝 시간이 며칠인지 계산 후, cycle이 몇 번 들어갈 수 있는지 확인후 생성
+////        for (LocalDateTime date = start; !date.isAfter(end); date = date.plusDays(cycle)) {
+////            Event event = EventConverter.toEvent(routine, date);
+////            eventRepository.save(event);
+////            eventCount++;
+////        }
+//
+//        Set<LocalDateTime> existingDates = new HashSet<>(
+//                eventRepository.findScheduledDatesByRoutineAndStartBetweenEnd(routine, today, end)
+//        );
+//
+//        List<Event> eventsToSave = new ArrayList<>();
+//
+//        if (cycle == 0) {
+//            if (!existingDates.contains(today)) {
+//                Event event = EventConverter.toEvent(routine, today);
+//                eventsToSave.add(event);
+//            }
+//
+//            eventRepository.saveAll(eventsToSave);
+//            return eventsToSave.size();  // 0 또는 1 반환
+//        }
+//
+//        for (LocalDate date = today; !date.isAfter(end); date = date.plusDays(cycle)) {
+//            if (!existingDates.contains(date)) {
+//                Event event = EventConverter.toEvent(routine, date);
+//                eventsToSave.add(event);
+//
+//                eventCount++;
+//            }
+//        }
+//        eventRepository.saveAll(eventsToSave);
+//
+//        return eventCount;
+//    }
 
     @Override
     public EventResponseDto.EventUpdateResponseDto updateEvent(String email, Long eventId, EventRequestDto.EventUpdateRequestDto eventUpdateRequestDto) {

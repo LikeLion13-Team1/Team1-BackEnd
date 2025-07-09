@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
@@ -44,10 +45,10 @@ public class EventController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestParam Long cursor,
             @RequestParam Integer size,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate today,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate end
     ) {
-        return CustomResponse.onSuccess(eventQueryService.getEventCursor(customUserDetails.getUsername(), cursor, size, start, end));
+        return CustomResponse.onSuccess(eventQueryService.getEventCursor(customUserDetails.getUsername(), cursor, size, today, end));
     }
 
     @Operation(summary = "루틴 이벤트 수정", description = "이벤트가 수행될 시간 scheduledAt은 null 일 수 없다.")

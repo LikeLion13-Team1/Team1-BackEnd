@@ -10,6 +10,8 @@ import com.project.likelion13th_team1.global.feature.entity.Feature;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,18 +47,27 @@ public class Routine extends BaseEntity {
 //    @Enumerated(EnumType.STRING)
 //    private Type type;
 
-    // 반복 주기
-    @Column(name = "cycle", nullable = false)
+    // 사용 여부
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
+
+//    // 반복 주기
+//    @Column(name = "cycle", nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    private Cycle cycle;
+
+    @Column(name = "repeat_days")
+    @ElementCollection(targetClass = DayOfWeek.class)
     @Enumerated(EnumType.STRING)
-    private Cycle cycle;
+    private List<DayOfWeek> repeatDays;
 
-    // 루틴 시작 시간
-    @Column(name = "start_at", nullable = false)
-    private LocalDateTime startAt;
+//    // 루틴 시작 시간
+//    @Column(name = "start_at", nullable = false)
+//    private LocalDate startAt;
 
-    // 루틴 반복 종료일 (null = 무한반복)
-    @Column(name = "end_at")
-    private LocalDateTime endAt;
+//    // 루틴 반복 종료일 (null = 무한반복)
+//    @Column(name = "end_at")
+//    private LocalDateTime endAt;
 
 //    // 루틴 삭제 soft
 //    @Column(name = "deleted_at")
@@ -82,17 +93,33 @@ public class Routine extends BaseEntity {
 //    @JoinColumn(name = "feature_id")
 //    private Feature feature;
 
-    // TODO : DTO 제약 조건이 필요하다
-    public void updateRoutine(RoutineRequestDto.RoutineUpdateRequestDto dto) {
-        if (dto.name() != null) this.name = dto.name();
-        if (dto.description() != null) this.description = dto.description();
-//        if (dto.status() != null) this.status = dto.status();
-        if (dto.cycle() != null) this.cycle = dto.cycle();
-        if (dto.startAt() != null) this.startAt = dto.startAt();
-        if (dto.endAt() != null) this.endAt = dto.endAt();
+//    // TODO : DTO 제약 조건이 필요하다
+//    public void updateRoutine(RoutineRequestDto.RoutineUpdateRequestDto dto) {
+//        if (dto.name() != null) this.name = dto.name();
+//        if (dto.description() != null) this.description = dto.description();
+////        if (dto.status() != null) this.status = dto.status();
+////        if (dto.cycle() != null) this.cycle = dto.cycle();
+////        if (dto.startAt() != null) this.startAt = dto.startAt();
+////        if (dto.endAt() != null) this.endAt = dto.endAt();
+//    }
+    public void updateName(String name) {
+        this.name = name;
     }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
 
 //    public void delete(Routine routine) {
 //        this.deletedAt = LocalDateTime.now();
 //    }
+
+    public void activate() {
+        this.isActive = true;
+    }
+
+    public void inactivate() {
+        this.isActive = false;
+    }
 }

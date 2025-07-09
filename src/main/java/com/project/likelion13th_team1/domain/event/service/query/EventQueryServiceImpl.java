@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -39,7 +40,7 @@ public class EventQueryServiceImpl implements EventQueryService{
     }
 
     @Override
-    public EventResponseDto.EventCursorResponseDto getEventCursor(String email, Long cursor, Integer size, LocalDateTime start, LocalDateTime end) {
+    public EventResponseDto.EventCursorResponseDto getEventCursor(String email, Long cursor, Integer size, LocalDate today, LocalDate end) {
         Pageable pageable = PageRequest.of(0, size);
 
         // cursor가 0일 경우(첫페이지) cursor 최대값
@@ -48,7 +49,7 @@ public class EventQueryServiceImpl implements EventQueryService{
         }
 
         Slice<EventDto> eventDtosSlice
-                = eventRepository.findAllByEventIdGreaterThanAndScheduledAtBetweenOrderByScheduledAtAsc(email, cursor, start, end, pageable);
+                = eventRepository.findAllByEventIdGreaterThanAndScheduledAtBetweenOrderByScheduledAtAsc(email, cursor, today, end, pageable);
 
         return EventConverter.toEventCursorResponseDto(eventDtosSlice);
     }

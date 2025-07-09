@@ -3,6 +3,7 @@ package com.project.likelion13th_team1.domain.event.dto.response;
 import com.project.likelion13th_team1.global.entity.Status;
 import lombok.Builder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,8 +13,8 @@ public class EventResponseDto {
     public record EventDetailResponseDto(
             Long routineId,
             Long eventId,
-            LocalDateTime scheduledAt,
-            LocalDateTime doneAt,
+            LocalDate scheduledAt,
+            LocalDate doneAt,
             Status status
     ) {
     }
@@ -35,7 +36,7 @@ public class EventResponseDto {
     @Builder
     public record EventDoneResponseDto(
             Long eventId,
-            LocalDateTime doneAt
+            LocalDate doneAt
     ) {
     }
 }
