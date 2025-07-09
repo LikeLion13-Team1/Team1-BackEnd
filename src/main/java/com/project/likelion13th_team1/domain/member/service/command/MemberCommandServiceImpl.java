@@ -2,7 +2,6 @@ package com.project.likelion13th_team1.domain.member.service.command;
 
 import com.project.likelion13th_team1.domain.member.converter.MemberConverter;
 import com.project.likelion13th_team1.domain.member.dto.request.MemberRequestDto;
-import com.project.likelion13th_team1.domain.member.dto.response.MemberResponseDto;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
@@ -11,7 +10,6 @@ import com.project.likelion13th_team1.global.feature.converter.FeatureConverter;
 import com.project.likelion13th_team1.global.feature.dto.request.FeatureRequestDto;
 import com.project.likelion13th_team1.global.feature.dto.response.FeatureResponseDto;
 import com.project.likelion13th_team1.global.feature.entity.Feature;
-import com.project.likelion13th_team1.global.feature.entity.FeatureType;
 import com.project.likelion13th_team1.global.feature.exception.FeatureErrorCode;
 import com.project.likelion13th_team1.global.feature.exception.FeatureException;
 import com.project.likelion13th_team1.global.feature.repository.FeatureRepository;
