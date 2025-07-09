@@ -28,7 +28,7 @@ public class MemberController {
     @Operation(summary = "회원가입", description = "유저이름이 공백이면 안됨<br/>이메일 형식을 지켜야함<br/>비밀번호는 문자, 숫자, 특수문자를 포함한 8자 이상")
     @PostMapping("/signup")
     public CustomResponse<String> createMember(
-            @RequestBody MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto
+            @RequestBody @Valid MemberRequestDto.MemberCreateRequestDto memberCreateRequestDto
     ) {
         memberCommandService.createMember(memberCreateRequestDto);
         return CustomResponse.onSuccess(HttpStatus.CREATED, "회원 가입 성공");
