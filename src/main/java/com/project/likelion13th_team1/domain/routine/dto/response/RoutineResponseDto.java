@@ -29,6 +29,7 @@ public class RoutineResponseDto {
     public record RoutineDetailResponseDto(
             Long groupId,
             Long routineId,
+            String name,
             String description,
 //            Status status,
 //            Type type,

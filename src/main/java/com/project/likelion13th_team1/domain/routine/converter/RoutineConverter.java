@@ -49,6 +49,7 @@ public class RoutineConverter {
         return RoutineResponseDto.RoutineDetailResponseDto.builder()
                 .groupId(routine.getGroup().getId())
                 .routineId(routine.getId())
+                .name(routine.getName())
                 .description(routine.getDescription())
 //                .status(routine.getStatus())
 //                .type(routine.getType())
