@@ -29,9 +29,9 @@ public class RoutineResponseDto {
     public record RoutineDetailResponseDto(
             Long routineId,
             String description,
-            Status status,
-            Type type,
-            Cycle cycle,
+//            Status status,
+//            Type type,
+//            Cycle cycle,
             List<DayOfWeek> repeatDays,
 //            LocalDateTime startAt,
 //            LocalDateTime endAt,
