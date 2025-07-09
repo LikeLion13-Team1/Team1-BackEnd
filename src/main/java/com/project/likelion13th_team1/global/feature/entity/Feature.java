@@ -18,27 +18,19 @@ public class Feature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "feature_type")
-    @Enumerated(EnumType.STRING)
-    private FeatureType featureType;
-
     // TODO : enum을 숫자로 저장할 수 있는 방법에 대해서 생각해보기 (조인이 더 빠르대요!)
 
     @Column(name = "Q1")
-    @Enumerated(EnumType.STRING)
-    private MessyHouse messyHouse;
+    private Integer q1;
 
     @Column(name = "Q2")
-    @Enumerated(EnumType.STRING)
-    private CleaningStyle cleaningStyle;
+    private Integer q2;
 
     @Column(name = "Q3")
-    @Enumerated(EnumType.STRING)
-    private CleanHouse cleanHouse;
+    private Integer q3;
 
     @Column(name = "Q4")
-    @Enumerated(EnumType.STRING)
-    private RoutineStyle routineStyle;
+    private Integer q4;
 
     public void updateFeature(FeatureRequestDto.FeatureUpdateRequestDto dto) {
         if (dto.messyHouse() != null) this.messyHouse = dto.messyHouse();
