@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.member.dto.request;
 
+import com.project.likelion13th_team1.domain.member.entity.SocialType;
 import com.project.likelion13th_team1.global.security.utils.PasswordPattern;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -25,5 +26,15 @@ public class MemberRequestDto {
             String profileImage
             //TODO : 유저 특성도 이걸로 바꿀건지?
     ){
+    }
+
+    @Builder
+    public record MemberSocialCreateRequestDto(
+            String username,
+            String email,
+            String profileImage,
+            Long socialId,
+            SocialType socialType
+    ) {
     }
 }

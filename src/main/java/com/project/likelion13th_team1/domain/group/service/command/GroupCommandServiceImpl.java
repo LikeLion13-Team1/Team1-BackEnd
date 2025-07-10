@@ -31,7 +31,7 @@ public class GroupCommandServiceImpl implements GroupCommandService {
 
     @Override
     public GroupResponseDto.GroupCreateResponseDto createGroup(String email, GroupRequestDto.GroupCreateRequestDto groupCreateRequestDto) {
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         Group group = GroupConverter.toGroup(groupCreateRequestDto, member);
@@ -43,7 +43,7 @@ public class GroupCommandServiceImpl implements GroupCommandService {
 
     @Override
     public void updateGroup(String email, Long groupId, GroupRequestDto.GroupUpdateRequestDto groupUpdateRequestDto) {
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         Group group = groupRepository.findById(groupId)
@@ -54,7 +54,7 @@ public class GroupCommandServiceImpl implements GroupCommandService {
 
     @Override
     public void deleteGroup(String email, Long groupId) {
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         Group group = groupRepository.findById(groupId)
