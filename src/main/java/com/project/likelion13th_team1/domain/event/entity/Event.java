@@ -60,4 +60,8 @@ public class Event {
         this.doneAt = null;
         this.status = Status.PROCESSING;
     }
+
+    public void updateStatus(Status status) {
+        this.status = status;
+    }
 }
