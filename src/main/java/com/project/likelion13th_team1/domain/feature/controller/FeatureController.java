@@ -23,7 +23,7 @@ public class FeatureController {
     private final FeatureQueryService featureQueryService;
 
     @Operation(summary = "회원 특성 정보 생성", description = "루틴 추천을 위한 회원 특성 정보를 생성한다.")
-    @PostMapping("/feature")
+    @PostMapping("my")
     public CustomResponse<String> createFeature(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody FeatureRequestDto.FeatureCreateRequestDto featureCreateRequestDto
@@ -33,7 +33,7 @@ public class FeatureController {
     }
 
     @Operation(summary = "회원 특성 정보 수정", description = "루틴 추천을 위한 회원 특성 정보를 수정한다.")
-    @PatchMapping("/feature")
+    @PatchMapping("my")
     public CustomResponse<String> updateFeature(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody FeatureRequestDto.FeatureUpdateRequestDto featureUpdateRequestDto
@@ -43,7 +43,7 @@ public class FeatureController {
     }
 
     @Operation(summary = "회원 특성 정보 조회", description = "회원 특성 정보를 조회한다.")
-    @GetMapping("/feature")
+    @GetMapping("/my")
     public CustomResponse<FeatureResponseDto.FeatureDetailResponseDto> getFeature(
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
