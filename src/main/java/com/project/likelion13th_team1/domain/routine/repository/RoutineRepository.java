@@ -20,13 +20,25 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
             "WHERE r.group.member.email = :email AND r.id = :routineId")
     Optional<Routine> findByMemberEmailAndRoutineId(@Param("email") String email, @Param("routineId") Long routineId);
 
-    // 커서 검색
+    // 커서 검색(유저 기준)
     @Query("SELECT new com.project.likelion13th_team1.domain.routine.dto.RoutineDto(r) " +
             "FROM Routine r " +
-            "WHERE r.id < :cursor AND r.group.member.email = :email " +
-            "ORDER BY r.id DESC")
-    Slice<RoutineDto> findAllByRoutineIdLessThanOrderByRoutineIdDesc(
+            "WHERE r.id > :cursor AND r.group.member.email = :email " +
+            "ORDER BY r.id ASC")
+    Slice<RoutineDto> findAllByRoutineIdLessThanOrderByRoutineIdASC(
             @Param("email") String email,
+            @Param("cursor") Long cursor,
+            Pageable pageable
+    );
+
+    // 커서 검색(그룹 기준)
+    @Query("SELECT new com.project.likelion13th_team1.domain.routine.dto.RoutineDto(r) " +
+            "FROM Routine r " +
+            "WHERE r.id > :cursor AND r.group.member.email = :email AND r.group.id = :groupId " +
+            "ORDER BY r.id ASC")
+    Slice<RoutineDto> findAllByGroupIdLessThanOrderByRoutineIdASC(
+            @Param("email") String email,
+            @Param("groupId") Long groupId,
             @Param("cursor") Long cursor,
             Pageable pageable
     );
