@@ -3,15 +3,17 @@ package com.project.likelion13th_team1.domain.feature.converter;
 import com.project.likelion13th_team1.domain.feature.dto.request.FeatureRequestDto;
 import com.project.likelion13th_team1.domain.feature.dto.response.FeatureResponseDto;
 import com.project.likelion13th_team1.domain.feature.entity.Feature;
+import com.project.likelion13th_team1.domain.member.entity.Member;
 
 public class FeatureConverter {
 
-    public static Feature toFeature(FeatureRequestDto.FeatureCreateRequestDto dto) {
+    public static Feature toFeature(FeatureRequestDto.FeatureCreateRequestDto dto, Member member) {
         return Feature.builder()
                 .q1(dto.q1())
                 .q2(dto.q2())
                 .q3(dto.q3())
                 .q4(dto.q4())
+                .member(member)
                 .build();
     }
 

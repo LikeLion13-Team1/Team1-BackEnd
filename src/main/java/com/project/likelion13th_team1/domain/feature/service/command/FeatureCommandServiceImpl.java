@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.feature.service.command;
 
+import com.project.likelion13th_team1.domain.feature.dto.response.FeatureResponseDto;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
@@ -24,11 +25,11 @@ public class FeatureCommandServiceImpl implements FeatureCommandService {
 
     @Override
     public void createFeature(String email, FeatureRequestDto.FeatureCreateRequestDto featureCreateRequestDto) {
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         // TODO : 중복저장 방지
-        Feature feature = FeatureConverter.toFeature(featureCreateRequestDto);
+        Feature feature = FeatureConverter.toFeature(featureCreateRequestDto, member);
         featureRepository.save(feature);
 
         member.linkFeature(feature);
@@ -36,13 +37,11 @@ public class FeatureCommandServiceImpl implements FeatureCommandService {
 
     @Override
     public void updateFeature(String email, FeatureRequestDto.FeatureUpdateRequestDto featureUpdateRequestDto) {
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        Feature feature = member.getFeature();
-        if(feature == null) {
-            throw new FeatureException(FeatureErrorCode.FEATURE_NOT_FOUND);
-        }
+        Feature feature = featureRepository.findByMember(member)
+                .orElseThrow(() -> new FeatureException(FeatureErrorCode.FEATURE_NOT_FOUND));
 
         if (featureUpdateRequestDto.q1() != null) feature.updateQ1(featureUpdateRequestDto.q1());
         if (featureUpdateRequestDto.q2() != null) feature.updateQ2(featureUpdateRequestDto.q2());
