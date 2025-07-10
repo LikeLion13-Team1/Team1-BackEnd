@@ -3,9 +3,9 @@ package com.project.likelion13th_team1.domain.member.entity;
 import java.util.Arrays;
 
 public enum Personality {
-    LAZY(0, 3),
-    NORMAL(4, 6),
-    DILIGENT(7, Integer.MAX_VALUE);
+    LAZY(4, 6),
+    NORMAL(7, 9),
+    DILIGENT(10, 12);
 
     private final int min;
     private final int max;
