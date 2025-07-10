@@ -14,12 +14,12 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
     @Query("""
     SELECT a
     FROM Alarm a
-    WHERE a.routine.id = :routineId
+    WHERE a.routineEvent.id = :routineEventId
       AND (:cursor IS NULL OR a.id < :cursor)
     ORDER BY a.id DESC
 """)
-    List<Alarm> findAlarmsByRoutineIdAndCursor(
-            @Param("routineId") Long routineEventId,
+    List<Alarm> findAlarmsByRoutineEventIdAndCursor(
+            @Param("routineEventId") Long routineEventId,
             @Param("cursor") Long cursor,
             Pageable pageable
     );
