@@ -1,6 +1,7 @@
 package com.project.likelion13th_team1.domain.member.service.command;
 
 import com.project.likelion13th_team1.domain.feature.entity.Feature;
+import com.project.likelion13th_team1.domain.group.service.command.GroupCommandService;
 import com.project.likelion13th_team1.domain.member.converter.MemberConverter;
 import com.project.likelion13th_team1.domain.member.converter.SocialLoginConverter;
 import com.project.likelion13th_team1.domain.member.dto.request.MemberRequestDto;
@@ -30,6 +31,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final AuthRepository authRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final SocialLoginRepository socialLoginRepository;
+    private final GroupCommandService groupCommandService;
 
     @Override
     public void createLocalMember(MemberRequestDto.MemberCreateRequestDto dto) {
@@ -43,6 +45,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         } catch (DataIntegrityViolationException e) {
             throw new MemberException(MemberErrorCode.MEMBER_EMAIL_DUPLICATE);
         }
+
+        // 그룹 생성
+        groupCommandService.initGroup(member);
     }
 
     @Override
@@ -56,6 +61,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         } catch (DataIntegrityViolationException e) {
             throw new MemberException(MemberErrorCode.MEMBER_EMAIL_DUPLICATE);
         }
+        // 그룹 생성
+        groupCommandService.initGroup(member);
     }
 
     @Override
