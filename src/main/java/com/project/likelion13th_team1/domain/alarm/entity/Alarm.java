@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "alarm")
@@ -34,19 +34,5 @@ public class Alarm{
 
     // 알람을 할 실제 루틴 정보
     @ManyToOne(fetch = FetchType.LAZY)
-    private RoutineEvent routineEvent;
-
-    public void setContext(String context) {
-        this.context = context;
-    }
-
-    public void setActivation(Activation activation) {
-        this.activation = activation;
-    }
-
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
-  
     private Event event;
 }
