@@ -1,5 +1,9 @@
 package com.project.likelion13th_team1.domain.group.service.command;
 
+import com.project.likelion13th_team1.domain.feature.entity.Feature;
+import com.project.likelion13th_team1.domain.feature.exception.FeatureErrorCode;
+import com.project.likelion13th_team1.domain.feature.exception.FeatureException;
+import com.project.likelion13th_team1.domain.feature.repository.FeatureRepository;
 import com.project.likelion13th_team1.domain.group.converter.GroupConverter;
 import com.project.likelion13th_team1.domain.group.dto.request.GroupRequestDto;
 import com.project.likelion13th_team1.domain.group.dto.response.GroupResponseDto;
@@ -38,6 +42,7 @@ public class GroupCommandServiceImpl implements GroupCommandService {
     private final GroupRepository groupRepository;
     private final RoutineCommandService routineCommandService;
     private final ExampleRoutineRepository exampleRoutineRepository;
+    private final FeatureRepository featureRepository;
 
     @Override
     public GroupResponseDto.GroupCreateResponseDto createGroup(String email, GroupRequestDto.GroupCreateRequestDto groupCreateRequestDto) {
@@ -86,6 +91,25 @@ public class GroupCommandServiceImpl implements GroupCommandService {
         // TODO : 고아가 된 루틴 삭제처리
 
         groupRepository.delete(group);
+    }
+
+    @Override
+    public void createRecommendedRoutineGroup(String email, Long groupId) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Feature feature = featureRepository.findByMember(member)
+                .orElseThrow(() -> new FeatureException(FeatureErrorCode.FEATURE_NOT_FOUND));
+
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new GroupException(GroupErrorCode.GROUP_NOT_FOUND));
+
+        // 그룹에 이전에 있던 내용 초기화
+        routineRepository.deleteByGroup(group);
+        groupRepository.flush();
+
+        // 특성 점수 합계로 루틴 세트를 받는다.
+        routineCommandService.createRecommendedRoutines(member.getPersonality(), group);
     }
 
     private int getRandomInt() {

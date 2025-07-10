@@ -7,6 +7,7 @@ import com.project.likelion13th_team1.domain.group.exception.GroupErrorCode;
 import com.project.likelion13th_team1.domain.group.exception.GroupException;
 import com.project.likelion13th_team1.domain.group.repository.GroupRepository;
 import com.project.likelion13th_team1.domain.member.entity.Member;
+import com.project.likelion13th_team1.domain.member.entity.Personality;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
 import com.project.likelion13th_team1.domain.member.repository.MemberRepository;
@@ -14,15 +15,19 @@ import com.project.likelion13th_team1.domain.routine.converter.RoutineConverter;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.domain.routine.dto.response.RoutineResponseDto;
 import com.project.likelion13th_team1.domain.routine.entity.ExampleRoutine;
+import com.project.likelion13th_team1.domain.routine.entity.RecommendedRoutine;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
 import com.project.likelion13th_team1.domain.routine.exception.RoutineErrorCode;
 import com.project.likelion13th_team1.domain.routine.exception.RoutineException;
+import com.project.likelion13th_team1.domain.routine.repository.RecommendedRoutineRepository;
 import com.project.likelion13th_team1.domain.routine.repository.RoutineRepository;
 import com.project.likelion13th_team1.global.apiPayload.code.GeneralErrorCode;
 import com.project.likelion13th_team1.global.apiPayload.exception.CustomException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 @Service
 @Transactional
@@ -34,6 +39,7 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
     private final EventCommandService eventCommandService;
     private final GroupRepository groupRepository;
     private final EventRepository eventRepository;
+    private final RecommendedRoutineRepository recommendedRoutineRepository;
 
     @Override
     public RoutineResponseDto.RoutineCreateResponseDto createRoutine(Long groupId, RoutineRequestDto.RoutineCreateRequestDto routineCreateRequestDto) {
@@ -72,7 +78,7 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
     public void createExampleRoutine(ExampleRoutine exampleRoutine, Group group) {
         Routine routine = RoutineConverter.toRoutine(exampleRoutine, group);
         routineRepository.save(routine);
-        eventCommandService.createEvent(routine);
+//        eventCommandService.createEvent(routine);
     }
 
     // TODO : 스케줄러 구현하기
@@ -124,4 +130,26 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         routine.inactivate();
         eventRepository.deleteByRoutine(routine);
     }
+
+    public void createRecommendedRoutines(Personality personality, Group group) {
+
+        List<RecommendedRoutine> recommendedRoutines = recommendedRoutineRepository.findByPersonality(personality);
+
+        Collections.shuffle(recommendedRoutines);
+
+        List<RecommendedRoutine> selectedRoutines = recommendedRoutines.stream()
+                .limit(20)
+                .toList();
+
+        List<Routine> routinesToSave = selectedRoutines.stream()
+                .map(recommendedRoutine -> RoutineConverter.toRoutine(recommendedRoutine, group))
+                .toList();
+
+        routineRepository.saveAll(routinesToSave);
+    }
+
+//    private int getRandom(){
+//        Random random = new Random();
+//        return random.nextInt(2);
+//    }
 }
