@@ -54,7 +54,7 @@ public class EventController {
     @Operation(summary = "루틴 이벤트 목록 커서 조회 (루틴 id 기준)", description = "cursor은 커서 위치로 맨 초기에는 0을 입력한다<br>" +
             "size는 한번에 나타낼 객체의 개수이다.<br>" +
             "hasNextCursor가 true라면 뒤에 내용이 더 있다는 의미이므로 다음 커서를 nextCursor값으로 입력하면 계속해서 객체가 출력된다.")
-    @GetMapping("/routine/{routineId}/events")
+    @GetMapping("/routines/{routineId}/events")
     public CustomResponse<EventResponseDto.EventCursorResponseDto> getEventCursorByRoutine(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long routineId,
