@@ -1,9 +1,11 @@
 package com.project.likelion13th_team1.domain.member.service.command;
 
+import com.project.likelion13th_team1.domain.feature.entity.Feature;
 import com.project.likelion13th_team1.domain.member.converter.MemberConverter;
 import com.project.likelion13th_team1.domain.member.converter.SocialLoginConverter;
 import com.project.likelion13th_team1.domain.member.dto.request.MemberRequestDto;
 import com.project.likelion13th_team1.domain.member.entity.Member;
+import com.project.likelion13th_team1.domain.member.entity.Personality;
 import com.project.likelion13th_team1.domain.member.entity.SocialLogin;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
@@ -72,5 +74,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 //        // soft delete
 //        member.delete();
         memberRepository.delete(member);
+    }
+
+    @Override
+    public void updatePersonality(Member member, Personality personality) {
+        member.updatePersonality(personality);
     }
 }

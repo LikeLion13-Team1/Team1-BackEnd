@@ -50,6 +50,10 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
+    @Column(name = "personality")
+    @Enumerated(EnumType.STRING)
+    private Personality personality;
+
     // soft delete 여부
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
@@ -79,5 +83,10 @@ public class Member extends BaseEntity {
     // member soft delete 메서드
     public void delete() {
         this.deletedAt = LocalDateTime.now();
+    }
+
+    // member personality update
+    public void updatePersonality(Personality personality) {
+        this.personality = personality;
     }
 }

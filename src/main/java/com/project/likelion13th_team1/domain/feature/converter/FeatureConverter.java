@@ -4,6 +4,7 @@ import com.project.likelion13th_team1.domain.feature.dto.request.FeatureRequestD
 import com.project.likelion13th_team1.domain.feature.dto.response.FeatureResponseDto;
 import com.project.likelion13th_team1.domain.feature.entity.Feature;
 import com.project.likelion13th_team1.domain.member.entity.Member;
+import com.project.likelion13th_team1.domain.member.entity.Personality;
 
 public class FeatureConverter {
 
@@ -17,7 +18,7 @@ public class FeatureConverter {
                 .build();
     }
 
-    public static FeatureResponseDto.FeatureDetailResponseDto toFeatureDetailResponseDto(Feature feature) {
+    public static FeatureResponseDto.FeatureDetailResponseDto toFeatureDetailResponseDto(Feature feature, Personality personality) {
         return FeatureResponseDto.FeatureDetailResponseDto.builder()
                 .featureId(feature.getId())
                 .q1(feature.getQ1())
@@ -25,6 +26,7 @@ public class FeatureConverter {
                 .q3(feature.getQ3())
                 .q4(feature.getQ4())
                 .total(getTotal(feature))
+                .personality(personality)
                 .build();
     }
 

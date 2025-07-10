@@ -29,6 +29,6 @@ public class FeatureQueryServiceImpl implements FeatureQueryService {
 
         Feature feature = featureRepository.findByMember(member)
                 .orElseThrow(() -> new FeatureException(FeatureErrorCode.FEATURE_NOT_FOUND));
-        return FeatureConverter.toFeatureDetailResponseDto(feature);
+        return FeatureConverter.toFeatureDetailResponseDto(feature, member.getPersonality());
     }
 }
