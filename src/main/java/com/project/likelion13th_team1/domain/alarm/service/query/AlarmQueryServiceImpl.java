@@ -19,13 +19,13 @@ public class AlarmQueryServiceImpl implements AlarmQueryService {
     private final AlarmRepository alarmRepository;
     private final AlarmConverter alarmConverter;
 
-    public AlarmResponseDto.AlarmDetailResponseDto getAlarms(Long routineEventId, Long cursor, Integer size) {
+    public AlarmResponseDto.AlarmDetailResponseDto getAlarms(Long routineId, Long cursor, Integer size) {
 
         // Limit Size
         // hasNext 결정을 위해 기존 size에 +1 해서 요청
         Pageable pageable = PageRequest.of(0, size+1);
 
-        List<Alarm> alarms = alarmRepository.findAlarmsByRoutineEventIdAndCursor(routineEventId, cursor, pageable);
+        List<Alarm> alarms = alarmRepository.findAlarmsByRoutineIdAndCursor(routineId, cursor, pageable);
 
         // hasNext 결정
         boolean hasNext = alarms.size() > size;
