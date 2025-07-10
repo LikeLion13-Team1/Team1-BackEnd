@@ -4,13 +4,10 @@ import com.project.likelion13th_team1.domain.member.converter.MemberConverter;
 import com.project.likelion13th_team1.domain.member.converter.SocialLoginConverter;
 import com.project.likelion13th_team1.domain.member.dto.request.MemberRequestDto;
 import com.project.likelion13th_team1.domain.member.entity.Member;
-import com.project.likelion13th_team1.domain.member.entity.Role;
 import com.project.likelion13th_team1.domain.member.entity.SocialLogin;
-import com.project.likelion13th_team1.domain.member.entity.SocialType;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
 import com.project.likelion13th_team1.domain.member.repository.MemberRepository;
-import com.project.likelion13th_team1.domain.feature.repository.FeatureRepository;
 import com.project.likelion13th_team1.domain.member.repository.SocialLoginRepository;
 import com.project.likelion13th_team1.global.security.auth.converter.AuthConverter;
 import com.project.likelion13th_team1.global.security.auth.entity.Auth;
@@ -61,7 +58,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     @Override
     public void updateMember(String email, MemberRequestDto.MemberUpdateRequestDto dto) {
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         member.updateUsername(dto);
@@ -69,10 +66,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     @Override
     public void deleteMember(String email) {
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        // soft delete
-        member.delete();
+//        // soft delete
+//        member.delete();
+        memberRepository.delete(member);
     }
 }

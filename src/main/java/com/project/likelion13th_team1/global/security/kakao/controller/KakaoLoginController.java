@@ -50,9 +50,11 @@ public class KakaoLoginController {
 
         // 3. 회원가입 & 로그인 처리
         // 여기에 서버 사용자 로그인(인증) 또는 회원가입 로직 추가
-        Optional<Member> member = memberRepository.findByEmail(userInfo.kakaoAccount().email());
-
         log.info("email = {}", userInfo.kakaoAccount().email());
+        Optional<Member> member = memberRepository.findByEmailAndNotDeleted(userInfo.kakaoAccount().email());
+
+
+
 
         if (member.isEmpty()) {
             // 존재하지 않으니 회원가입으로 이동

@@ -16,8 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -31,12 +29,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         log.info("[ CustomUserDetailsService ] Email 을 이용하여 User 를 검색합니다.");
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
         log.info("[ CustomUserDetailsService ] Member 를 이용하여 Auth 를 검색합니다.");
         Auth auth = authRepository.findByMember(member)
                 .orElseThrow(() -> new AuthException(AuthErrorCode._NOT_FOUND));
-//        Optional<Member> memberEntity = memberRepository.findByEmail(email);
+//        Optional<Member> memberEntity = memberRepository.findByEmailAndNotDeleted(email);
 //        if (memberEntity.isPresent()) {
 //            Member member = memberEntity.get();
 //            return new CustomUserDetails(member.getEmail(),member.getPassword(), member.getRole());
