@@ -1,12 +1,17 @@
 package com.project.likelion13th_team1.domain.member.service.command;
 
 import com.project.likelion13th_team1.domain.member.converter.MemberConverter;
+import com.project.likelion13th_team1.domain.member.converter.SocialLoginConverter;
 import com.project.likelion13th_team1.domain.member.dto.request.MemberRequestDto;
 import com.project.likelion13th_team1.domain.member.entity.Member;
+import com.project.likelion13th_team1.domain.member.entity.Role;
+import com.project.likelion13th_team1.domain.member.entity.SocialLogin;
+import com.project.likelion13th_team1.domain.member.entity.SocialType;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
 import com.project.likelion13th_team1.domain.member.repository.MemberRepository;
 import com.project.likelion13th_team1.domain.feature.repository.FeatureRepository;
+import com.project.likelion13th_team1.domain.member.repository.SocialLoginRepository;
 import com.project.likelion13th_team1.global.security.auth.converter.AuthConverter;
 import com.project.likelion13th_team1.global.security.auth.entity.Auth;
 import com.project.likelion13th_team1.global.security.auth.repository.AuthRepository;
@@ -25,6 +30,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final MemberRepository memberRepository;
     private final AuthRepository authRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final SocialLoginRepository socialLoginRepository;
 
     @Override
     public void createLocalMember(MemberRequestDto.MemberCreateRequestDto dto) {
@@ -35,6 +41,19 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         try {
             memberRepository.save(member);
             authRepository.save(auth);
+        } catch (DataIntegrityViolationException e) {
+            throw new MemberException(MemberErrorCode.MEMBER_EMAIL_DUPLICATE);
+        }
+    }
+
+    @Override
+    public void createSocialMember(MemberRequestDto.MemberSocialCreateRequestDto dto) {
+
+        Member member = MemberConverter.toMember(dto);
+        SocialLogin socialLogin = SocialLoginConverter.toSocialLogin(dto, member);
+        try {
+            memberRepository.save(member);
+            socialLoginRepository.save(socialLogin);
         } catch (DataIntegrityViolationException e) {
             throw new MemberException(MemberErrorCode.MEMBER_EMAIL_DUPLICATE);
         }

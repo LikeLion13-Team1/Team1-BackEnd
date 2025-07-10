@@ -40,6 +40,7 @@ public class SecurityConfig {
             "/api/v1/auth/login", //로그인 은 인증이 필요하지 않음
             "/api/v1/members/signup", // 회원가입은 인증이 필요하지 않음
             "/api/v1/auth/reissue", // 토큰 재발급은 인증이 필요하지 않음
+            "/api/v1/callback/kakao",
             "api/usage",
             "/swagger-ui/**",   // swagger 관련 URL
             "/v3/api-docs/**",
