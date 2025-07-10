@@ -116,6 +116,19 @@ public class GroupCommandServiceImpl implements GroupCommandService {
         routineCommandService.createRecommendedRoutines(member.getPersonality(), group);
     }
 
+    public void initGroup(Member member){
+        // TODO : 매직넘버
+        List<String> groupName = List.of("루틴 그룹1", "루틴 그룹2", "루틴 그룹3");
+
+        for (String s : groupName) {
+            Group group = Group.builder()
+                    .name(s)
+                    .member(member)
+                    .build();
+            groupRepository.save(group);
+        }
+    }
+
     private int getRandomInt() {
         Random random = new Random();
         return random.nextInt(6);
