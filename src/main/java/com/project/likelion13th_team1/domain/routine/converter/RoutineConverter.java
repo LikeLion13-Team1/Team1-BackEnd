@@ -5,12 +5,12 @@ import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.routine.dto.RoutineDto;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.domain.routine.dto.response.RoutineResponseDto;
-import com.project.likelion13th_team1.domain.routine.entity.Routine;
-import com.project.likelion13th_team1.domain.routine.entity.Type;
+import com.project.likelion13th_team1.domain.routine.entity.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Slice;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -27,6 +27,31 @@ public class RoutineConverter {
                 .endAt(dto.endAt())
                 .group(group)
 //                .member(member)
+                .build();
+    }
+
+    public static Routine toRoutine(ExampleRoutine exampleRoutine, Group group) {
+        return Routine.builder()
+                .name(exampleRoutine.getName())
+                .description(exampleRoutine.getDescription())
+                .isActive(false)
+                .cycle(exampleRoutine.getCycle())
+                .startAt(LocalDate.now())
+//                .endAt(LocalDate.now().plusDays(5))
+                .group(group)
+                .build();
+    }
+
+    public static Routine toRoutine(RecommendedRoutine recommendedRoutine, Group group) {
+        return Routine.builder()
+                .name(recommendedRoutine.getName())
+                .description(recommendedRoutine.getDescription())
+                .isActive(false)
+                .cycle(recommendedRoutine.getCycle())
+                .startAt(LocalDate.now())
+//                .startAt(startAt)
+                .endAt(LocalDate.now().plusMonths(3))
+                .group(group)
                 .build();
     }
 

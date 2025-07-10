@@ -11,4 +11,6 @@ public interface GroupCommandService {
 
     void deleteGroup(String email, Long groupId);
 
+    void createRecommendedRoutineGroup(String email, Long groupId);
+
 }

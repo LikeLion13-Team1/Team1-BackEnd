@@ -2,7 +2,6 @@ package com.project.likelion13th_team1.domain.event.repository;
 
 import com.project.likelion13th_team1.domain.event.dto.EventDto;
 import com.project.likelion13th_team1.domain.event.entity.Event;
-import com.project.likelion13th_team1.domain.routine.dto.RoutineDto;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -13,7 +12,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,18 +25,32 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("end") LocalDate end
     );
 
-    // 커서 검색
+    // 커서 검색 (날짜 기준)
     @Query("SELECT new com.project.likelion13th_team1.domain.event.dto.EventDto(e) " +
             "FROM Event e " +
             "WHERE e.id > :cursor " +
             "AND e.routine.group.member.email = :email " +
             "AND e.scheduledAt BETWEEN :start AND :end " +
             "ORDER BY e.scheduledAt ASC")
-    Slice<EventDto> findAllByEventIdGreaterThanAndScheduledAtBetweenOrderByScheduledAtAsc(
+    Slice<EventDto> findAllGreaterThanAndScheduledAtBetweenOrderByScheduledAtAsc(
             @Param("email") String email,
             @Param("cursor") Long cursor,
             @Param("start") LocalDate start,
             @Param("end") LocalDate end,
+            Pageable pageable
+    );
+
+    // 커서 검색 (루틴 기준)
+    @Query("SELECT new com.project.likelion13th_team1.domain.event.dto.EventDto(e) " +
+            "FROM Event e " +
+            "WHERE e.id > :cursor " +
+            "AND e.routine.group.member.email = :email " +
+            "AND e.routine.id = :routineId " +
+            "ORDER BY e.scheduledAt ASC")
+    Slice<EventDto> findAllByRoutineIdOrderByScheduledAtAsc(
+            @Param("email") String email,
+            @Param("routineId") Long routineId,
+            @Param("cursor") Long cursor,
             Pageable pageable
     );
 

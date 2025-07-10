@@ -52,4 +52,8 @@ public class Feature {
     public void updateQ4(Integer q4) {
         this.q4 = q4;
     }
+
+    public Integer getTotal() {
+        return this.q1 + this.q2 + this.q3 + this.q4;
+    }
 }

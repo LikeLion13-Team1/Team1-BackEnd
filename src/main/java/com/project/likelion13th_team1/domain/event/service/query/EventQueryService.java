@@ -9,5 +9,8 @@ public interface EventQueryService {
 
     EventResponseDto.EventDetailResponseDto getEvent(String email, Long eventId);
 
-    EventResponseDto.EventCursorResponseDto getEventCursor(String email, Long cursor, Integer size, LocalDate today, LocalDate end);
+    EventResponseDto.EventCursorResponseDto getEventCursorByDate(String email, Long cursor, Integer size, LocalDate today, LocalDate end);
+
+    EventResponseDto.EventCursorResponseDto getEventCursorByRoutine(String email, Long routineId, Long cursor, Integer size);
+
 }
