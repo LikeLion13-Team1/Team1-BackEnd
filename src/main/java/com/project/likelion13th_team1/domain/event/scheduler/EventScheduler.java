@@ -5,10 +5,12 @@ import com.project.likelion13th_team1.domain.event.entity.Event;
 import com.project.likelion13th_team1.domain.event.repository.EventRepository;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
 import com.project.likelion13th_team1.domain.routine.repository.RoutineRepository;
+import com.project.likelion13th_team1.global.entity.Status;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.Set;
 
 @Slf4j
 @Component
+@Transactional
 @RequiredArgsConstructor
 public class EventScheduler {
 
@@ -60,5 +63,18 @@ public class EventScheduler {
         }
 
         log.info("[Scheduler] 루틴 이벤트 생성 스케줄러 종료");
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void setFail() {
+        log.info("[Scheduler] 루틴 이벤트 실패 스케줄러 시작");
+        LocalDate today = LocalDate.now();
+
+        List<Event> failedEvents = eventRepository.findAllByScheduledAtBeforeAndStatus(today, Status.PROCESSING);
+
+        for (Event failedEvent : failedEvents) {
+            failedEvent.updateStatus(Status.FAILED);
+        }
+        log.info("[Scheduler] 루틴 이벤트 실패 스케줄러 종료");
     }
 }
