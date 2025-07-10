@@ -24,6 +24,11 @@ public class FeatureConverter {
                 .q2(feature.getQ2())
                 .q3(feature.getQ3())
                 .q4(feature.getQ4())
+                .total(getTotal(feature))
                 .build();
+    }
+
+    private static Integer getTotal(Feature feature) {
+        return feature.getQ1() + feature.getQ2() + feature.getQ3() + feature.getQ4();
     }
 }
