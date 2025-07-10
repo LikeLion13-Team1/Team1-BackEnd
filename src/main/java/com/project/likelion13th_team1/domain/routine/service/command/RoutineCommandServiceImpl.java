@@ -13,6 +13,7 @@ import com.project.likelion13th_team1.domain.member.repository.MemberRepository;
 import com.project.likelion13th_team1.domain.routine.converter.RoutineConverter;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.domain.routine.dto.response.RoutineResponseDto;
+import com.project.likelion13th_team1.domain.routine.entity.ExampleRoutine;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
 import com.project.likelion13th_team1.domain.routine.exception.RoutineErrorCode;
 import com.project.likelion13th_team1.domain.routine.exception.RoutineException;
@@ -65,6 +66,13 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         eventRepository.deleteByRoutine(routine);
         eventCommandService.createEvent(routine);
         return RoutineConverter.toRoutineUpdateResponseDto(routine);
+    }
+
+    @Override
+    public void createExampleRoutine(ExampleRoutine exampleRoutine, Group group) {
+        Routine routine = RoutineConverter.toRoutine(exampleRoutine, group);
+        routineRepository.save(routine);
+        eventCommandService.createEvent(routine);
     }
 
     // TODO : 스케줄러 구현하기
