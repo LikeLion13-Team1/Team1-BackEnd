@@ -13,7 +13,10 @@ import com.project.likelion13th_team1.domain.feature.exception.FeatureException;
 import com.project.likelion13th_team1.domain.feature.repository.FeatureRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @Service
 @Transactional
@@ -30,7 +33,12 @@ public class FeatureCommandServiceImpl implements FeatureCommandService {
 
         // TODO : 중복저장 방지
         Feature feature = FeatureConverter.toFeature(featureCreateRequestDto, member);
-        featureRepository.save(feature);
+        try {
+            featureRepository.save(feature);
+        } catch (DataIntegrityViolationException e){
+            throw new FeatureException(FeatureErrorCode.FEATURE_DUPLICATED);
+        }
+
 
         member.linkFeature(feature);
     }
