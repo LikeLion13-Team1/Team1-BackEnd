@@ -46,10 +46,14 @@ public class GroupCommandServiceImpl implements GroupCommandService {
 
     @Override
     public GroupResponseDto.GroupCreateResponseDto createGroup(String email, GroupRequestDto.GroupCreateRequestDto groupCreateRequestDto) {
-        LocalDate startAt = LocalDate.now();
-
         Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Long groupCount = groupRepository.countByMember(member);
+
+        if (groupCount == 3) {
+            throw new GroupException(GroupErrorCode.GROUP_LIMIT_EXCEEDED);
+        }
 
         Group group = GroupConverter.toGroup(groupCreateRequestDto, member);
 
