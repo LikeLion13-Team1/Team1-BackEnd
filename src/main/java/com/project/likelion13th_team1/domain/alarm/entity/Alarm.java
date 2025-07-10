@@ -1,9 +1,9 @@
 package com.project.likelion13th_team1.domain.alarm.entity;
 
-import com.project.likelion13th_team1.domain.routine.entity.Routine;
 import com.project.likelion13th_team1.domain.event.entity.Event;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,7 +34,7 @@ public class Alarm{
 
     // 알람을 할 실제 루틴 정보
     @ManyToOne(fetch = FetchType.LAZY)
-    private Routine routine;
+    private RoutineEvent routineEvent;
 
     public void setContext(String context) {
         this.context = context;
