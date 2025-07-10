@@ -2,12 +2,9 @@ package com.project.likelion13th_team1.domain.member.entity;
 
 import com.project.likelion13th_team1.domain.member.dto.request.MemberRequestDto;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
-import com.project.likelion13th_team1.global.feature.entity.Feature;
+import com.project.likelion13th_team1.domain.feature.entity.Feature;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 

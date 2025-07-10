@@ -1,10 +1,9 @@
 package com.project.likelion13th_team1.domain.alarm.entity;
 
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
-import com.project.likelion13th_team1.domain.routine.entity.RoutineEvent;
+import com.project.likelion13th_team1.domain.event.entity.Event;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -48,4 +47,6 @@ public class Alarm{
     public void setTime(LocalDateTime time) {
         this.time = time;
     }
+  
+    private Event event;
 }

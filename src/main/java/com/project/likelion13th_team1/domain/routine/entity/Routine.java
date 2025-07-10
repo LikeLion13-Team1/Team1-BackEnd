@@ -1,15 +1,15 @@
 package com.project.likelion13th_team1.domain.routine.entity;
 
-import com.project.likelion13th_team1.domain.member.entity.Member;
+import com.project.likelion13th_team1.domain.event.entity.Event;
+import com.project.likelion13th_team1.domain.group.entity.Group;
 import com.project.likelion13th_team1.domain.routine.dto.request.RoutineRequestDto;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
-import com.project.likelion13th_team1.global.feature.entity.Feature;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,15 +32,19 @@ public class Routine extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    // 루틴 상태 (진행 중인지 끝났는지)
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private Status status;
+//    // 루틴 상태 (진행 중인지 끝났는지)
+//    @Column(name = "status")
+//    @Enumerated(EnumType.STRING)
+//    private Status status;
 
-    // 루틴 타입 (유저가 만든 것인지, 추천받은 것인지)
-    @Column(name = "type", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Type type;
+//    // 루틴 타입 (유저가 만든 것인지, 추천받은 것인지)
+//    @Column(name = "type", nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    private Type type;
+
+    // 사용 여부
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive;
 
     // 반복 주기
     @Column(name = "cycle", nullable = false)
@@ -48,39 +52,56 @@ public class Routine extends BaseEntity {
     private Cycle cycle;
 
     // 루틴 시작 시간
-    @Column(name = "startAt", nullable = false)
-    private LocalDateTime startAt;
+    @Column(name = "start_at", nullable = false)
+    private LocalDate startAt;
 
     // 루틴 반복 종료일 (null = 무한반복)
-    @Column(name = "endAt")
-    private LocalDateTime endAt;
+    @Column(name = "end_at")
+    private LocalDate endAt;
 
-    // 루틴 삭제 soft
-    @Column(name = "deletedAt")
-    private LocalDateTime deletedAt;
+//    // 루틴 삭제 soft
+//    @Column(name = "deleted_at")
+//    private LocalDateTime deletedAt;
 
-    // 멤버 FK
+//    // 멤버 FK
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "member_id")
+//    private Member member;
+
+    // 그룹 FK
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "group_id")
+    private Group group;
 
-    // 루틴 특성 FK (유저에게 추천해주기 위한?)
-    // TODO : 근데 CUSTOM 으로 만드는 경우에는 어떻게 할지?
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "feature_id")
-    private Feature feature;
+    // 루틴 삭제시 이벤트도 삭제
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> eventList = new ArrayList<>();
+
+//    // 루틴 특성 FK (유저에게 추천해주기 위한?)
+//    // TODO : 근데 CUSTOM 으로 만드는 경우에는 어떻게 할지?
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "feature_id")
+//    private Feature feature;
 
     // TODO : DTO 제약 조건이 필요하다
     public void updateRoutine(RoutineRequestDto.RoutineUpdateRequestDto dto) {
         if (dto.name() != null) this.name = dto.name();
         if (dto.description() != null) this.description = dto.description();
-        if (dto.status() != null) this.status = dto.status();
+//        if (dto.status() != null) this.status = dto.status();
         if (dto.cycle() != null) this.cycle = dto.cycle();
         if (dto.startAt() != null) this.startAt = dto.startAt();
         if (dto.endAt() != null) this.endAt = dto.endAt();
     }
 
-    public void delete(Routine routine) {
-        this.deletedAt = LocalDateTime.now();
+//    public void delete(Routine routine) {
+//        this.deletedAt = LocalDateTime.now();
+//    }
+
+    public void activate() {
+        this.isActive = true;
+    }
+
+    public void inactivate() {
+        this.isActive = false;
     }
 }
