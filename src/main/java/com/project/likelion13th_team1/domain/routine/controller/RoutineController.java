@@ -78,7 +78,7 @@ public class RoutineController {
     }
 
     @Operation(summary = "루틴 목록 커서 조회( 그룹의 모든 루틴)", description = "cursor은 커서 위치로 맨 초기에는 0을 입력한다 <br>size는 한번에 나타낼 객체의 개수이다.<br>hasNextCursor가 true라면 뒤에 내용이 더 있다는 의미이므로 다음 커서를 nextCursor값으로 입력하면 계속해서 객체가 출력된다.")
-    @GetMapping("/group/{groupId}/routines/my")
+    @GetMapping("/groups/{groupId}/routines/my")
     public CustomResponse<RoutineResponseDto.RoutineCursorResponseDto> getMyGroupRoutineCursor(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long groupId,
