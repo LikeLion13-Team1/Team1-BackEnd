@@ -10,7 +10,8 @@ public class FeatureResponseDto {
             Integer q1,
             Integer q2,
             Integer q3,
-            Integer q4
+            Integer q4,
+            Integer total
     ) {
     }
 }
