@@ -3,6 +3,7 @@ package com.project.likelion13th_team1.domain.member.entity;
 import com.project.likelion13th_team1.domain.member.dto.request.MemberRequestDto;
 import com.project.likelion13th_team1.global.entity.BaseEntity;
 import com.project.likelion13th_team1.domain.feature.entity.Feature;
+import com.project.likelion13th_team1.global.security.auth.entity.Auth;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,9 +30,9 @@ public class Member extends BaseEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    // 비밀번호
-    @Column(name = "password", nullable = false)
-    private String password;
+//    // 비밀번호
+//    @Column(name = "password", nullable = false)
+//    private String password;
 
     // 프로필 사진
     @Column(name = "profile_image")
@@ -55,6 +56,9 @@ public class Member extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feature_id", unique = true)
     private Feature feature;
+
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Auth auth;
 
     // feature 생성 후 연결 메서드
     // TODO : 이 연결 메서드를 제네릭으로 한다면!! Routine에서 재활용할 수 있지 않을까요

@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberConverter {
 
-    public static Member toMember(MemberRequestDto.MemberCreateRequestDto dto, String password) {
+    public static Member toMember(MemberRequestDto.MemberCreateRequestDto dto) {
         return Member.builder()
                 .username(dto.username())
                 .email(dto.email())
-                .password(password)
+//                .password(password)
                 .role(Role.USER)
                 .socialType(SocialType.LOCAL)
                 .build();
