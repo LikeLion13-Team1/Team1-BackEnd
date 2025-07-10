@@ -19,11 +19,11 @@ public class AlarmController {
     @Operation(summary = "알람 조회")
     @GetMapping("/api/v1/routines/{routineEventId}/alarms")
     public CustomResponse<?> getAlarms(
-            @PathVariable("routineEventId") Long routineEventId,
+            @PathVariable("routineEventId") Long routineId,
             @RequestParam("cursor") Long cursor,
             @RequestParam("size") Integer size
     ) {
-        return CustomResponse.onSuccess(alarmQueryService.getAlarms(routineEventId, cursor, size));
+        return CustomResponse.onSuccess(alarmQueryService.getAlarms(routineId, cursor, size));
     }
 
     @Operation
@@ -38,9 +38,9 @@ public class AlarmController {
     @Operation
     @PostMapping("/api/v1/events/{routineEventId}/alarms")
     public CustomResponse<?> createAlarm(
-            @PathVariable("routineEventId") Long routineEventId,
+            @PathVariable("routineEventId") Long routineId,
             @RequestBody AlarmRequestDto.AlarmCreateRequestDto alarmCreateRequestDto
     ) {
-        return CustomResponse.onSuccess(alarmCommandService.createAlarm(routineEventId, alarmCreateRequestDto));
+        return CustomResponse.onSuccess(alarmCommandService.createAlarm(routineId, alarmCreateRequestDto));
     }
 }
