@@ -26,7 +26,7 @@ public class AlarmController {
         return CustomResponse.onSuccess(alarmQueryService.getAlarms(routineId, cursor, size));
     }
 
-    @Operation
+    @Operation(summary = "알람 수정")
     @PatchMapping("/api/v1/alarms/{alarmId}")
     public CustomResponse<?> updateAlarm(
             @PathVariable("alarmId") Long alarmId,
@@ -35,7 +35,7 @@ public class AlarmController {
         return CustomResponse.onSuccess(alarmCommandService.updateAlarm(alarmId, alarmUpdateRequestDto));
     }
 
-    @Operation
+    @Operation(summary = "알람 생성")
     @PostMapping("/api/v1/events/{routineEventId}/alarms")
     public CustomResponse<?> createAlarm(
             @PathVariable("routineEventId") Long routineId,
