@@ -71,4 +71,14 @@ public class GroupController {
         groupCommandService.deleteGroup(customUserDetails.getUsername(), groupId);
         return CustomResponse.onSuccess(HttpStatus.NO_CONTENT, "그룹 삭제 완료");
     }
+
+    @Operation(summary = "루틴 추천 그룹 생성", description = "멤버와 루틴의 특성 정보를 매칭시켜 루틴을 추천한다")
+    @PostMapping("/groups/{groupId}/recommendation")
+    public CustomResponse<String> recommendRoutineGroup(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long groupId
+    ) {
+        groupCommandService.createRecommendedRoutineGroup(customUserDetails.getUsername(), groupId);
+        return CustomResponse.onSuccess(HttpStatus.OK, "추천 루틴 그룹 저장 완료");
+    }
 }

@@ -107,10 +107,4 @@ public class RoutineController {
         routineCommandService.inactivateRoutine(customUserDetails.getUsername(), routineId);
         return CustomResponse.onSuccess(HttpStatus.OK, "루틴비활성화 완료");
     }
-
-    @Operation(summary = "루틴 추천", description = "멤버와 루틴의 특성 정보를 매칭시켜 루틴을 추천한다")
-    @PostMapping("/routines/recommendation")
-    public CustomResponse<?> recommendRoutine() {
-        return CustomResponse.onFailure("500", "구상을 해봐야 해요", null);
-    }
 }

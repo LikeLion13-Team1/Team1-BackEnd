@@ -3,11 +3,15 @@ package com.project.likelion13th_team1.domain.routine.repository;
 import com.project.likelion13th_team1.domain.group.entity.Group;
 import com.project.likelion13th_team1.domain.routine.dto.RoutineDto;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jdk.jfr.MetadataDefinition;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,4 +51,11 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
             "FROM Routine r " +
             "WHERE r.isActive = true")
     List<Routine> findAllActiveRoutines();
+
+    @Transactional
+    @Modifying
+    @Query("DELETE " +
+            "FROM Routine r " +
+            "WHERE r.group = :group")
+    void deleteByGroup(@Param("group") Group group);
 }

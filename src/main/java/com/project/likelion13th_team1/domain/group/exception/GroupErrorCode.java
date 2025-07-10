@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 public enum GroupErrorCode implements BaseErrorCode {
 
     GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "GROUP404", "그룹을 찾을 수 없습니다."),
+    GROUP_LIMIT_EXCEEDED(HttpStatus.CONFLICT, "GROUP409", "그룹 최대 생성 개수를 초과했습니다."),
     ;
 
     private final HttpStatus httpStatus;
