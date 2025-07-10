@@ -11,13 +11,22 @@ import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
 import com.project.likelion13th_team1.domain.member.repository.MemberRepository;
+import com.project.likelion13th_team1.domain.routine.converter.RoutineConverter;
+import com.project.likelion13th_team1.domain.routine.entity.ExampleRoutine;
+import com.project.likelion13th_team1.domain.routine.entity.Routine;
+import com.project.likelion13th_team1.domain.routine.repository.ExampleRoutineRepository;
 import com.project.likelion13th_team1.domain.routine.repository.RoutineRepository;
+import com.project.likelion13th_team1.domain.routine.service.command.RoutineCommandService;
 import com.project.likelion13th_team1.domain.routine.service.command.RoutineCommandServiceImpl;
 import com.project.likelion13th_team1.global.apiPayload.code.GeneralErrorCode;
 import com.project.likelion13th_team1.global.apiPayload.exception.CustomException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -27,16 +36,26 @@ public class GroupCommandServiceImpl implements GroupCommandService {
     private final MemberRepository memberRepository;
     private final RoutineRepository routineRepository;
     private final GroupRepository groupRepository;
-    private final RoutineCommandServiceImpl routineCommandServiceImpl;
+    private final RoutineCommandService routineCommandService;
+    private final ExampleRoutineRepository exampleRoutineRepository;
 
     @Override
     public GroupResponseDto.GroupCreateResponseDto createGroup(String email, GroupRequestDto.GroupCreateRequestDto groupCreateRequestDto) {
+        LocalDate startAt = LocalDate.now();
+
         Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         Group group = GroupConverter.toGroup(groupCreateRequestDto, member);
 
         groupRepository.save(group);
+
+        // ex routine 에서 루틴 기본 세팅 가져오기
+        List<ExampleRoutine> exampleRoutines = exampleRoutineRepository.findAll();
+
+        for (ExampleRoutine exampleRoutine : exampleRoutines) {
+            routineCommandService.createExampleRoutine(exampleRoutine, group);
+        }
 
         return GroupConverter.toGroupCreateResponseDto(group);
     }
@@ -67,5 +86,10 @@ public class GroupCommandServiceImpl implements GroupCommandService {
         // TODO : 고아가 된 루틴 삭제처리
 
         groupRepository.delete(group);
+    }
+
+    private int getRandomInt() {
+        Random random = new Random();
+        return random.nextInt(6);
     }
 }
