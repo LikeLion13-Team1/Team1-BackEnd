@@ -6,6 +6,10 @@ import com.project.likelion13th_team1.domain.alarm.entity.Alarm;
 import com.project.likelion13th_team1.domain.alarm.exception.AlarmErrorCode;
 import com.project.likelion13th_team1.domain.alarm.exception.AlarmException;
 import com.project.likelion13th_team1.domain.alarm.repository.AlarmRepository;
+import com.project.likelion13th_team1.domain.event.entity.Event;
+import com.project.likelion13th_team1.domain.event.exception.EventErrorCode;
+import com.project.likelion13th_team1.domain.event.exception.EventException;
+import com.project.likelion13th_team1.domain.event.repository.EventRepository;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
 import com.project.likelion13th_team1.domain.routine.exception.RoutineErrorCode;
 import com.project.likelion13th_team1.domain.routine.exception.RoutineException;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Service;
 public class AlarmCommandServiceImpl implements AlarmCommandService {
     private final AlarmRepository alarmRepository;
     private final RoutineRepository routineRepository;
+    private final EventRepository eventRepository;
 
     // Id만 넘기면 되므로 컨버터 미사용
     public Long updateAlarm(Long id , AlarmRequestDto.AlarmUpdateRequestDto alarmUpdateRequestDto) {
@@ -33,17 +38,31 @@ public class AlarmCommandServiceImpl implements AlarmCommandService {
         return alarm.getId();
     }
 
-    public Long createAlarm(Long routineEventId, AlarmRequestDto.AlarmCreateRequestDto alarmCreateRequestDto) {
-        // Routine 탐색
-        Routine routine = routineRepository.findById(routineEventId)
-                .orElseThrow(() -> new RoutineException(RoutineErrorCode.ROUTINE_NOT_FOUND));
+    public Long createAlarm(Long eventId, AlarmRequestDto.AlarmCreateRequestDto alarmCreateRequestDto) {
+        // Event 탐색
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
 
         Alarm alarm = Alarm.builder()
                 .context(alarmCreateRequestDto.context())
                 .activation(Activation.Y)
                 .time(alarmCreateRequestDto.time())
-                .routine(routine)
+                .event(event)
                 .build();
+
+        Alarm saveAlarm = alarmRepository.save(alarm);
+
+        return alarm.getId();
+    }
+
+    public Long toggleAlarm(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventException(EventErrorCode.EVENT_NOT_FOUND));
+        Alarm alarm = alarmRepository.findByEvent(event)
+                .orElseThrow(() -> new AlarmException(AlarmErrorCode.ALARM_NOT_FOUND));
+
+        alarm.setActivation(alarm.getActivation().toggle());
+        alarmRepository.save(alarm);
 
         return alarm.getId();
     }

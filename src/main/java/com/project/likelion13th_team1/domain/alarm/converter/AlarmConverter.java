@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.alarm.converter;
 
+import com.project.likelion13th_team1.domain.alarm.dto.response.AlarmDto;
 import com.project.likelion13th_team1.domain.alarm.dto.response.AlarmResponseDto;
 import com.project.likelion13th_team1.domain.alarm.entity.Alarm;
 import lombok.AccessLevel;

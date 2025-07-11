@@ -1,9 +1,12 @@
 package com.project.likelion13th_team1.domain.alarm.service.query;
 
 import com.project.likelion13th_team1.domain.alarm.converter.AlarmConverter;
+import com.project.likelion13th_team1.domain.alarm.dto.response.AlarmDto;
 import com.project.likelion13th_team1.domain.alarm.dto.response.AlarmResponseDto;
 import com.project.likelion13th_team1.domain.alarm.entity.Alarm;
 import com.project.likelion13th_team1.domain.alarm.repository.AlarmRepository;
+import com.project.likelion13th_team1.domain.member.entity.Member;
+import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -19,13 +22,27 @@ public class AlarmQueryServiceImpl implements AlarmQueryService {
     private final AlarmRepository alarmRepository;
     private final AlarmConverter alarmConverter;
 
-    public AlarmResponseDto.AlarmDetailResponseDto getAlarms(Long routineId, Long cursor, Integer size) {
+
+    public List<Alarm> getAlarms(CustomUserDetails customUserDetails) {
+        String memberEmail = customUserDetails.getUsername();
+
+        return alarmRepository.findAllByMemberEmail(memberEmail);
+    }
+
+    public List<AlarmDto> getAlarmsByMember(Member member) {
+        List<Alarm> alarms = alarmRepository.findAllByEvent_Routine_Group_Member(member);
+        return alarms.stream()
+                .map(AlarmDto::from)
+                .toList();
+    }
+
+    public AlarmResponseDto.AlarmDetailResponseDto getAlarms1(Long eventId, Long cursor, Integer size) {
 
         // Limit Size
         // hasNext 결정을 위해 기존 size에 +1 해서 요청
         Pageable pageable = PageRequest.of(0, size+1);
 
-        List<Alarm> alarms = alarmRepository.findAlarmsByRoutineIdAndCursor(routineId, cursor, pageable);
+        List<Alarm> alarms = alarmRepository.findAlarmsByEventIdAndCursor(eventId, cursor, pageable);
 
         // hasNext 결정
         boolean hasNext = alarms.size() > size;

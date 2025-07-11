@@ -34,7 +34,7 @@ public class Alarm{
 
     // 알람을 할 실제 루틴 정보
     @ManyToOne(fetch = FetchType.LAZY)
-    private Routine routine;
+    private Event event;
 
     public void setContext(String context) {
         this.context = context;
@@ -47,6 +47,4 @@ public class Alarm{
     public void setTime(LocalDateTime time) {
         this.time = time;
     }
-  
-    private Event event;
 }
