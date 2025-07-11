@@ -59,4 +59,19 @@ public class RoutineQueryServiceImpl implements RoutineQueryService {
 
         return RoutineConverter.toRoutineCursorResponseDto(routineDtosSlice);
     }
+
+    @Override
+    public RoutineResponseDto.RoutineCursorResponseDto getMyGroupTrueRoutineCursor(String email, Long groupId, Long cursor, Integer size) {
+        Pageable pageable = PageRequest.of(0, size);
+
+        // cursor가 0일 경우(첫페이지) cursor 최대값
+        if (cursor == 0) {
+            cursor = Long.MIN_VALUE;
+        }
+
+        Slice<RoutineDto> routineDtosSlice
+                = routineRepository.findAllByGroupIdLessThanOrderByRoutineAndTrueIdASC(email, groupId, cursor, pageable);
+
+        return RoutineConverter.toRoutineCursorResponseDto(routineDtosSlice);
+    }
 }

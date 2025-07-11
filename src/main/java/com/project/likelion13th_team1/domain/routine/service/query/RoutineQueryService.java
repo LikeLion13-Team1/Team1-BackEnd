@@ -9,4 +9,6 @@ public interface RoutineQueryService {
     RoutineResponseDto.RoutineCursorResponseDto getMyRoutineCursor(String email, Long cursor, Integer size);
 
     RoutineResponseDto.RoutineCursorResponseDto getMyGroupRoutineCursor(String email, Long groupId, Long cursor, Integer size);
+
+    RoutineResponseDto.RoutineCursorResponseDto getMyGroupTrueRoutineCursor(String email, Long groupId, Long cursor, Integer size);
 }
