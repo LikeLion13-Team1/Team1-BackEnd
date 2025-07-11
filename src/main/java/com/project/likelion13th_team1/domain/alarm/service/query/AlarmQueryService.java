@@ -12,4 +12,5 @@ public interface AlarmQueryService {
     AlarmResponseDto.AlarmDetailResponseDto getAlarms1(Long routineEventId, Long cursor, Integer size);
     List<Alarm> getAlarms(CustomUserDetails customUserDetails);
     List<AlarmDto> getAlarmsByMember(Member member);
+    AlarmDto getAlarmByMember(Member member);
 }
