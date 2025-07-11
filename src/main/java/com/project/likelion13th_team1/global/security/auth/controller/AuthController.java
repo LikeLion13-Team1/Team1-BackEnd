@@ -4,10 +4,14 @@ import com.project.likelion13th_team1.global.apiPayload.CustomResponse;
 import com.project.likelion13th_team1.global.security.auth.dto.request.AuthRequestDto;
 import com.project.likelion13th_team1.global.security.auth.service.AuthService;
 import com.project.likelion13th_team1.global.security.jwt.dto.JwtDto;
+import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,5 +52,15 @@ public class AuthController {
     @PostMapping("/logout")
     public CustomResponse<?> logout() {
         return null;
+    }
+
+    @Operation(summary = "비밀번호 변경", description = "현재 비밀번호와 바꿀 비밀번호를 입력해 비밀번호를 변경한다.")
+    @PostMapping("/password/reset")
+    public CustomResponse<String> resetPassword(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestBody @Valid AuthRequestDto.PasswordResetRequestDto passwordResetRequestDto
+    ) {
+        authService.resetPassword(customUserDetails.getUsername(), passwordResetRequestDto);
+        return CustomResponse.onSuccess(HttpStatus.OK, "비밀번호가 변경되었습니다.");
     }
 }

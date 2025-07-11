@@ -1,5 +1,11 @@
 package com.project.likelion13th_team1.global.security.auth.service;
 
+import com.project.likelion13th_team1.domain.member.entity.Member;
+import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
+import com.project.likelion13th_team1.domain.member.exception.MemberException;
+import com.project.likelion13th_team1.domain.member.repository.MemberRepository;
+import com.project.likelion13th_team1.global.security.auth.dto.request.AuthRequestDto;
+import com.project.likelion13th_team1.global.security.auth.entity.Auth;
 import com.project.likelion13th_team1.global.security.exception.AuthErrorCode;
 import com.project.likelion13th_team1.global.security.exception.AuthException;
 import com.project.likelion13th_team1.global.security.jwt.JwtUtil;
@@ -9,6 +15,7 @@ import com.project.likelion13th_team1.global.security.jwt.repository.TokenReposi
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -18,6 +25,8 @@ public class AuthServiceImpl implements AuthService{
 
     private final JwtUtil jwtUtil;
     private final TokenRepository tokenRepository;
+    private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public JwtDto reissueToken(JwtDto tokenDto) {
@@ -46,5 +55,28 @@ public class AuthServiceImpl implements AuthService{
         } else {
             throw new AuthException(AuthErrorCode.INVALID_TOKEN);
         }
+    }
+
+    @Override
+    public void resetPassword(String email, AuthRequestDto.PasswordResetRequestDto passwordResetRequestDto) {
+
+        if (!passwordResetRequestDto.newPassword().equals(passwordResetRequestDto.newPasswordConfirmation())) {
+            throw new AuthException(AuthErrorCode.NEW_PASSWORD_DOES_NOT_MATCH);
+        }
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Auth auth = member.getAuth();
+
+        if (!passwordEncoder.matches(passwordResetRequestDto.currentPassword(), auth.getPassword())) {
+            throw new AuthException(AuthErrorCode.CURRENT_PASSWORD_DOES_NOT_MATCH);
+        }
+        if (passwordEncoder.matches(passwordResetRequestDto.newPassword(), auth.getPassword())) {
+            throw new AuthException(AuthErrorCode.NEW_PASSWORD_IS_CURRENT_PASSWORD);
+        }
+
+        auth.updatePassword(passwordEncoder.encode(auth.getPassword()));
+
     }
 }
