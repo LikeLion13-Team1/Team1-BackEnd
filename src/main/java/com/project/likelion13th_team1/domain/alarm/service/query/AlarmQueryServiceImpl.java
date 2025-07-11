@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @Transactional
@@ -34,6 +35,13 @@ public class AlarmQueryServiceImpl implements AlarmQueryService {
         return alarms.stream()
                 .map(AlarmDto::from)
                 .toList();
+    }
+
+    public AlarmDto getAlarmByMember(Member member) {
+        List<Alarm> alarms = alarmRepository.findAllByEvent_Routine_Group_Member(member);
+
+        Alarm randomAlarm = alarms.get(ThreadLocalRandom.current().nextInt(alarms.size()));
+        return AlarmDto.from(randomAlarm);
     }
 
     public AlarmResponseDto.AlarmDetailResponseDto getAlarms1(Long eventId, Long cursor, Integer size) {
