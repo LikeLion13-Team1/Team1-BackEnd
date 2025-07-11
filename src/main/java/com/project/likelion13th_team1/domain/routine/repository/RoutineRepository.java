@@ -38,7 +38,10 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
     // 커서 검색(그룹 기준)
     @Query("SELECT new com.project.likelion13th_team1.domain.routine.dto.RoutineDto(r) " +
             "FROM Routine r " +
-            "WHERE r.id > :cursor AND r.group.member.email = :email AND r.group.id = :groupId " +
+            "WHERE r.id > :cursor " +
+            "AND r.group.member.email = :email " +
+            "AND r.group.id = :groupId " +
+            "AND r.isActive = true " +
             "ORDER BY r.id ASC")
     Slice<RoutineDto> findAllByGroupIdLessThanOrderByRoutineIdASC(
             @Param("email") String email,
