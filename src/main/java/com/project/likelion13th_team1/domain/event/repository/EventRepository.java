@@ -56,12 +56,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     );
 
     // 루틴이 삭제 또는 비활성화 됐을 때, 그 자식 루틴 이벤트 일괄 삭제
-    @Transactional
-    @Modifying
-    @Query("DELETE " +
+    @Query("SELECT e " +
             "FROM Event e " +
             "WHERE e.routine = :routine")
-    void deleteByRoutine(@Param("routine") Routine routine);
+    List<Event> findByRoutine(@Param("routine") Routine routine);
 
     @Query("SELECT e " +
             "FROM Event e " +

@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.routine.service.command;
 
+import com.project.likelion13th_team1.domain.event.entity.Event;
 import com.project.likelion13th_team1.domain.event.repository.EventRepository;
 import com.project.likelion13th_team1.domain.event.service.command.EventCommandService;
 import com.project.likelion13th_team1.domain.group.entity.Group;
@@ -25,6 +26,7 @@ import com.project.likelion13th_team1.global.apiPayload.code.GeneralErrorCode;
 import com.project.likelion13th_team1.global.apiPayload.exception.CustomException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,6 +35,7 @@ import java.util.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class RoutineCommandServiceImpl implements RoutineCommandService {
 
     private final MemberRepository memberRepository;
@@ -58,6 +61,7 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         Routine routine = RoutineConverter.toRoutine(routineCreateRequestDto, group);
         routineRepository.save(routine);
 
+        log.info("루틴 생성완료 이벤트 생성하겠습니다.");
         int eventCount = eventCommandService.createEvent(routine);
 
         return RoutineConverter.toRoutineCreateResponseDto(routine, eventCount);
@@ -83,7 +87,10 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         }
 
         routine.updateRoutine(routineUpdateRequestDto);
-        eventRepository.deleteByRoutine(routine);
+
+        List<Event> eventsToDelete = eventRepository.findByRoutine(routine);
+        eventRepository.deleteAll(eventsToDelete);
+
         eventCommandService.createEvent(routine);
         return RoutineConverter.toRoutineUpdateResponseDto(routine);
     }
@@ -104,6 +111,8 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         Routine routine = routineRepository.findById(routineId)
                 .orElseThrow(() -> new RoutineException(RoutineErrorCode.ROUTINE_NOT_FOUND));
 
+        log.info("member = {} ", member);
+        log.info("routine.getMember = {} ", routine.getGroup().getMember());
         if (routine.getGroup().getMember() != member) {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
         }
@@ -142,7 +151,8 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         }
 
         routine.inactivate();
-        eventRepository.deleteByRoutine(routine);
+        List<Event> eventsToDelete = eventRepository.findByRoutine(routine);
+        eventRepository.deleteAll(eventsToDelete);
     }
 
     public void createRecommendedRoutines(Personality personality, Group group) {

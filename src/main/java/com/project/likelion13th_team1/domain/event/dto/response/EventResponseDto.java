@@ -13,6 +13,7 @@ public class EventResponseDto {
     public record EventDetailResponseDto(
             Long routineId,
             Long eventId,
+            String routineName,
             LocalDate scheduledAt,
             LocalDate doneAt,
             Status status

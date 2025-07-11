@@ -13,6 +13,7 @@ import com.project.likelion13th_team1.global.apiPayload.code.GeneralErrorCode;
 import com.project.likelion13th_team1.global.apiPayload.exception.CustomException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ import java.util.Set;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class EventCommandServiceImpl implements EventCommandService {
 
     private final EventRepository eventRepository;
@@ -80,6 +82,7 @@ public class EventCommandServiceImpl implements EventCommandService {
 
         List<Event> savedEvents = eventRepository.saveAll(eventsToSave);
 
+        log.info("이벤트 생성완료 알람 생성 시작");
         alarmCommandService.autoCreateAlarm(savedEvents);
 
         return eventCount;
