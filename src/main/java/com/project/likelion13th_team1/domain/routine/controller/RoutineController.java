@@ -88,6 +88,17 @@ public class RoutineController {
         return CustomResponse.onSuccess(routineQueryService.getMyGroupRoutineCursor(customUserDetails.getUsername(), groupId, cursor, size));
     }
 
+    @Operation(summary = "루틴 목록 커서 조회( 그룹의 모든 루틴 & isActive = true)", description = "cursor은 커서 위치로 맨 초기에는 0을 입력한다 <br>size는 한번에 나타낼 객체의 개수이다.<br>hasNextCursor가 true라면 뒤에 내용이 더 있다는 의미이므로 다음 커서를 nextCursor값으로 입력하면 계속해서 객체가 출력된다.")
+    @GetMapping("/groups/{groupId}/routines/my/active")
+    public CustomResponse<RoutineResponseDto.RoutineCursorResponseDto> getMyGroupTrueRoutineCursor(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long groupId,
+            @RequestParam Long cursor,
+            @RequestParam Integer size
+    ) {
+        return CustomResponse.onSuccess(routineQueryService.getMyGroupTrueRoutineCursor(customUserDetails.getUsername(), groupId, cursor, size));
+    }
+
     @Operation(summary = "루틴 활성화", description = "루틴의 isActive를 true로 바꾸고, 이벤트를 생성한다.")
     @PatchMapping("/routines/{routineId}/activate")
     public CustomResponse<String> activateRoutine(
