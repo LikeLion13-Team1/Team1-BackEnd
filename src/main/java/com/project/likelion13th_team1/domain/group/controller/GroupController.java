@@ -36,9 +36,10 @@ public class GroupController {
     @Operation(summary = "그룹 단일 조회", description = "그룹 id를 통해 그룹 정보를 조회합니다.")
     @GetMapping("/{groupId}")
     public CustomResponse<GroupResponseDto.GroupDetailResponseDto> getGroup(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long groupId
     ) {
-        return CustomResponse.onSuccess(groupQueryService.getGroup(groupId));
+        return CustomResponse.onSuccess(groupQueryService.getGroup(customUserDetails.getUsername(), groupId));
     }
 
     @Operation(summary = "그룹 목록 조회 (내 그룹만)", description = "내가 가지고 있는 그룹의 목록을 조회합니다." +
