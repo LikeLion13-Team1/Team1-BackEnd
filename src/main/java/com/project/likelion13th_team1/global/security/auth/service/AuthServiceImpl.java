@@ -4,8 +4,12 @@ import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
 import com.project.likelion13th_team1.domain.member.repository.MemberRepository;
+import com.project.likelion13th_team1.global.mail.MailService;
+import com.project.likelion13th_team1.global.mail.exception.MailErrorCode;
+import com.project.likelion13th_team1.global.mail.exception.MailException;
 import com.project.likelion13th_team1.global.security.auth.dto.request.AuthRequestDto;
 import com.project.likelion13th_team1.global.security.auth.entity.Auth;
+import com.project.likelion13th_team1.global.security.auth.repository.AuthRepository;
 import com.project.likelion13th_team1.global.security.exception.AuthErrorCode;
 import com.project.likelion13th_team1.global.security.exception.AuthException;
 import com.project.likelion13th_team1.global.security.jwt.JwtUtil;
@@ -15,6 +19,7 @@ import com.project.likelion13th_team1.global.security.jwt.repository.TokenReposi
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +32,9 @@ public class AuthServiceImpl implements AuthService{
     private final TokenRepository tokenRepository;
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final MailService mailService;
+    private final AuthRepository authRepository;
 
     @Override
     public JwtDto reissueToken(JwtDto tokenDto) {
@@ -76,7 +84,35 @@ public class AuthServiceImpl implements AuthService{
             throw new AuthException(AuthErrorCode.NEW_PASSWORD_IS_CURRENT_PASSWORD);
         }
 
-        auth.updatePassword(passwordEncoder.encode(auth.getPassword()));
+        auth.updatePassword(passwordEncoder.encode(passwordResetRequestDto.newPassword()));
+        authRepository.save(auth);
 
+    }
+
+    @Override
+    public void resetPasswordWithCode(String passwordTokenHeader, AuthRequestDto.PasswordResetWithCodeRequestDto passwordResetWithCodeRequestDto) {
+        final String uuid = passwordTokenHeader.replace("PasswordToken ", "").trim();
+        log.info("헤더다 : {}", passwordTokenHeader);
+        final String redisKey = "password_token : " + uuid;
+
+        final String email = redisTemplate.opsForValue().get(redisKey);
+
+        if (email == null) {
+            throw new AuthException(AuthErrorCode.INVALID_TOKEN);
+        }
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        Auth auth = member.getAuth();
+
+        if (!passwordResetWithCodeRequestDto.newPassword().equals(passwordResetWithCodeRequestDto.newPasswordConfirmation())) {
+            throw new AuthException(AuthErrorCode.NEW_PASSWORD_DOES_NOT_MATCH);
+        }
+
+        auth.updatePassword(passwordEncoder.encode(passwordResetWithCodeRequestDto.newPassword()));
+        authRepository.save(auth);
+
+        mailService.sendPasswordChangeNotification(email);
     }
 }
