@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.event.entity;
 
+import com.project.likelion13th_team1.domain.alarm.entity.Alarm;
 import com.project.likelion13th_team1.domain.routine.entity.Routine;
 import com.project.likelion13th_team1.global.entity.Status;
 import jakarta.persistence.*;
@@ -7,6 +8,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,6 +44,11 @@ public class Event {
     @JoinColumn(name = "routine_id")
     private Routine routine;
 
+    // Alarm과 양방향 매핑 관계 설정, Event가 삭제된다면 Alarm도 삭제
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Alarm> alarms = new ArrayList<>();
+
+
     // updateEvent
     // TODO : 제약조건
     public void updateEvent(LocalDate scheduledAt, LocalDate doneAt, Status status) {
@@ -59,9 +67,5 @@ public class Event {
     public void undoneEvent() {
         this.doneAt = null;
         this.status = Status.PROCESSING;
-    }
-
-    public void updateStatus(Status status) {
-        this.status = status;
     }
 }
