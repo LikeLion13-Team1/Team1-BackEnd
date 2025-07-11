@@ -45,13 +45,3 @@ spring:
             token-uri: ${KAKAO_TOKEN_URI}
             user-info-uri: ${KAKAO_USER_INFO_URI}
             user-name-attribute: ${KAKAO_USER_NAME_ATTRIBUTE}
-
-  mail:
-    host: smtp.naver.com
-    port: 465 # 네이버 표준 port번호 , 구글은 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-    properties:
-      mail.smtp.auth: true
-      mail.smtp.ssl.enable: true
-      mail.smtp.ssl.trust: smtp.naver.com
