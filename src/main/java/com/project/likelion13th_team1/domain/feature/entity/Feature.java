@@ -1,6 +1,7 @@
 package com.project.likelion13th_team1.domain.feature.entity;
 
 
+import com.project.likelion13th_team1.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,6 +32,10 @@ public class Feature {
     @Column(name = "Q4")
     private Integer q4;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
 
     public void updateQ1(Integer q1) {
         this.q1 = q1;
@@ -46,5 +51,9 @@ public class Feature {
 
     public void updateQ4(Integer q4) {
         this.q4 = q4;
+    }
+
+    public Integer getTotal() {
+        return this.q1 + this.q2 + this.q3 + this.q4;
     }
 }

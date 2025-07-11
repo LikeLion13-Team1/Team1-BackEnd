@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/events")
+@RequestMapping("/api/v1")
 @Tag(name = "Event", description = "루틴 이벤트 관련 API")
 public class EventController {
 
@@ -28,7 +28,7 @@ public class EventController {
     private final EventQueryService eventQueryService;
 
     @Operation(summary = "루틴 이벤트 단일 조회", description = "이벤트 아이디로 이벤트 객체 1개를 검색한다.")
-    @GetMapping("/{eventId}")
+    @GetMapping("/events/{eventId}")
     public CustomResponse<EventResponseDto.EventDetailResponseDto> getEvent(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long eventId
@@ -40,19 +40,32 @@ public class EventController {
             "size는 한번에 나타낼 객체의 개수이다.<br>" +
             "hasNextCursor가 true라면 뒤에 내용이 더 있다는 의미이므로 다음 커서를 nextCursor값으로 입력하면 계속해서 객체가 출력된다." +
             "<br> 날짜를 기준으로 검색하므로 YYYY-MM-DD 의 형태로 검색 시작 날짜와 끝 날짜를 입력한다.")
-    @GetMapping()
-    public CustomResponse<EventResponseDto.EventCursorResponseDto> getEventCursor(
+    @GetMapping("/events")
+    public CustomResponse<EventResponseDto.EventCursorResponseDto> getEventCursorByDate(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestParam Long cursor,
             @RequestParam Integer size,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate end
     ) {
-        return CustomResponse.onSuccess(eventQueryService.getEventCursor(customUserDetails.getUsername(), cursor, size, start, end));
+        return CustomResponse.onSuccess(eventQueryService.getEventCursorByDate(customUserDetails.getUsername(), cursor, size, start, end));
+    }
+
+    @Operation(summary = "루틴 이벤트 목록 커서 조회 (루틴 id 기준)", description = "cursor은 커서 위치로 맨 초기에는 0을 입력한다<br>" +
+            "size는 한번에 나타낼 객체의 개수이다.<br>" +
+            "hasNextCursor가 true라면 뒤에 내용이 더 있다는 의미이므로 다음 커서를 nextCursor값으로 입력하면 계속해서 객체가 출력된다.")
+    @GetMapping("/routines/{routineId}/events")
+    public CustomResponse<EventResponseDto.EventCursorResponseDto> getEventCursorByRoutine(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long routineId,
+            @RequestParam Long cursor,
+            @RequestParam Integer size
+    ) {
+        return CustomResponse.onSuccess(eventQueryService.getEventCursorByRoutine(customUserDetails.getUsername(), routineId, cursor, size));
     }
 
     @Operation(summary = "루틴 이벤트 수정", description = "이벤트가 수행될 시간 scheduledAt은 null 일 수 없다.")
-    @PatchMapping("/{eventId}")
+    @PatchMapping("events/{eventId}")
     public CustomResponse<EventResponseDto.EventUpdateResponseDto> updateEvent(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long eventId,
@@ -62,7 +75,7 @@ public class EventController {
     }
 
     @Operation(summary = "루틴 이벤트 삭제", description = "이벤트 아이디를 통해 이벤트 객체를 삭제한다.")
-    @DeleteMapping("/{eventId}")
+    @DeleteMapping("events/{eventId}")
     public CustomResponse<String> deleteEvent(
         @AuthenticationPrincipal CustomUserDetails customUserDetails,
         @PathVariable Long eventId
@@ -72,7 +85,7 @@ public class EventController {
     }
 
     @Operation(summary = "루틴 완료", description = "루틴을 수행했을 때, 루틴 수행완료 시간을 현재 시간으로 설정하고, 해당 status를 SUCCESS로 변경한다.")
-    @PatchMapping("/{eventId}/done")
+    @PatchMapping("events/{eventId}/done")
     public CustomResponse<EventResponseDto.EventDoneResponseDto> doneEvent(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long eventId
@@ -81,7 +94,7 @@ public class EventController {
     }
 
     @Operation(summary = "루틴 완료 취소", description = "수행한 루틴의 수행완료를 되돌리고 싶을 때, 루틴 수행완료 시간을 null로 설정하고, 해당 status를 PROCESSING으로 변경한다.")
-    @PatchMapping("/{eventId}/undone")
+    @PatchMapping("events/{eventId}/undone")
     public CustomResponse<EventResponseDto.EventDoneResponseDto> undoneEvent(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long eventId

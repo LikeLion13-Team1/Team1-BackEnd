@@ -12,7 +12,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,7 +42,7 @@ public class RoutineController {
     public CustomResponse<RoutineResponseDto.RoutineUpdateResponseDto> updateRoutine(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long routineId,
-            @RequestBody RoutineRequestDto.RoutineUpdateRequestDto routineUpdateRequestDto
+            @RequestBody @Valid RoutineRequestDto.RoutineUpdateRequestDto routineUpdateRequestDto
 
     ) {
         return CustomResponse.onSuccess(routineCommandService.updateRoutine(customUserDetails.getUsername(), routineId, routineUpdateRequestDto));
@@ -68,14 +67,25 @@ public class RoutineController {
         return CustomResponse.onSuccess(routineQueryService.getRoutine(customUserDetails.getUsername(), routineId));
     }
 
-    @Operation(summary = "루틴 목록 커서 조회", description = "cursor은 커서 위치로 맨 초기에는 0을 입력한다 <br>size는 한번에 나타낼 객체의 개수이다.<br>hasNextCursor가 true라면 뒤에 내용이 더 있다는 의미이므로 다음 커서를 nextCursor값으로 입력하면 계속해서 객체가 출력된다.")
+    @Operation(summary = "루틴 목록 커서 조회 (유저의 모든 루틴)", description = "cursor은 커서 위치로 맨 초기에는 0을 입력한다 <br>size는 한번에 나타낼 객체의 개수이다.<br>hasNextCursor가 true라면 뒤에 내용이 더 있다는 의미이므로 다음 커서를 nextCursor값으로 입력하면 계속해서 객체가 출력된다.")
     @GetMapping("/routines/my")
-    public CustomResponse<RoutineResponseDto.RoutineCursorResponseDto> getRoutineCursor(
+    public CustomResponse<RoutineResponseDto.RoutineCursorResponseDto> getMyRoutineCursor(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestParam Long cursor,
             @RequestParam Integer size
     ) {
-        return CustomResponse.onSuccess(routineQueryService.getRoutineCursor(customUserDetails.getUsername(), cursor, size));
+        return CustomResponse.onSuccess(routineQueryService.getMyRoutineCursor(customUserDetails.getUsername(), cursor, size));
+    }
+
+    @Operation(summary = "루틴 목록 커서 조회( 그룹의 모든 루틴)", description = "cursor은 커서 위치로 맨 초기에는 0을 입력한다 <br>size는 한번에 나타낼 객체의 개수이다.<br>hasNextCursor가 true라면 뒤에 내용이 더 있다는 의미이므로 다음 커서를 nextCursor값으로 입력하면 계속해서 객체가 출력된다.")
+    @GetMapping("/groups/{groupId}/routines/my")
+    public CustomResponse<RoutineResponseDto.RoutineCursorResponseDto> getMyGroupRoutineCursor(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long groupId,
+            @RequestParam Long cursor,
+            @RequestParam Integer size
+    ) {
+        return CustomResponse.onSuccess(routineQueryService.getMyGroupRoutineCursor(customUserDetails.getUsername(), groupId, cursor, size));
     }
 
     @Operation(summary = "루틴 활성화", description = "루틴의 isActive를 true로 바꾸고, 이벤트를 생성한다.")
@@ -96,11 +106,5 @@ public class RoutineController {
     ) {
         routineCommandService.inactivateRoutine(customUserDetails.getUsername(), routineId);
         return CustomResponse.onSuccess(HttpStatus.OK, "루틴비활성화 완료");
-    }
-
-    @Operation(summary = "루틴 추천", description = "멤버와 루틴의 특성 정보를 매칭시켜 루틴을 추천한다")
-    @PostMapping("/routines/recommendation")
-    public CustomResponse<?> recommendRoutine() {
-        return CustomResponse.onFailure("500", "구상을 해봐야 해요", null);
     }
 }

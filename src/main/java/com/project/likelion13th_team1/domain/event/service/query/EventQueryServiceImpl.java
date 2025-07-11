@@ -7,7 +7,6 @@ import com.project.likelion13th_team1.domain.event.entity.Event;
 import com.project.likelion13th_team1.domain.event.exception.EventErrorCode;
 import com.project.likelion13th_team1.domain.event.exception.EventException;
 import com.project.likelion13th_team1.domain.event.repository.EventRepository;
-import com.project.likelion13th_team1.domain.routine.converter.RoutineConverter;
 import com.project.likelion13th_team1.global.apiPayload.code.GeneralErrorCode;
 import com.project.likelion13th_team1.global.apiPayload.exception.CustomException;
 import jakarta.transaction.Transactional;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -40,7 +38,7 @@ public class EventQueryServiceImpl implements EventQueryService{
     }
 
     @Override
-    public EventResponseDto.EventCursorResponseDto getEventCursor(String email, Long cursor, Integer size, LocalDate today, LocalDate end) {
+    public EventResponseDto.EventCursorResponseDto getEventCursorByDate(String email, Long cursor, Integer size, LocalDate today, LocalDate end) {
         Pageable pageable = PageRequest.of(0, size);
 
         // cursor가 0일 경우(첫페이지) cursor 최대값
@@ -49,7 +47,22 @@ public class EventQueryServiceImpl implements EventQueryService{
         }
 
         Slice<EventDto> eventDtosSlice
-                = eventRepository.findAllByEventIdGreaterThanAndScheduledAtBetweenOrderByScheduledAtAsc(email, cursor, today, end, pageable);
+                = eventRepository.findAllGreaterThanAndScheduledAtBetweenOrderByScheduledAtAsc(email, cursor, today, end, pageable);
+
+        return EventConverter.toEventCursorResponseDto(eventDtosSlice);
+    }
+
+    @Override
+    public EventResponseDto.EventCursorResponseDto getEventCursorByRoutine(String email, Long routineId, Long cursor, Integer size) {
+        Pageable pageable = PageRequest.of(0, size);
+
+        // cursor가 0일 경우(첫페이지) cursor 최대값
+        if (cursor == 0) {
+            cursor = Long.MIN_VALUE;
+        }
+
+        Slice<EventDto> eventDtosSlice
+                = eventRepository.findAllByRoutineIdOrderByScheduledAtAsc(email, routineId, cursor, pageable);
 
         return EventConverter.toEventCursorResponseDto(eventDtosSlice);
     }

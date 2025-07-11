@@ -31,6 +31,11 @@ public class EventCommandServiceImpl implements EventCommandService {
     @Override
     public int createEvent(Routine routine) {
 
+        // 비활성화 된 루틴일 때
+        if (!routine.getIsActive()) {
+            return 0;
+        }
+
         LocalDate start = routine.getStartAt();
         LocalDate oneYearLater = start.plusYears(1);
         LocalDate end;

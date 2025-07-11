@@ -25,3 +25,23 @@ spring:
     token:
       access-expiration-time: ${JWT_ACCESS_EXPIRATION_TIME}
       refresh-expiration-time: ${JWT_REFRESH_EXPIRATION_TIME}
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            authorization-grant-type: ${KAKAO_AUTHORIZATION_GRANT_TYPE}
+            client-id: ${KAKAO_CLIENT_ID}
+            redirect-uri: ${KAKAO_REDIRECT_URI}
+            client-authentication-method: ${KAKAO_AUTHENTICATION_METHOD}
+            scope:
+              - profile_nickname
+              - profile_image
+              - profile_email
+        provider:
+          kakao:
+            authorization-uri: ${KAKAO_AUTHORIZATION_URI}
+            token-uri: ${KAKAO_TOKEN_URI}
+            user-info-uri: ${KAKAO_USER_INFO_URI}
+            user-name-attribute: ${KAKAO_USER_NAME_ATTRIBUTE}

@@ -19,7 +19,7 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 
     @Override
     public MemberResponseDto.MemberDetailResponseDto getMember(String email) {
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         return MemberConverter.toMemberDetailResponseDto(member);

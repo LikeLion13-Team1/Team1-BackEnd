@@ -6,5 +6,7 @@ public interface RoutineQueryService {
 
     RoutineResponseDto.RoutineDetailResponseDto getRoutine(String email, Long routineId);
 
-    RoutineResponseDto.RoutineCursorResponseDto getRoutineCursor(String email, Long cursor, Integer size);
+    RoutineResponseDto.RoutineCursorResponseDto getMyRoutineCursor(String email, Long cursor, Integer size);
+
+    RoutineResponseDto.RoutineCursorResponseDto getMyGroupRoutineCursor(String email, Long groupId, Long cursor, Integer size);
 }

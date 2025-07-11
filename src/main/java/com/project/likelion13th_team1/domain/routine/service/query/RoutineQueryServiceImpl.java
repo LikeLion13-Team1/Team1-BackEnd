@@ -31,16 +31,31 @@ public class RoutineQueryServiceImpl implements RoutineQueryService {
     }
 
     @Override
-    public RoutineResponseDto.RoutineCursorResponseDto getRoutineCursor(String email, Long cursor, Integer size) {
+    public RoutineResponseDto.RoutineCursorResponseDto getMyRoutineCursor(String email, Long cursor, Integer size) {
         Pageable pageable = PageRequest.of(0, size);
 
         // cursor가 0일 경우(첫페이지) cursor 최대값
         if (cursor == 0) {
-            cursor = Long.MAX_VALUE;
+            cursor = Long.MIN_VALUE;
         }
 
         Slice<RoutineDto> routineDtosSlice
-                = routineRepository.findAllByRoutineIdLessThanOrderByRoutineIdDesc(email, cursor, pageable);
+                = routineRepository.findAllByRoutineIdLessThanOrderByRoutineIdASC(email, cursor, pageable);
+
+        return RoutineConverter.toRoutineCursorResponseDto(routineDtosSlice);
+    }
+
+    @Override
+    public RoutineResponseDto.RoutineCursorResponseDto getMyGroupRoutineCursor(String email, Long groupId, Long cursor, Integer size) {
+        Pageable pageable = PageRequest.of(0, size);
+
+        // cursor가 0일 경우(첫페이지) cursor 최대값
+        if (cursor == 0) {
+            cursor = Long.MIN_VALUE;
+        }
+
+        Slice<RoutineDto> routineDtosSlice
+                = routineRepository.findAllByGroupIdLessThanOrderByRoutineIdASC(email, groupId, cursor, pageable);
 
         return RoutineConverter.toRoutineCursorResponseDto(routineDtosSlice);
     }

@@ -1,5 +1,6 @@
 package com.project.likelion13th_team1.domain.feature.service.query;
 
+import com.project.likelion13th_team1.domain.feature.repository.FeatureRepository;
 import com.project.likelion13th_team1.domain.member.entity.Member;
 import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
 import com.project.likelion13th_team1.domain.member.exception.MemberException;
@@ -19,16 +20,15 @@ import org.springframework.stereotype.Service;
 public class FeatureQueryServiceImpl implements FeatureQueryService {
 
     private final MemberRepository memberRepository;
+    private final FeatureRepository featureRepository;
 
     @Override
     public FeatureResponseDto.FeatureDetailResponseDto getFeature(String email) {
-        Member member = memberRepository.findByEmail(email)
+        Member member = memberRepository.findByEmailAndNotDeleted(email)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
 
-        Feature feature = member.getFeature();
-        if(feature == null) {
-            throw new FeatureException(FeatureErrorCode.FEATURE_NOT_FOUND);
-        }
-        return FeatureConverter.toFeatureDetailResponseDto(feature);
+        Feature feature = featureRepository.findByMember(member)
+                .orElseThrow(() -> new FeatureException(FeatureErrorCode.FEATURE_NOT_FOUND));
+        return FeatureConverter.toFeatureDetailResponseDto(feature, member.getPersonality());
     }
 }
