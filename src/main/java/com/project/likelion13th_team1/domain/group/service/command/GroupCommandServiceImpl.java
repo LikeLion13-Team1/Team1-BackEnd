@@ -94,7 +94,9 @@ public class GroupCommandServiceImpl implements GroupCommandService {
 
         // TODO : 고아가 된 루틴 삭제처리
 
-        groupRepository.delete(group);
+        List<Routine> routinesToDelete = routineRepository.findByGroup(group);
+        routineRepository.deleteAll(routinesToDelete);
+        groupRepository.flush();
     }
 
     @Override
