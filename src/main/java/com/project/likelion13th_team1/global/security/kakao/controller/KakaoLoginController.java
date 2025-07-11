@@ -13,7 +13,6 @@ import com.project.likelion13th_team1.global.security.kakao.dto.response.KakaoUs
 import com.project.likelion13th_team1.global.security.kakao.service.KakaoService;
 import com.project.likelion13th_team1.global.security.userdetails.CustomUserDetails;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
@@ -37,11 +35,10 @@ public class KakaoLoginController {
     private final JwtUtil jwtUtil;
 
     @GetMapping("/callback/kakao")
-    public CustomResponse<String> callback(
-            @RequestParam("code") String code,
-            HttpServletResponse response
+    public CustomResponse<JwtDto> callback(
+            @RequestParam("code") String code
 
-    ) throws IOException {
+    ) {
 
         // 1. 카카오 인증서버에서 토큰을 발급받는다.
         // 인가code와 Redirect URL을 파라미터로 전달하여 카카오 인증서버에 요청.
@@ -71,23 +68,13 @@ public class KakaoLoginController {
         log.info("[ KakaoLoginController ] 회원 정보가 존재해 로그인을 진행합니다");
         CustomUserDetails customUserDetails = new CustomUserDetails(userInfo.kakaoAccount().email(), null, Role.USER);
 
-//        //Client 에게 줄 Response 를 Build
-//        JwtDto jwtDto = JwtDto.builder()
-//                .accessToken(jwtUtil.createJwtAccessToken(customUserDetails)) //access token 생성
-//                .refreshToken(jwtUtil.createJwtRefreshToken(customUserDetails)) //refresh token 생성
-//                .build();
-
-        String jwtAccessToken = jwtUtil.createJwtAccessToken(customUserDetails);
-        String jwtRefreshToken = jwtUtil.createJwtRefreshToken(customUserDetails);
-
-        // ✅ 프론트엔드로 리다이렉트
-        String frontendRedirectUrl = "https://frontend-app.com/login/success"
-                + "?accessToken=" + jwtAccessToken
-                + "&refreshToken=" + jwtRefreshToken;
-
-        response.sendRedirect(frontendRedirectUrl);
+        //Client 에게 줄 Response 를 Build
+        JwtDto jwtDto = JwtDto.builder()
+                .accessToken(jwtUtil.createJwtAccessToken(customUserDetails)) //access token 생성
+                .refreshToken(jwtUtil.createJwtRefreshToken(customUserDetails)) //refresh token 생성
+                .build();
 
         // CustomResponse 사용하여 응답 통일
-        return CustomResponse.onSuccess("카카오 리다이렉트");
+        return CustomResponse.onSuccess(jwtDto);
     }
 }
