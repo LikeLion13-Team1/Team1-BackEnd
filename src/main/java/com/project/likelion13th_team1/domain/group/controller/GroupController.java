@@ -36,9 +36,10 @@ public class GroupController {
     @Operation(summary = "그룹 단일 조회", description = "그룹 id를 통해 그룹 정보를 조회합니다.")
     @GetMapping("/{groupId}")
     public CustomResponse<GroupResponseDto.GroupDetailResponseDto> getGroup(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long groupId
     ) {
-        return CustomResponse.onSuccess(groupQueryService.getGroup(groupId));
+        return CustomResponse.onSuccess(groupQueryService.getGroup(customUserDetails.getUsername(), groupId));
     }
 
     @Operation(summary = "그룹 목록 조회 (내 그룹만)", description = "내가 가지고 있는 그룹의 목록을 조회합니다." +
@@ -79,7 +80,7 @@ public class GroupController {
             "<br> 유저의 특성과 연관된 LAZY, NORMAL, DILIGENT (게으름, 보통, 부지런)이 멤버 객체에 부여됩니다." +
             "<br> 그러고 피그마상으로 마지막에 어떤 그룹에 저장할 건가요? 할때 선택한 그룹 id를 입력하면" +
             "<br> 그룹 내용을 한번 초기화하고, 추천된 루틴 세트가 그룹에 채워집니다.")
-    @PostMapping("/groups/{groupId}/recommendation")
+    @PostMapping("/{groupId}/recommendation")
     public CustomResponse<String> recommendRoutineGroup(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long groupId
