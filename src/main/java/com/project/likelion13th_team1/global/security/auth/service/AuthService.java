@@ -7,6 +7,4 @@ public interface AuthService {
     JwtDto reissueToken(JwtDto jwtDto);
 
     void resetPassword(String email, AuthRequestDto.PasswordResetRequestDto passwordResetRequestDto);
-
-    void resetPasswordWithCode(String passwordTokenHeader, AuthRequestDto.PasswordResetWithCodeRequestDto passwordResetWithCodeRequestDto);
 }

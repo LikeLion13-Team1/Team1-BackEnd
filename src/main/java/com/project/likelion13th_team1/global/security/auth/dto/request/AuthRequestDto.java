@@ -25,14 +25,4 @@ public class AuthRequestDto {
             String newPasswordConfirmation
     ) {
     }
-
-    public record PasswordResetWithCodeRequestDto(
-            @NotBlank
-            @Pattern(regexp = PasswordPattern.REGEXP, message = PasswordPattern.MESSAGE)
-            String newPassword,
-            @NotBlank
-            @Pattern(regexp = PasswordPattern.REGEXP, message = PasswordPattern.MESSAGE)
-            String newPasswordConfirmation
-    ) {
-    }
 }

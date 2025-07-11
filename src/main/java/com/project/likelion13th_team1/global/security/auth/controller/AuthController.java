@@ -12,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.SignatureException;
 
@@ -60,15 +63,4 @@ public class AuthController {
         authService.resetPassword(customUserDetails.getUsername(), passwordResetRequestDto);
         return CustomResponse.onSuccess(HttpStatus.OK, "비밀번호가 변경되었습니다.");
     }
-
-    @Operation(summary = "비밀번호 재설정 (잃어버렸으르 때)", description = "메일 인증 코드 확인으로 발급된 토큰")
-    @PostMapping("/password/reset/code")
-    public CustomResponse<String> resetPasswordWithCode(
-            @RequestHeader("PasswordToken") String passwordTokenHeader,
-            @RequestBody AuthRequestDto.PasswordResetWithCodeRequestDto passwordResetWithCodeRequestDto
-    ) {
-        authService.resetPasswordWithCode(passwordTokenHeader, passwordResetWithCodeRequestDto);
-        return CustomResponse.onSuccess(HttpStatus.OK, "비밀번호 변경이 완료되었습니다.");
-    }
-
 }
