@@ -1,6 +1,5 @@
 package com.project.likelion13th_team1.domain.event.service.command;
 
-import com.project.likelion13th_team1.domain.alarm.service.command.AlarmCommandService;
 import com.project.likelion13th_team1.domain.event.converter.EventConverter;
 import com.project.likelion13th_team1.domain.event.dto.request.EventRequestDto;
 import com.project.likelion13th_team1.domain.event.dto.response.EventResponseDto;
@@ -28,8 +27,6 @@ import java.util.Set;
 public class EventCommandServiceImpl implements EventCommandService {
 
     private final EventRepository eventRepository;
-
-    private final AlarmCommandService alarmCommandService;
 
     @Override
     public int createEvent(Routine routine) {
@@ -64,9 +61,7 @@ public class EventCommandServiceImpl implements EventCommandService {
                 eventsToSave.add(event);
             }
 
-            List<Event> savedEvents = eventRepository.saveAll(eventsToSave);
-
-            alarmCommandService.autoCreateAlarm(savedEvents);
+            eventRepository.saveAll(eventsToSave);
             return eventsToSave.size();  // 0 또는 1 반환
         }
 
@@ -78,10 +73,7 @@ public class EventCommandServiceImpl implements EventCommandService {
             }
         }
 
-        List<Event> savedEvents = eventRepository.saveAll(eventsToSave);
-
-        alarmCommandService.autoCreateAlarm(savedEvents);
-
+        eventRepository.saveAll(eventsToSave);
         return eventCount;
     }
 
