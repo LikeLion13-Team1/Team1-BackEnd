@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +39,7 @@ public class KakaoLoginController {
     private final JwtUtil jwtUtil;
 
     @GetMapping("/callback/kakao")
-    public CustomResponse<JwtDto> callback(
+    public CustomResponse<String> callback(
             @RequestParam("code") String code,
             HttpServletResponse response
 
@@ -70,28 +72,29 @@ public class KakaoLoginController {
         // 로그인으로 이동
         log.info("[ KakaoLoginController ] 회원 정보가 존재해 로그인을 진행합니다");
         CustomUserDetails customUserDetails = new CustomUserDetails(userInfo.kakaoAccount().email(), null, Role.USER);
+//
+//        //Client 에게 줄 Response 를 Build
+//        JwtDto jwtDto = JwtDto.builder()
+//                .accessToken(jwtUtil.createJwtAccessToken(customUserDetails)) //access token 생성
+//                .refreshToken(jwtUtil.createJwtRefreshToken(customUserDetails)) //refresh token 생성
+//                .build();
 
-        //Client 에게 줄 Response 를 Build
-        JwtDto jwtDto = JwtDto.builder()
-                .accessToken(jwtUtil.createJwtAccessToken(customUserDetails)) //access token 생성
-                .refreshToken(jwtUtil.createJwtRefreshToken(customUserDetails)) //refresh token 생성
-                .build();
-//
-//        String jwtAccessToken = jwtUtil.createJwtAccessToken(customUserDetails);
-//        String jwtRefreshToken = jwtUtil.createJwtRefreshToken(customUserDetails);
-//
-//
-//        log.info("[KakaoLoginController ] access = {}, refresh = {}", jwtAccessToken, jwtRefreshToken);
-//
-//        // ✅ 프론트엔드로 리다이렉트
-//        String frontendRedirectUrl = "http://127.0.0.1:5500/Team1-FrontEnd/pages/home2.html"
-//                + "?accessToken=" + jwtAccessToken
-//                + "&refreshToken=" + jwtRefreshToken;
-//
-//        log.info("frontendRedirectUrl {}", frontendRedirectUrl);
-//        response.sendRedirect(frontendRedirectUrl);
+        String jwtAccessToken = jwtUtil.createJwtAccessToken(customUserDetails);
+        String jwtRefreshToken = jwtUtil.createJwtRefreshToken(customUserDetails);
+
+
+        log.info("[KakaoLoginController ] access = {}, refresh = {}", jwtAccessToken, jwtRefreshToken);
+
+
+        // ✅ 프론트엔드로 리다이렉트
+        String frontendRedirectUrl = "http://127.0.0.1:5500/Team1-FrontEnd/pages/kakao-callback.html"
+                + "?accessToken=" + jwtAccessToken
+                + "&refreshToken=" + jwtRefreshToken;
+
+        log.info("frontendRedirectUrl {}", frontendRedirectUrl);
+        response.sendRedirect(frontendRedirectUrl);
 
         // CustomResponse 사용하여 응답 통일
-        return CustomResponse.onSuccess(jwtDto);
+        return CustomResponse.onSuccess("성공");
     }
 }
