@@ -18,6 +18,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -53,6 +55,20 @@ public class AlarmCommandServiceImpl implements AlarmCommandService {
         Alarm saveAlarm = alarmRepository.save(alarm);
 
         return alarm.getId();
+    }
+
+    @Transactional
+    public void autoCreateAlarm(List<Event> events) {
+        List<Alarm> alarmsToSave = events.stream()
+                .map(event -> Alarm.builder()
+                        .event(event)
+                        .context("Normal")
+                        .activation(Activation.Y)
+                        .time(event.getScheduledAt().atTime(18, 0))
+                        .build())
+                .toList();
+
+        alarmRepository.saveAll(alarmsToSave);
     }
 
     public Long toggleAlarm(Long eventId) {
