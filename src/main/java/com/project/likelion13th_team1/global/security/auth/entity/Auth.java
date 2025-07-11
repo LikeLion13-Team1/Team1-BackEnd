@@ -22,4 +22,8 @@ public class Auth {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", unique = true, nullable = false)
     private Member member;
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
 }
