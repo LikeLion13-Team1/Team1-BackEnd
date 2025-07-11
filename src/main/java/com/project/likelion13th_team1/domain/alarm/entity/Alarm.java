@@ -34,6 +34,7 @@ public class Alarm{
 
     // 알람을 할 실제 루틴 정보
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
     private Event event;
 
     public void setContext(String context) {
