@@ -39,6 +39,18 @@ public class AlarmController {
         return ResponseEntity.ok(alarms);
     }
 
+    @Operation(summary = "알람 단건 랜덤 조회")
+    @GetMapping("api/v1/alarm")
+    public ResponseEntity<AlarmDto> getAlarm(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) {
+        Member member = memberRepository.findByEmail(customUserDetails.getUsername())
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        AlarmDto alarm = alarmQueryService.getAlarmByMember(member);
+        return ResponseEntity.ok(alarm);
+    }
+
     @Operation(summary = "알람 활성화 토글")
     @PatchMapping("/api/v1/alarms/{eventId}")
     public CustomResponse<?> toggleAlarm(
