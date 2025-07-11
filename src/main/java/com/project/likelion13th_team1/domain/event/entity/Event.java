@@ -46,7 +46,7 @@ public class Event {
 
     // Alarm과 양방향 매핑 관계 설정, Event가 삭제된다면 Alarm도 삭제
     @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Alarm> alarms = new ArrayList<>();
+    private List<Alarm> alarms;
 
 
     // updateEvent
@@ -67,5 +67,9 @@ public class Event {
     public void undoneEvent() {
         this.doneAt = null;
         this.status = Status.PROCESSING;
+    }
+
+    public void updateStatus(Status status) {
+        this.status = status;
     }
 }
