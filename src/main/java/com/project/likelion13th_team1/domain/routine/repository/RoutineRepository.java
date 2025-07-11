@@ -52,10 +52,8 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
             "WHERE r.isActive = true")
     List<Routine> findAllActiveRoutines();
 
-    @Transactional
-    @Modifying
-    @Query("DELETE " +
+    @Query("SELECT r " +
             "FROM Routine r " +
             "WHERE r.group = :group")
-    void deleteByGroup(@Param("group") Group group);
+    List<Routine> findByGroup(@Param("group") Group group);
 }
