@@ -34,6 +34,7 @@ public class CorsConfig implements WebMvcConfigurer {
         allowedHttpMethods.add("GET");
         allowedHttpMethods.add("POST");
         allowedHttpMethods.add("PUT");
+        allowedHttpMethods.add("PATCH");
         allowedHttpMethods.add("DELETE");
         allowedHttpMethods.add("PATCH");
 

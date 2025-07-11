@@ -7,6 +7,12 @@ import com.project.likelion13th_team1.domain.group.entity.Group;
 import com.project.likelion13th_team1.domain.group.exception.GroupErrorCode;
 import com.project.likelion13th_team1.domain.group.exception.GroupException;
 import com.project.likelion13th_team1.domain.group.repository.GroupRepository;
+import com.project.likelion13th_team1.domain.member.entity.Member;
+import com.project.likelion13th_team1.domain.member.exception.MemberErrorCode;
+import com.project.likelion13th_team1.domain.member.exception.MemberException;
+import com.project.likelion13th_team1.domain.member.repository.MemberRepository;
+import com.project.likelion13th_team1.global.apiPayload.code.GeneralErrorCode;
+import com.project.likelion13th_team1.global.apiPayload.exception.CustomException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -20,11 +26,16 @@ import org.springframework.stereotype.Service;
 public class GroupQueryServiceImpl implements GroupQueryService {
 
     private final GroupRepository groupRepository;
+    private final MemberRepository memberRepository;
 
     @Override
-    public GroupResponseDto.GroupDetailResponseDto getGroup(Long groupId) {
+    public GroupResponseDto.GroupDetailResponseDto getGroup(String email, Long groupId) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new GroupException(GroupErrorCode.GROUP_NOT_FOUND));
+
+        if (!group.getMember().getEmail().equals(email)) {
+            throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
+        }
 
         return GroupConverter.toGroupDetailResponseDto(group);
     }
