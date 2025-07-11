@@ -18,6 +18,8 @@ public class AlarmDto {
     private String activation;
     private LocalDateTime time;
     private String eventTitle;
+    private String routineName;
+    private String routineDescription;
 
     public static AlarmDto from(Alarm alarm) {
         return AlarmDto.builder()
@@ -25,7 +27,8 @@ public class AlarmDto {
                 .context(alarm.getContext())
                 .activation(alarm.getActivation().name())
                 .time(alarm.getTime())
+                .routineName(alarm.getEvent().getRoutine().getName())
+                .routineDescription(alarm.getEvent().getRoutine().getDescription())
                 .build();
     }
 }
-
