@@ -27,6 +27,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -47,6 +48,13 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new GroupException(GroupErrorCode.GROUP_NOT_FOUND));
 
+        LocalDate startAt = routineCreateRequestDto.startAt();
+        LocalDate endAt = routineCreateRequestDto.endAt();
+
+        if (endAt != null && startAt.isAfter(endAt)) {
+            throw new RoutineException(RoutineErrorCode.ROUTINE_END_AT_IS_EARLIER_THAN_START_AT);
+        }
+
         Routine routine = RoutineConverter.toRoutine(routineCreateRequestDto, group);
         routineRepository.save(routine);
 
@@ -66,6 +74,12 @@ public class RoutineCommandServiceImpl implements RoutineCommandService {
 
         if (routine.getGroup().getMember() != member) {
             throw new CustomException(GeneralErrorCode.FORBIDDEN_403);
+        }
+        LocalDate startAt = routineUpdateRequestDto.startAt();
+        LocalDate endAt = routineUpdateRequestDto.endAt();
+
+        if (endAt != null && startAt.isAfter(endAt)) {
+            throw new RoutineException(RoutineErrorCode.ROUTINE_END_AT_IS_EARLIER_THAN_START_AT);
         }
 
         routine.updateRoutine(routineUpdateRequestDto);

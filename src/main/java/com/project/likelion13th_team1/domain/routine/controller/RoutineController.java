@@ -42,7 +42,7 @@ public class RoutineController {
     public CustomResponse<RoutineResponseDto.RoutineUpdateResponseDto> updateRoutine(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable Long routineId,
-            @RequestBody RoutineRequestDto.RoutineUpdateRequestDto routineUpdateRequestDto
+            @RequestBody @Valid RoutineRequestDto.RoutineUpdateRequestDto routineUpdateRequestDto
 
     ) {
         return CustomResponse.onSuccess(routineCommandService.updateRoutine(customUserDetails.getUsername(), routineId, routineUpdateRequestDto));
