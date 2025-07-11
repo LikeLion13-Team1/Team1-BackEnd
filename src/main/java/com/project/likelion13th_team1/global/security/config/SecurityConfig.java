@@ -43,6 +43,8 @@ public class SecurityConfig {
             "/api/v1/callback/kakao",
             "/mail-verifications/request-code",
             "/mail-verifications/validation",
+            "/mail-verifications/validation/password",
+            "/api/v1/auth/password/reset/code",
             "api/usage",
             "/swagger-ui/**",   // swagger 관련 URL
             "/v3/api-docs/**",
