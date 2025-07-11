@@ -16,6 +16,7 @@ import com.project.likelion13th_team1.domain.routine.exception.RoutineException;
 import com.project.likelion13th_team1.domain.routine.repository.RoutineRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class AlarmCommandServiceImpl implements AlarmCommandService {
     private final AlarmRepository alarmRepository;
     private final RoutineRepository routineRepository;
@@ -59,6 +61,7 @@ public class AlarmCommandServiceImpl implements AlarmCommandService {
 
     @Transactional
     public void autoCreateAlarm(List<Event> events) {
+        log.info("이벤트 리스트 = {}", events);
         List<Alarm> alarmsToSave = events.stream()
                 .map(event -> Alarm.builder()
                         .event(event)
@@ -67,8 +70,9 @@ public class AlarmCommandServiceImpl implements AlarmCommandService {
                         .time(event.getScheduledAt().atTime(18, 0))
                         .build())
                 .toList();
-
+        log.info("저장할 알람 = {}", alarmsToSave);
         alarmRepository.saveAll(alarmsToSave);
+        log.info("알람 저장 완료");
     }
 
     public Long toggleAlarm(Long eventId) {

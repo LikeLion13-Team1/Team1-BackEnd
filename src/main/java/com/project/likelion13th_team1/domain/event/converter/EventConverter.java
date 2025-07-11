@@ -28,6 +28,7 @@ public class EventConverter {
         return EventResponseDto.EventDetailResponseDto.builder()
                 .routineId(event.getRoutine().getId())
                 .eventId(event.getId())
+                .routineName(event.getRoutine().getName())
                 .scheduledAt(event.getScheduledAt())
                 .doneAt(event.getDoneAt())
                 .status(event.getStatus())
