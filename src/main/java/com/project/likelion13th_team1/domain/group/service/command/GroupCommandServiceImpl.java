@@ -109,7 +109,8 @@ public class GroupCommandServiceImpl implements GroupCommandService {
                 .orElseThrow(() -> new GroupException(GroupErrorCode.GROUP_NOT_FOUND));
 
         // 그룹에 이전에 있던 내용 초기화
-        routineRepository.deleteByGroup(group);
+        List<Routine> routinesToDelete = routineRepository.findByGroup(group);
+        routineRepository.deleteAll(routinesToDelete);
         groupRepository.flush();
 
         // 특성 점수 합계로 루틴 세트를 받는다.
