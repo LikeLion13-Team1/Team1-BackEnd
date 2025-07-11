@@ -80,11 +80,15 @@ public class KakaoLoginController {
         String jwtAccessToken = jwtUtil.createJwtAccessToken(customUserDetails);
         String jwtRefreshToken = jwtUtil.createJwtRefreshToken(customUserDetails);
 
+
+        log.info("[KakaoLoginController ] access = {}, refresh = {}", jwtAccessToken, jwtRefreshToken);
+
         // ✅ 프론트엔드로 리다이렉트
         String frontendRedirectUrl = "http://127.0.0.1:5500/Team1-FrontEnd/pages/home2.html"
                 + "?accessToken=" + jwtAccessToken
                 + "&refreshToken=" + jwtRefreshToken;
 
+        log.info("frontendRedirectUrl {}", frontendRedirectUrl);
         response.sendRedirect(frontendRedirectUrl);
 
         // CustomResponse 사용하여 응답 통일
