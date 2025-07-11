@@ -45,7 +45,7 @@ public class Event {
     private Routine routine;
 
     // Alarm과 양방향 매핑 관계 설정, Event가 삭제된다면 Alarm도 삭제
-    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Alarm> alarms;
 
 
