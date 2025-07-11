@@ -27,6 +27,7 @@ public class CorsConfig implements WebMvcConfigurer {
         allowedOriginPatterns.add("http://127.0.0.1:8080");
         allowedOriginPatterns.add("http://127.0.0.1:5500");
         allowedOriginPatterns.add("http://13.209.221.182:8080");
+        allowedOriginPatterns.add("https://team1-front-end1.vercel.app");
 
 
         //허용하는 HTTP METHOD 지정
